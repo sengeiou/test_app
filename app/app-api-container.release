@@ -1,0 +1,8 @@
+# 请参考 https://help.aliyun.com/document_detail/59293.html 了解更多关于release文件的编写方式 
+
+code.language=oracle-jdk1.8
+build.command=mvn clean install -P ${ENV_P}
+build.output=target/app-0.0.1-SNAPSHOT.jar
+docker.file=Dockerfile
+docker.repo=registry.cn-hangzhou.aliyuncs.com/bevol/app_api
+docker.tag=${TIMESTAMP}

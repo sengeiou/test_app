@@ -1,0 +1,63 @@
+spring:
+  datasource:
+    username: bevol_online
+    password: BevolOn123
+    url: jdbc:mysql://rdsoxdt0k8m3y0561p1fi.mysql.rds.aliyuncs.com:3306/bevol_online
+    type: com.alibaba.druid.pool.DruidDataSource
+    #初始化连接大小
+    initialSize: 3
+    #连接池最小空闲
+    minIdle: 2
+    #连接池最大使用连接数量
+    maxActive: 3
+    #获取连接最大等待时间
+    maxWait: 60000
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+  data:
+    mongodb:
+      uri: mongodb://bevol_test:bevol_test@dds-bp1c48607e161ac41.mongodb.rds.aliyuncs.com:3717,dds-bp1c48607e161ac42.mongodb.rds.aliyuncs.com:3717/bevol_test?replicaSet=mgset-1110679;maxpoolsize=30
+      database: bevol_test
+  redis:
+    host: 100.114.152.47
+    port: 16379
+    pool:
+      max-active: 100
+      max-idle: 30
+      max-wait: 30
+
+cloud:
+  search:
+    openSearchIndexPre:
+    hot_entity: 0
+
+server:
+  port: 80
+
+aliyun:
+  oss:
+    pcAccessId: qMV4CnsV6ZoTOuNF
+    pcAccessKey: BvoWgRnwmCXbog5wjIUh00zrR7S41k
+    pcBucket: www-bevol
+    pcEndpoint: http://oss-cn-hangzhou.aliyuncs.com
+    mAccessId: Kjswdndtlw7PJ4Tj
+    mAccessKey: 78f7rXOd0JrycxSEgfU2h5H79uWP2P
+    mBucket: m-bevol
+    mEndpoint: http://oss-cn-hangzhou.aliyuncs.com
+    sourceAccessId: IUf7jmalKxSol1ow
+    sourceAccessKey: 8z3isV4pOc1VgqDOfMKlW0ct6isO7l
+    sourceBucket: bevol-source
+    sourceEndpoint: http://oss-cn-hangzhou.aliyuncs.com
+
+static:
+  html:
+    root: /usr/local/www/static/tmp

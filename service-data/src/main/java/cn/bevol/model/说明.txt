@@ -1,0 +1,13 @@
+������Ҫ����
+�û� userinfo
+ʵ�� entity
+��Ϣ msg
+�Ĺ�ϵ
+entity-��ʾʵ��goods��find��composition״̬����
+ϲ������ϲ�����ղء����۵���Ϣ
+
+userinfo
+������entity�Ĺ�ϵ ����Ϣ���� ����Ϣ����
+
+��Ϣ msg �ɹ���Ա��ϵͳ����
+���û��Ĺ�ϵ��¼��userMsgRelation��

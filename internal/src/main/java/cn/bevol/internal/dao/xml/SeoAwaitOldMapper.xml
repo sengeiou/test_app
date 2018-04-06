@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.internal.dao.mapper.SeoAwaitOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.internal.entity.model.SeoAwait">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="operate_type" property="operateType" jdbcType="VARCHAR"/>
+        <result column="data_type" property="dataType" jdbcType="VARCHAR"/>
+        <result column="data_source" property="dataSource" jdbcType="VARCHAR"/>
+         <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+    </resultMap>
+   
+	<select id="selectTotal" resultType="int">
+   		 SELECT count(*) FROM hq_seo_await
+        <if test="wheres != null">
+            WHERE 1=1
+            <if test="wheres.beginTime != null">
+                and update_time between #{wheres.beginTime} and #{wheres.endTime}
+            </if>
+            <if test="wheres.state != null">
+                and state = #{state}
+            </if>
+            <if test="wheres.dataType != null">
+                and data_type = #{dataType}
+            </if>
+            <if test="wheres.operateType != null">
+                and operate_type = #{operateType}
+            </if>
+            <if test="wheres.dataSource != null">
+                and  data_source =#{dataSource}
+            </if>
+        </if>
+    </select> 
+    <select id="selectTotalByWhere" resultType="int">
+     	SELECT count(*) FROM hq_seo_await
+     	WHERE 1=1
+     	<if test="state != null">
+	       and state = #{state}
+	      </if>
+	      <if test="dataType != null">
+	       and data_type = #{dataType}
+	      </if>
+	      <if test="operateType != null">
+	       and operate_type = #{operateType}
+	      </if>
+	       <if test="operateType != null">
+	       and operate_type = #{operateType}
+	      </if>
+    </select>
+     
+    <insert id="insert" parameterType="cn.bevol.internal.entity.model.SeoAwait"  >
+    	insert into hq_seo_await(mid.url,operate_type,data_type,data_source,state,create_time,update_time)
+    	values
+    	(	
+    		#{mid},#{url},#{operateType},#{dataType},#{dataSource},#{state}, #{createTime}, #{updateTime}
+    	)
+    </insert>
+   <insert id="insertOrUpdate" parameterType="cn.bevol.internal.entity.model.SeoAwait">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from hq_seo_await where url = #{url} and operate_type = #{operateType} and data_type =#{dataType}
+        </selectKey>
+        <if test="count == 0">
+       		 insert into hq_seo_await(mid,url,data_type,operate_type,data_source, state,create_time)
+    		values
+    		(	
+    			#{mid}, #{url},#{dataType},#{operateType},#{dataSource},0, #{createTime}
+    		)
+        </if>
+        <if test="count > 0">
+        	update hq_seo_await set
+            <if test="mid!=null">mid= #{mid},</if>
+            <if test="url!=null">  url =#{url},</if>
+            <if test="dataType!=null">  data_type=#{dataType}, </if>
+            <if test="operateType!=null">operate_type =#{operateType},</if>
+            <if test="dataSource!=null">data_source =#{dataSource},</if>
+            state=1,
+            <if test="updateTime!=null">update_time= #{updateTime}</if>
+        	where url = #{url} and operate_type = #{operateType} and data_type =#{dataType}
+        </if>
+     </insert>
+     <select id="findByPage" resultMap="BaseResultMap">
+    SELECT * FROM hq_seo_await
+    <if test="wheres != null">
+      WHERE 1=1
+      <if test="wheres.beginTime != null">
+        and update_time between #{wheres.beginTime} and #{wheres.endTime}
+      </if>
+      <if test="wheres.state != null">
+       and state = #{state}
+      </if>
+      <if test="wheres.dataType != null">
+       and data_type = #{dataType}
+      </if>
+      <if test="wheres.operateType != null">
+       and operate_type = #{operateType}
+      </if>
+      <if test="wheres.dataSource != null">
+      	and  data_source =#{dataSource}
+      </if>
+    </if>
+    <if test="orderBy != null">
+      ORDER BY ${orderBy}
+    </if>
+    <if test="pageSize > 0">
+      LIMIT #{pagedBegin},#{pageSize}
+    </if>
+  </select>
+  
+   <select id="findAll" resultMap="BaseResultMap">
+    SELECT * FROM hq_seo_await
+      WHERE 1=1
+      AND state = 0
+      ORDER BY create_time DESC
+       LIMIT 1500
+   
+  </select>
+    <select id="findByDate" resultMap="BaseResultMap">
+         SELECT * FROM hq_seo_await
+      WHERE 1=1 AND state = 0
+        <if test="beginTime != null">
+            AND create_time BETWEEN  #{beginTime} AND #{endTime}
+        </if>
+      ORDER BY create_time DESC
+    </select>
+    <update id="update" parameterType="cn.bevol.internal.entity.model.SeoAwait">
+	    update hq_seo_await set
+        <if test="mid!=null">mid= #{mid},</if>
+        <if test="url!=null">  url =#{url},</if>
+        <if test="dataType!=null">  data_type=#{dataType}, </if>
+        <if test="operateType!=null">operate_type =#{operateType},</if>
+        <if test="dataSource!=null">data_source =#{dataSource},</if>
+        <if test="state!=null">state=#{state},</if>
+        <if test="updateTime!=null">update_time= #{updateTime}</if>
+        where url = #{url} and operate_type = #{operateType} and data_type =#{dataType}
+    </update>
+</mapper>

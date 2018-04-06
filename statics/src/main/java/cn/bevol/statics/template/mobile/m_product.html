@@ -1,0 +1,42 @@
+<#include "/header.html" />
+<script type="text/javascript" src="${js}/arttmpl.js"></script>
+<script type="text/javascript" src="${js}/m_product2.js"></script>
+<link rel="stylesheet" type="text/css" href="${css}/m_product2.css"/>
+<!--搜索框-->
+<header class="mui-bar mui-bar-nav" id="head_box">
+    <div class="mui-input-row">
+        <input type="search" readonly="value" placeholder="搜索${product_total!'557588'}种化妆品的安全和功效" id="searchval" class="mui-input-clear">
+        <span class="mui-icon search-icon" style=""><img src="${img}/wx/images/search_icon_black.png"></span>
+    </div>
+</header>
+<div class="mui-content">
+    <div id="pullrefresh" class="mui-scroll-wrapper" style="padding-top: 44px;">
+        <div id="input_box">
+            <div class="search-box goods">
+                <ul id="goods-container" class="mui-table-view mui-table-view-chevron">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--goods-->
+<script type="text/html" id="goods-tpl">
+    <%for(var i = 0; i < data.length; i++){%>
+    <li class="mui-table-view-cell goods_box goods-btn" data-id="<%=data[i].id%>" data-mid="<%=data[i].mid%>" a-href>
+        <div class='goods_list'>
+            <%if(data[i].imageSrc){%>
+            <img src="<%=data[i].imageSrc%>@70p" class='imglist' />
+            <%}else{%>
+            <img src="${img}/wx/images/default.png" class='imglist' />
+            <%}%>
+        </div>
+        <div class='goods_text_box'>
+            <span class="goods_text_box_title"><%=data[i].title%></span>
+            <span class="goods_text_box_en"><%=data[i].alias%></span>
+        </div>
+        <div class="clear"></div>
+    </li>
+    <%}%>
+</script>
+<#include "/footer.html" />

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+
+<settings>
+       <mirrors>
+        <mirror>
+            <id>aliyun-repo</id>
+            <mirrorOf>central</mirrorOf>
+            <name>central mirror</name>
+            <url>http://maven.aliyun.com/mvn/repository</url>
+        </mirror>
+        <mirror>
+            <id>my-lib-repo</id>
+            <mirrorOf>my-lib-repo</mirrorOf>
+            <name>private mirror</name>
+            <url>http://nexus.bevol.cn/content/groups/public/</url>
+        </mirror>
+    </mirrors> 
+ 
+      
+</settings>

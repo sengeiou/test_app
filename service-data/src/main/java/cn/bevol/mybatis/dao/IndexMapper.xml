@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.mybatis.dao.IndexMapper">
+<resultMap id="BaseResultMap" type="cn.bevol.mybatis.dto.EssenceComment">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+        <result column="headimgurl" property="headimgurl" jdbcType="VARCHAR"/>
+        <result column="user_descz" property="userDescz" jdbcType="VARCHAR"/>
+        <result column="goods_image" property="goodsImage" jdbcType="VARCHAR"/>
+        <result column="goods_title" property="goodsTitle" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
+        <result column="goods_mid" property="goodsMid" jdbcType="VARCHAR"/>
+        <result column="skin" property="skin" jdbcType="VARCHAR"/>
+        <result column="skin_results" property="skinResults" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="type_id" property="typeId" jdbcType="INTEGER"/>
+        <result column="is_essence" property="isEssence" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <result column="like_num" property="likeNum" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <select id="fingClassification" resultType="cn.bevol.mybatis.dto.Classification">
+        SELECT id,alias as title,image,sorting FROM hq_goods_category WHERE sorting &gt; 0 ORDER BY sorting LIMIT 0,8
+    </select>
+
+    <select id="findImage" resultType="cn.bevol.mybatis.dto.IndexImage">
+       select `value` from hq_config where `key`='banners' or `key`='categorylists' LIMIT 0,1
+    </select>
+
+    <select id="shareDescByType" resultType="cn.bevol.mybatis.dto.Share">
+        SELECT id,type,text FROM hq_document WHERE hidden_status=0 AND delete_status=0
+    </select>
+
+
+    <insert id="insertShare" parameterType="cn.bevol.mybatis.dto.Share">
+        INSERT INTO `hq_document` (`type`,`text`)
+        VALUES
+	    (#{type,jdbcType=INTEGER},#{text,jdbcType=VARCHAR});
+    </insert>
+
+    <delete id="deleteShare">
+        delete from hq_document where type= #{type,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="fingShopAddress" resultType="cn.bevol.mybatis.dto.ShoppingAddress">
+        SELECT title,logo,url FROM hq_shopping_address WHERE hidden=0 AND deleted=0
+    </select>
+    
+    <!-- 首页精选点评 -->
+    <select id="essenceCommentList" resultMap="BaseResultMap">
+       SELECT id,user_id,nickname,skin,skin_results,headimgurl,user_descz,goods_id,goods_mid,goods_image,goods_title,
+        TYPE,type_id,content,like_num,is_essence,publish_time,create_time FROM hq_essence_comment WHERE
+         publish_time &lt; UNIX_TIMESTAMP(ADDDATE(DATE(SYSDATE()),1))  ORDER BY publish_time desc LIMIT 0,1
+    </select>
+    
+    <!-- v2.9 首页精选点评 -->
+    <select id="essenceCommentList2" resultMap="BaseResultMap">
+       SELECT id,user_id,nickname,skin,skin_results,headimgurl,user_descz,goods_id,goods_mid,goods_image,goods_title,
+        TYPE,type_id,content,like_num,is_essence,publish_time,create_time FROM hq_essence_comment WHERE
+         publish_time &lt; UNIX_TIMESTAMP(ADDDATE(DATE(SYSDATE()),1)) and hidden_status=0 ORDER BY publish_time DESC LIMIT 0,3
+    </select>
+    
+    <!-- 往期精选文章 -->
+    <select id="oldAarticleList" resultMap="BaseResultMap">
+       SELECT id,user_id,nickname,skin,skin_results,headimgurl,user_descz,goods_id,goods_mid,goods_image,goods_title,
+        TYPE,type_id,content,like_num,is_essence,publish_time,create_time FROM hq_essence_comment WHERE
+         publish_time &lt; UNIX_TIMESTAMP(ADDDATE(DATE(SYSDATE()),1)) and hidden_status=0 ORDER BY publish_time desc LIMIT #{start},#{size}
+    </select>
+    
+    <!-- 更新精华点评的产品图片 -->
+    <update id="updateEssenceImage">
+		UPDATE hq_essence_comment e,hq_goods g SET e.goods_image=g.image WHERE g.id=e.goods_id
+    </update>
+    
+    
+    <select id="count" resultType="long">
+       SELECT count(id) FROM hq_essence_comment WHERE
+         publish_time &lt;= UNIX_TIMESTAMP(DATE(SYSDATE()))
+    </select>
+    
+    <!-- 后台添加首页精华点评 -->
+    <insert id="addEssenceComment">
+       insert into hq_essence_comment(user_id,nickname,headimgurl,user_descz,goods_id,goods_mid,goods_image,type,
+       type_id,content,like_num,is_essence,create_time,publish_time,hidden_status,goods_title,skin,skin_results)
+        values(
+        	#{userId,jdbcType=INTEGER},#{nickname,jdbcType=VARCHAR},#{headimgurl,jdbcType=VARCHAR},#{userDescz,jdbcType=VARCHAR},#{goodsId,jdbcType=INTEGER},#{goodsMid,jdbcType=VARCHAR}
+       		,#{goodsImage,jdbcType=VARCHAR},#{type,jdbcType=INTEGER},#{typeId,jdbcType=INTEGER},#{content,jdbcType=VARCHAR},#{likeNum,jdbcType=INTEGER},#{isEssence,jdbcType=INTEGER},#{createTime,jdbcType=INTEGER}
+       		,#{publishTime,jdbcType=INTEGER},#{hiddenStatus,jdbcType=INTEGER},#{goodsTitle,jdbcType=VARCHAR},#{skin,jdbcType=VARCHAR},#{skinResults,jdbcType=VARCHAR}
+        )
+    </insert>
+    
+    <select id="getNum" resultType="Map">
+       SELECT user_id,COUNT(*) as num FROM hq_essence_comment WHERE TYPE=#{type} GROUP BY user_id
+    </select>
+    
+    <select id="getEssenceCommentByID" resultMap="BaseResultMap">
+       SELECT * FROM hq_essence_comment WHERE id=#{id} and hidden_status=0
+    </select>
+    
+        <select id="checkVersion" resultType="Map">
+       select * from hq_appversion where `systype`=#{ver} and `isnew`=1 order by id desc LIMIT 0,1
+    </select>
+    
+    <select id="findByGoodsId" resultMap="BaseResultMap">
+       select * from hq_essence_comment where `goods_id`=#{goodsId} and `hidden_status`=0 and type=2 order  by id desc LIMIT 0,1
+    </select>
+    
+</mapper>

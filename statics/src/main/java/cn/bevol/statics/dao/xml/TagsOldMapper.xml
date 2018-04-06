@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.statics.dao.mapper.TagsOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.model.Tags">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="tag" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="findByTabs" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT t.title,t.id FROM hq_new_tags t left join hq_tag_list l on l.id = t.tag_pid
+        WHERE 1=1 and hidden_status =0 and delete_status=0 and tabs = #{tabs}
+    </select>
+    <select id="findByIds" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT t.title,t.id FROM hq_new_tags t
+        WHERE 1=1 and id in
+        <foreach collection="array" item="id"  open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

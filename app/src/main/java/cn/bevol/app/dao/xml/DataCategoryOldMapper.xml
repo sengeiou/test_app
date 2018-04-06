@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bevol.app.dao.mapper.DataCategoryOldMapper">
+<!-- 
+<resultMap type="EntityGoods" id="BaseMap">
+	<id column="id" property="id" jdbcType="INTEGER"/>
+	<result column="like_num" property="likeNum" jdbcType="Integer"/>
+	<result column="hidden" property="hidden" jdbcType="Integer"/>
+	<result column="hidden" property="hidden" jdbcType="Integer"/>
+	<result column="title" property="title" jdbcType="Long"/>
+	<result column="alias" property="alias" jdbcType="Long"/>
+	<result column="hit" property="hitNum" jdbcType="Long"/>
+	<result column="image" property="image" jdbcType="String"/>
+	<result column="like_num" property="likeNum" jdbcType="Long"/>
+	<result column="title" property="title" jdbcType="int"/>
+	<result column="title" property="title" jdbcType="int"/>
+</resultMap>
+ -->
+	<select id="selectGoodsById" resultType="Long">
+		select hq_goods_search.goods_id from hq_goods_search,hq_goods where hq_goods_search.category=#{category} and hq_goods_search.goods_id=hq_goods.id and hq_goods.deleted=0 and hq_goods.hidden=0 and hq_goods.hidden_skin=0  order by hq_goods_search.comment_avg_score Desc limit 0,200  
+	</select>
+		<select id="selectSfetyGoodsById" resultType="Long">
+		select hq_goods_search.goods_id from hq_goods_search,hq_goods where hq_goods_search.safety_1_num>4.5 and hq_goods_search.goods_id=hq_goods.id and hq_goods.deleted=0 and hq_goods.hidden=0 and hq_goods.hidden_skin=0 order by hq_goods_search.comment_avg_score Desc limit 0,200  
+	</select>
+		<select id="selectByBrandId" resultType="Long">
+		select  hq_goods.id from hq_goods,hq_goods_search where hq_goods.brand_id=#{brandId} and hq_goods.id=hq_goods_search.goods_id and hq_goods.deleted=0 and hq_goods.hidden=0 and hq_goods.hidden_skin=0 order by hq_goods_search.comment_avg_score desc limit 200	
+	</select>
+		<select id="selectTitleByBrandId" resultType="String">
+		select cn_name from hq_brands where id=#{brandId}
+	</select>
+	</mapper>

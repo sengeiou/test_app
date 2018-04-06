@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="cn.bevol.mybatis.dao.GoodsSearchMapper">
+	<resultMap id="BaseResultMap" type="cn.bevol.mybatis.model.Tags">
+        <result column="tag_ids" property="id" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+	 <select id="findByPageOfTag" resultMap="BaseResultMap">
+       SELECT tag_ids FROM hq_goods_search
+
+    <if test="pageSize > 0">
+      LIMIT #{pagedBegin},#{pageSize}
+    </if>
+  </select>
+  <select id="selectTotal" resultType="int">
+    SELECT count(*) FROM hq_goods_search
+  </select>
+</mapper>

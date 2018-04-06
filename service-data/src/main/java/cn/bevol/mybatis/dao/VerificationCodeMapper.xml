@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.mybatis.dao.VerificationCodeMapper" >
+	
+ 	
+  	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->  
+  	<!-- 保存验证码-->  
+	<insert id="save" parameterType="cn.bevol.model.user.VerificationCode" useGeneratedKeys="true" keyProperty="id">
+		insert into hq_verification_code(phone,vcode,type,update_stamp,create_stamp) values(#{phone},#{vcode},#{type},#{updateStamp},#{createStamp})
+	</insert>
+	
+	<!-- 保存邮箱验证码-->  
+	<insert id="saveEmail" parameterType="cn.bevol.model.user.VerificationCode" useGeneratedKeys="true" keyProperty="id">
+		insert into hq_verification_code(email,vcode,type,update_stamp,create_stamp) values(#{email},#{vcode},#{type},#{updateStamp},#{createStamp})
+	</insert>
+	
+ 	<!--获取手机验证码 -->  
+	<select id="getVcode" resultType="cn.bevol.model.user.VerificationCode">
+		select id,phone,vcode,type,update_stamp updateStamp,create_stamp createStamp from hq_verification_code where phone=#{phone} and type=#{type} order by id desc limit 0,1
+	</select>
+	<!--获取邮箱验证码 -->
+	<select id="getEmailVcode" resultType="cn.bevol.model.user.VerificationCode">
+		select id,phone,vcode,type,update_stamp updateStamp,create_stamp createStamp,email from hq_verification_code where email=#{email} and type=#{type} order by id desc limit 0,1
+	</select>
+	
+	<!--获取图片验证码 -->
+	<select id="getImgVcode" resultType="cn.bevol.model.user.VerificationCode">
+		select id,phone,imgVcode,type,update_stamp updateStamp,create_stamp createStamp,email from hq_verification_code where imgVcode=#{imgVcode} and type=#{type} order by id desc limit 0,1
+	</select>
+	
+   	<delete id="deleteField">
+			delete from hq_verification_code where  ${feild}=#{val}
+	</delete>
+	
+   	<select id="getVerificationNum" resultType="Long">
+		select count(*) from hq_verification_code where phone is not null and create_stamp>UNIX_TIMESTAMP(ADDDATE(DATE(SYSDATE()),0)) 
+	</select>
+   	
+</mapper>

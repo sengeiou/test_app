@@ -1,0 +1,10 @@
+spring:
+  redis:
+     host: r-bp16678ce20be2c4.redis.rds.aliyuncs.com
+     port: 6379
+     password: rediSb20180109
+     pool:
+        max-active: 100
+        max-idle: 30
+        max-wait: 30
+        testOnBorrow: true

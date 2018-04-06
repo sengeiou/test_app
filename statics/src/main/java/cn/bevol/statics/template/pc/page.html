@@ -1,0 +1,80 @@
+<div class="foot-page">
+    <div class="tcdPageCode">
+        <#if pageNum?eval lt 6>
+            <#list 1..pageNum as t>
+                <#if t = curPage?eval>
+                    <span class="current">${curPage}</span>
+                    <#elseif t?eval == 1/>
+                    <a href="/${staticType}" class="tcdNumber">1</a>
+                    <#else/>
+                    <a href="/${staticType}_${t}" class="tcdNumber">${t}</a>
+                </#if>
+            </#list>
+            <#elseif (pageNum?eval - curPage?eval) gt 3 />
+            <#if curPage?eval = 1>
+                <span class="disabled">首页</span>
+                <span class="current">1</span>
+                <#else/>
+                <a href="/${staticType}" class="tcdNumber">首页</a>
+                <a href="/${staticType}" class="tcdNumber">1</a>
+            </#if>
+            <#if pageNum?eval lt 5>
+                <#list 2..4 as t>
+                    <#if curPage?eval =t>
+                        <span class="current">${curPage}</span>
+                        <#else/>
+                        <a href="/${staticType}_${t}" class="tcdNumber">${t}</a>
+                    </#if>
+                </#list>
+                <#else/>
+                <#if curPage?eval gt 3>
+                    <span class="dian point02">...</span>
+                    <a href="/${staticType}_${curPage?eval - 2}" class="tcdNumber">${curPage?eval - 2}</a>
+                    <a href="/${staticType}_${curPage?eval - 1}" class="tcdNumber">${curPage?eval - 1}</a>
+                    <span class="current">${curPage}</span>
+                    <#else/>
+                    <#list 2..curPage?eval as t>
+                        <#if t = curPage?eval>
+                            <span class="current">${curPage}</span>
+                            <#else/>
+                            <a href="/${staticType}_${t}" class="tcdNumber">${t}</a>
+                        </#if>
+                    </#list>
+                </#if>
+
+                <a href="/${staticType}_${curPage?eval + 1}" class="tcdNumber">${curPage?eval + 1}</a>
+                <a href="/${staticType}_${curPage?eval + 2}" class="tcdNumber">${curPage?eval + 2}</a>
+                <span class="dian point02">...</span>
+                <a href="/${staticType}_${pageNum}" class="tcdNumber">${pageNum}</a>
+                <a href="/${staticType}_${pageNum}" class="nextPage">尾页</a>
+            </#if>
+            <#else/>
+            <a href="/${staticType}" class="tcdNumber">首页</a>
+            <a href="/${staticType}" class="tcdNumber">1</a>
+            <#if curPage?eval gt 3>
+                <span class="dian point02">...</span>
+                <#list (pageNum?eval-3)..pageNum as t>
+                    <#if curPage?eval =t>
+                        <span class="current">${curPage}</span>
+                        <#else/>
+                        <a href="/${staticType}_${t}" class="tcdNumber">${t}</a>
+                    </#if>
+                </#list>
+                <#else/>
+                <#list 2..pageNum?eval as t>
+                    <#if t = curPage?eval>
+                        <span class="current">${curPage}</span>
+                        <#else/>
+                        <a href="/${staticType}_${t}" class="tcdNumber">${t}</a>
+                    </#if>
+                </#list>
+            </#if>
+
+            <#if curPage?eval = pageNum?eval>
+                <span class="disabled">尾页</span>
+                <#else/>
+                <a href="/${staticType}_${pageNum}" class="nextPage">尾页</a>
+            </#if>
+        </#if>
+    </div>
+</div>

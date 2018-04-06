@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bevol.statics.dao.mapper.UserStatisticalOldMapper">
+<resultMap id="BaseResultMap" type="cn.bevol.statics.entity.model.UserStatistical">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="login_total" property="loginTotalNum" jdbcType="INTEGER"/>
+        <id column="start_total" property="startTotalNum" jdbcType="INTEGER"/>
+        <id column="register_total" property="registerTotalNum" jdbcType="INTEGER"/>
+        <id column="active_total" property="activeTotalNum" jdbcType="INTEGER"/>
+        <id column="login_grand" property="loginGrandTotalNum" jdbcType="INTEGER"/>
+        <id column="start_grand" property="startGrandTotalNum" jdbcType="INTEGER"/>
+        <id column="register_grand" property="registerGrandTotalNum" jdbcType="INTEGER"/>
+        <id column="active_grand" property="activeGrandTotalNum" jdbcType="INTEGER"/>
+        <id column="active_stribution" property="activeStribution" jdbcType="VARCHAR"/>
+        <id column="statistics_date" property="statisticsDate" jdbcType="INTEGER"/>
+        <id column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <id column="update_time" property="updateTime" jdbcType="INTEGER"/>
+    </resultMap>
+
+     <insert id="insertOrUpdate" parameterType="cn.bevol.statics.entity.model.UserStatistical" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from hq_user_statistics where statistics_date = #{statisticsDate}
+        </selectKey>
+        <if test="count == 0">
+        	insert into hq_user_statistics( login_total,      start_total,       register_total,       active_total,
+        	login_grand,      start_grand,       register_grand,        active_grand,
+        	active_stribution,
+        	statistics_date,
+        	create_time)
+    	values
+    	(	
+    		#{loginTotalNum},#{startTotalNum}, #{registerTotalNum}, #{activeTotalNum},
+    		#{loginGrandTotalNum},#{startGrandTotalNum}, #{registerGrandTotalNum}, #{activeGrandTotalNum},
+    		#{activeStribution},#{statisticsDate},#{createTime}
+    	)
+        </if>
+        <if test="count > 0">
+        	update hq_user_statistics set
+        	 <if test="loginTotalNum=null">login_total=#{loginTotalNum},</if>
+			 <if test="startTotalNum!=null">start_total=#{startTotalNum},</if>
+			 <if test="registerTotalNum!=null">register_total =#{registerTotalNum},</if>
+			 <if test="activeTotalNum!=null">active_total= #{activeTotalNum},</if>
+			 <if test="loginGrandTotalNum!=null">login_grand= #{loginGrandTotalNum},</if>
+			 <if test="startGrandTotalNum!=null">start_grand= #{startGrandTotalNum},</if>
+			 <if test="registerGrandTotalNum!=null">register_grand= #{registerGrandTotalNum},</if>
+			 <if test="activeGrandTotalNum!=null">active_grand= #{activeGrandTotalNum},</if>
+			 <if test="activeStribution!=null">active_stribution= #{activeStribution},</if>
+			 <if test="statisticsDate!=null">statistics_date= #{statisticsDate},</if>
+			 <if test="updateTime!=null">update_time =#{updateTime}</if>
+       	    where statistics_date = #{statisticsDate}
+        </if>
+     </insert>
+
+		<select id="findByPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_user_statistics
+	    <if test="wheres != null">
+	      WHERE 1=1 
+	      <if test="wheres.beginTime != null">
+	        and statistics_date between #{wheres.beginTime} and #{wheres.endTime}
+	      </if>
+	    </if>
+	    <if test="orderBy != null">
+	      ORDER BY ${orderBy}
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+	<select id="findByStatisticsDate"  resultMap="BaseResultMap">
+	    SELECT * FROM hq_user_statistics
+	      WHERE 1=1 
+	      <if test="statisticsDate != null">
+	        and statistics_date = #{statisticsDate} limit 0,1
+	      </if>
+	  </select>
+</mapper>

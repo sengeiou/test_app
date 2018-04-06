@@ -1,0 +1,101 @@
+<!--评论-->
+<div class="comments-box" id="comments-html">
+    <#if comments?? && comments?size gt 0>
+        <div class="comments-title">评论(${commentTotal})</div>
+        <div class="hot-comments-title">热门评论</div>
+        <#list comments as comment>
+            <#if comment.userInfo?? >
+                <div class="comment-answer">
+                    <ul id="dpuser" class="comment-answer-ul-box">
+                        <li class="comment-answer-left">
+                            <#if comment.userInfo.headimgurl?? && comment.userInfo.headimgurl !=''>
+                                <img src="${comment.userInfo.headimgurl!}" alt="" class="head-box-img-url" onerror="javascript:this.src='${img}/wx/images2/morenyixiu.png';" />
+                                <#else/>
+                                <img src="${img}/wx/images2/morenyixiu.png" alt="" class="head-box-img-url" />
+                            </#if>
+                        </li>
+                        <li class="comment-answer-right" id="comment-main">
+                            <#if comment.skinResults??>
+                                <span class="span01">${comment.userInfo.nickname!}</span>
+                                <div class="head-skin">
+                                    <span>${comment.skinResult1!}</span>
+                                    <span>${comment.skinResult2!}</span>
+                                    <span>${comment.skinResult3!}</span>
+                                    <span>${comment.skinResult4!}</span>
+                                </div>
+                                <#else/>
+                                <span id="span_my" class="span02">${comment.userInfo.nickname!}</span>
+                            </#if>
+                            <div class="add-time">${comment.createStampText!}</div>
+                            <div>
+                                <div style="height: 0px;"></div>
+                                <div id="minicontent_${comment.id}" class="mincontent comments-text-style">${comment.content!}</div>
+                                <#if comment.image?? && comment.image != "">
+                                    <div class="biaoqingbao">
+                                        <img src="${comment.image}@60p" class="biaoqingbao-img">
+                                    </div>
+                                </#if>
+
+                                <div class="comment-time-box">
+                                    <div class="comment-time">&nbsp;</div>
+                                    <div class="comment-zan-box">
+                                        <p class="icon-zanzan find-child-zan" title="${comment.id}" id="clikecount">
+                                            <img src="${img}/wx/images2/zan.png" class="dianzan">
+                                            <span>${comment.likeNum}</span>
+                                        </p>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="comm-line"></div>
+                                <#if comment.comments?? && comment.commentNum?? && comment.commentNum gt 0>
+                                    <div class="comment-answer-box">
+                                        <#if comment.comments[0].mainId == comment.comments[0].pid>
+                                            <span class="comment-answer-text" style="color: #4D4D4D;">
+												<span style="color: #AC69FE;">${comment.comments[0].userInfo.nickname}</span>回复：
+											</span>
+                                            <#else/>
+                                            <#if comment.comments[0].pUserInfo??>
+                                                <span class="comment-answer-text">
+													<span style="color: #AC69FE;">${comment.comments[0].userInfo.nickname}
+                                                    </span>回复<span style="color: #AC69FE;">@${comment.comments[0].pUserInfo.nickname}</span>：
+												</span>
+                                            </#if>
+                                        </#if>
+
+                                        <span class="remContent comments-text-style">${comment.comments[0].content}</span>
+                                        <#if comment.comments[0].image?? && comment.comments[0].image != "">
+                                            <div class="biaoqingbao">
+                                                <img src="${comment.comments[0].image}@60p" class="biaoqingbao-img">
+                                            </div>
+                                        </#if>
+
+                                        <#if comment.commentNum gt 1>
+                                            <div class="comm-more">
+                                                更多${comment.commentNum!}条回复
+                                            </div>
+                                        </#if>
+                                    </div>
+                                </#if>
+                            </div>
+                        </li>
+                        <div class="clear"></div>
+                    </ul>
+                </div>
+            </#if>
+            <#break/>
+        </#list>
+        <#if comments?size gt 1>
+            <div class="comments-btn">
+                下载美丽修行，查看全部${commentTotal}条精彩评论
+            </div>
+            <#else />
+            <div class="comments-btn">
+                下载美丽修行，查看更多精彩内容
+            </div>
+        </#if>
+        <#else/>
+        <div class="comments-btn">
+            下载美丽修行，查看更多精彩内容
+        </div>
+    </#if>
+</div>

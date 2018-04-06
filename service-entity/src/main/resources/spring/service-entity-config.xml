@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<import resource="classpath:spring/mongo-config.xml" />
+	<import resource="classpath:spring/mysql-config.xml" />
+	<import resource="classpath:spring/cache-config.xml" />
+    <import resource="classpath:spring/mvc-log-config.xml"/>
+
+    <context:component-scan base-package="cn.bevol.entity.service"/>
+	<bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
+		<constructor-arg value="${mvn.bevol.taobao.duanxin.url}" />
+		<constructor-arg value="${mvn.bevol.taobao.duanxin.id}" />
+		<constructor-arg value="${mvn.bevol.taobao.duanxin.key}" />
+	</bean>    
+
+	<bean id="KeyTypeEnumALIYUN"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField"
+			value="com.aliyun.opensearch.object.KeyTypeEnum.ALIYUN" />
+	</bean>
+
+	<bean id="cloudsearchClient" class="com.aliyun.opensearch.CloudsearchClient">
+		<constructor-arg value="lMZwMNFhiR5o1TfO" />
+		<constructor-arg value="Qt6ZzNDaoGtwwcHWWGAn1bhdP3qvFC" />
+		<!-- <constructor-arg value="http://intranet.opensearch-cn-hangzhou.aliyuncs.com"/> -->
+		<constructor-arg value="http://opensearch-cn-hangzhou.aliyuncs.com" />
+		<constructor-arg>
+			<bean class="java.util.HashMap"></bean>
+		</constructor-arg>
+		<constructor-arg ref="KeyTypeEnumALIYUN" />
+	</bean>
+	
+
+    <bean id="prop"
+          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <array>
+                <value>classpath:spring-${mvn.bevol.env}.properties</value>
+            </array>
+        </property>
+    </bean>
+
+	<!-- 启动@AspectJ支持 -->
+	<aop:aspectj-autoproxy />
+</beans>

@@ -1,0 +1,342 @@
+<#include "/header.html" />
+<script type="text/javascript" src="${js}/goods2.js"></script>
+<script type="text/javascript" src="${js}/zoom.js"></script>
+<script type="text/javascript" src="${js}/previewimage.js"></script>
+<link rel="stylesheet" type="text/css" href="${css}/goods2.css"/>
+<link rel="stylesheet" type="text/css" href="${css}/comment2.css"/>
+
+<div class="mui-content">
+    <div class="goods-main">
+        <!--产品info-->
+        <div class="goods-info-box" id="goods-info-html">
+            <div class="goods-img-box">
+                <#if (goods.image)?? && (goods.image)?length gt 0>
+                    <img src="${img}/Goods/source/${goods.image!}@90p" data-preview-src="${img}/Goods/source/${goods.image!}" data-preview-group="1" style="width:100%;" onerror="javascript:this.src='${img}/wx/images2/default.jpg'" alt="${goods.title!}" />
+                    <#else/>
+                    <img src="${img}/Goods/default.png" alt="" style="width:100%;" />
+                </#if>
+            </div>
+            <div class="goods-title-box">
+                <p class="entity-title">${goods.title!}</p>
+                <p class="entity-alias">${goods.alias!}</p>
+                <#if goods.price?? && goods.price != "" && goods.capacity?? && goods.capacity != "">
+                    <p class="entity-price">参考价格：￥${goods.price} / ${goods.capacity}</p>
+                </#if>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="line"></div>
+        <!--产品功能-->
+        <div class="goods-model-box">
+            <div id="slider" class="mui-slider">
+                <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+                    <a class="mui-control-item mui-active" href="#item1mobile">
+                        成分分析
+                    </a>
+                    <a class="mui-control-item" href="#item2mobile">
+                        安全说
+                    </a>
+                    <a class="mui-control-item" href="#item3mobile">
+                        功效说
+                    </a>
+                    <a class="mui-control-item" href="#item4mobile">
+                        肤质匹配
+                    </a>
+                </div>
+                <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-3"></div>
+                <div class="mui-slider-group">
+                    <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+                        <div id="scroll1" class="mui-scroll-wrapper">
+                            <div class="mui-scroll" id="analysis">
+                                <#if goods.dataTypeStr?? && goods.dataTypeStr != ''>
+                                    <div class="analysis-title">
+                                        本商品的成分来自该商品的<span id="from-title">${goods.dataTypeStr}</span>
+                                    </div>
+                                </#if>
+                                <div class="count-box">
+                                    <div class="count">
+                                        <div class="count_list1">
+                                            <div class="count_list1_test">
+                                                <div class="people"></div>
+                                            </div>
+                                        </div>
+                                        <div class="count_list2">
+                                            <div class="count_list1_test">
+                                                <div class="people"></div>
+                                            </div>
+                                        </div>
+                                        <div class="count_list3">
+                                            <div class="count_list1_test">
+                                                <div class="people"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="count-explain-box">
+                                        <ul>
+                                            <li class="list01"><img src="${img}/wx/images2/warning-01.png"><span>安全成分</span></li>
+                                            <li class="list02"><img src="${img}/wx/images2/warning-02.png">较安全成分</li>
+                                            <li class="list03"><img src="${img}/wx/images2/warning-03.png">潜在风险成分</li>
+                                            <div class="clear"></div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="item2mobile" class="mui-slider-item mui-control-content">
+                        <div id="scroll2" class="mui-scroll-wrapper">
+                            <div class="mui-scroll">
+                                <ul class='mui-table-view mui-grid-view' id='safeul'>
+                                    <li class="mui-table-view-cell mui-media mui-col-xs-12">
+                                        安全星级：
+                                        <#list safety as safe>
+                                            <#if safe.unit == 1>
+                                                <#assign xinji = safe.num />
+                                                <#list 1..5 as t>
+                                                    <#if t lte xinji?eval >
+                                                        <img src="${img}/wx/images2/xiaostar.png" style="width: 14px;height: 14px; "/>
+                                                        <#else/>
+                                                        <#if t gt xinji?eval && t lt (xinji?eval + 1)>
+                                                            <img src="${img}/wx/images2/xiaobanstar.png" style="width: 14px;height: 14px; "/>
+                                                            <#else/>
+                                                            <img src="${img}/wx/images2/xiaostargree.png" style="width: 14px;height: 14px; " />
+                                                        </#if>
+                                                    </#if>
+                                                </#list>
+                                                <#else/>
+                                    <li class="mui-table-view-cell mui-media mui-col-xs-6 aqs">
+                                        <p>${safe.name}：<span <#if safe.num?eval = 0>style="color:#4d4d4d"</#if> >${safe.num}种</span></p>
+                                    </li>
+                                    </#if>
+                                    </#list>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="item3mobile" class="mui-slider-item mui-control-content">
+                        <div id="scroll3" class="mui-scroll-wrapper">
+                            <div class="mui-scroll">
+                                <ul class='mui-table-view mui-grid-view' id='effctul'>
+                                    <#if effects?size gt 0>
+                                        <#list effects as effect>
+                                            <#if effect.displayType==0 || effect.displayType==1>
+                                                <#if effect.id == -1>
+                                                    <li class="mui-table-view-cell mui-media aqs">
+                                                        <p class="list-p">
+                                                            ${effect.displayName}：<span>${effect.num}种</span>
+                                                        </p>
+                                                    </li>
+                                                    <#else/>
+                                                    <li class="mui-table-view-cell mui-media aqs">
+                                                        <p class="list-p">
+                                                            ${effect.displayName}：<span <#if effect.num?eval = 0>style="color:#4d4d4d"</#if> >${effect.num}种</span>
+                                                        </p>
+                                                    </li>
+                                                </#if>
+                                            </#if>
+                                        </#list>
+                                        <#else/>
+                                        <li class="mui-table-view-cell mui-media aqs">
+                                            <p>
+                                                全成分：<span>${composition?size}种</span>
+                                            </p>
+                                        </li>
+                                    </#if>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="item4mobile" class="mui-slider-item mui-control-content">
+                        <div id="scroll4" class="mui-scroll-wrapper">
+                            <div class="mui-scroll">
+                                <button class="download-app">
+                                    下载APP，查看肤质匹配信息
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="line"></div>
+
+                <!--修行说-->
+                <div class="comment-answer">
+                    <#if goods.doyen?? && goods.doyen?size gt 0>
+                        <ul id="dpuser" class="comment-answer-ul-box">
+                            <li class="comment-answer-left">
+                                <div class="Vicon"><img src="${img}/wx/images2/Vicon.png" class="img_z"></div>
+                                <#if goods.doyen.headimgurl?? && goods.doyen.headimgurl != "">
+                                    <img src="${goods.doyen.headimgurl!}" class="head-box-img-url" />
+                                    <#else/>
+                                    <img src="${img}/wx/images2/morenyixiu.png" class="head-box-img-url" />
+                                </#if>
+                            </li>
+                            <li class="comment-answer-right" id="comment-main">
+                                <span class="span01">${goods.doyen.nickname!}</span><span class="xxs-box-tips">友情特邀</span>
+                                <div class="head-skin">${goods.doyen.userDescz!}</div>
+                                <div class="mincontent comments-text-style">${goods.doyen.doyenComment!}</div>
+                            </li>
+                            <div class="clear"></div>
+                        </ul>
+                        <#else/>
+                        <#if commentTotal?? && commentTotal gt 0 && comments?size gt 0>
+                            <#include "/comment_without_title.html" />
+                        <!--<ul id="dpuser" class="comment-answer-ul-box">
+                            <li class="comment-answer-left">
+                                <#if comments[0].userInfo.headimgurl?? && comments[0].userInfo.headimgurl != "">
+                                    <img src="${comments[0].userInfo.headimgurl!}" class="head-box-img-url" onerror="javascript:this.src='${img}/wx/images2/morenyixiu.png';"/>
+                                    <#else/>
+                                    <img src="${img}/wx/images2/morenyixiu.png" class="head-box-img-url" />
+                                </#if>
+                            </li>
+                            <li class="comment-answer-right" id="comment-main">
+                                <span class="span01">${comments[0].userInfo.nickname!}</span>
+                                <div class="mincontent comments-text-style">${comments[0].content!}</div>
+                            </li>
+                            <div class="clear"></div>
+                        </ul>-->
+                        </#if>
+                    </#if>
+                </div>
+
+                <!--评论按钮-->
+                <#if goods.doyen?? && goods.doyen?size gt 0 && commentTotal?? && commentTotal gt 0>
+                    <div class="comments-btn">
+                        下载美丽修行，查看全部${commentTotal}条精彩评论
+                    </div>
+                </#if>
+                <!--全成分表-->
+                <div class="composition-table" id="composition-html">
+                    <div class="composition-table-title">全成分表</div>
+                    <div class="composition-table-tips">
+                        <p>本产品含 ${composition?size} 种成分</p>
+                        本商品全成分表来源自
+                        <#if (goods.cpsType)?? &&  (goods.cpsType)?has_content && goods.cpsType== 'mfj_cps'>
+                            <span>产品标签顺序</span>（成分表根据单一成分含量从多到少排序，含量低于1%的成分可以随意排列）。
+                            <#elseif (goods.cpsType)?? &&  (goods.cpsType)?has_content && goods.cpsType == 'def_cps_3' />
+                            <span>产品备案顺序</span>（成分表根据药监局备案的配方工艺分组排序，和含量无关）。
+                            <#else/>
+                            <span>配方备案顺序</span>（根据产品在药监局备案提供的成分表，原则上应该和产品标签一致，但由于厂家问题也有例外情况）。
+                        </#if>
+                    </div>
+                    <div class="line"></div>
+                    <table class="table" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <th>成分名称</th>
+                            <th>安全风险</th>
+                            <th>活性成分</th>
+                            <th>致痘风险</th>
+                            <th>使用目的</th>
+                        </tr>
+                        <#assign i = 0 />
+                        <#list composition as comp>
+                            <#--<#if i gte 10>
+                                <#break/>
+                            </#if>-->
+                            <tr>
+                                <td class="table_mark" style='width:30%;' data-mid='${comp.mid}'>
+                                    <span style="color: #AC69FE;">${comp.title}</span>
+                                </td>
+                                <#if comp.safety = "">
+                                    <td style='width:15%;'>&nbsp;</td>
+                                    <#else/>
+                                    <td style='width:15%;'>
+                                        <div class="safe-color" style="vertical-align: middle;">${comp.safety}</div>
+                                    </td>
+                                </#if>
+                                <#if comp.active == "1">
+                                    <td style='text-align:center;width:15%;'>
+                                        <img src="${img}/wx/images2/good.png" style="width: 16px;">
+                                    </td>
+                                    <#elseif comp.active == "2"/>
+                                    <td style='text-align:center;width:15%;'>&nbsp;</td>
+                                    <#elseif comp.active == "UVAB"/>
+                                    <td style='text-align:center;width:15%;'>UVA/B</td>
+                                    <#elseif comp.active == "UVA"/>
+                                    <td style='text-align:center;width:15%;'>UVA</td>
+                                    <#elseif comp.active == "UVB"/>
+                                    <td style='text-align:center;width:15%;'>UVB</td>
+                                    <#else />
+                                    <td style='text-align:center;width:15%;'>&nbsp;</td>
+                                </#if>
+
+                                <#if comp.acneRisk == "1">
+                                    <td style='text-align:center;margin:0 auto;width:15%;'>
+                                        <img src="${img}/wx/images2/face.png" style="width: 16px;margin-bottom: 0px; margin: 0 auto;">
+                                    </td>
+                                    <#else/>
+                                    <td style='text-align:center;width:15%;'>&nbsp;</td>
+                                </#if>
+
+                                <#if comp.useds?size gt 0 && comp.useds[0]??>
+                                    <#if comp.useds[0].title = "乳化固定剂">
+                                        <td style='text-align:center;width:25%;'>乳化固 定剂</td>
+                                        <#else/>
+                                        <td style='text-align:center;width:25%;'>${comp.useds[0].title}</td>
+                                    </#if>
+                                    <#else/>
+                                    <td style='text-align:center;width:25%;'>&nbsp;</td>
+                                </#if>
+                            </tr>
+                            <#assign i = i+1 />
+                        </#list>
+                    </table>
+                    <#--<#if composition?size gt 10>
+                        &lt;!&ndash;评论按钮&ndash;&gt;
+                        <div class="composition-btn">
+                            下载美丽修行，查看全部${composition?size}种成分
+                        </div>
+                    </#if>-->
+                </div>
+            </div>
+        </div>
+        <script>
+            (function($) {
+                mui('.mui-slider').slider().setStopped(true);
+
+                $('.mui-scroll-wrapper').scroll({
+                    indicators: true //是否显示滚动条
+                });
+                /*document.getElementById('slider').addEventListener('slide', function(e) {
+                    if (e.detail.slideNumber === 0) {
+                        var safeHeight = document.getElementById("safeul").offsetHeight;
+                        document.getElementById("item1mobile").style.height = safeHeight + "px";
+                    } else if (e.detail.slideNumber === 1){
+                        var effctulHeight = document.getElementById("effctul").offsetHeight;
+                        document.getElementById("item1mobile").style.height = "0px";
+                        document.getElementById("item2mobile").style.height = effctulHeight + "px";
+                        document.getElementById("item3mobile").style.height = "0px";
+                        document.getElementById("item4mobile").style.height = "0px";
+                    } else if (e.detail.slideNumber === 2) {
+                        document.getElementById("item1mobile").style.height = "0px";
+                        document.getElementById("item2mobile").style.height = "0px";
+                        document.getElementById("item3mobile").style.height = "80px";
+                        document.getElementById("item4mobile").style.height = "0px";
+                    } else if (e.detail.slideNumber === 3) {
+                        document.getElementById("item1mobile").style.height = "0px";
+                        document.getElementById("item2mobile").style.height = "0px";
+                        document.getElementById("item3mobile").style.height = "0px";
+                        document.getElementById("item4mobile").style.height = "140px";
+                        animate();
+                    }
+                });*/
+            })(mui);
+
+            //成分分析动画
+            function animate(){
+                var percent01 = ${percent01};
+                var percent02 = ${percent02};
+                var percent03 = ${percent03};
+                $(".count").css("width", "100%");
+                $(".count_list1").animate({
+                    "width": percent01 + "%"
+                }, 500);
+                $(".count_list2").animate({
+                    "width": percent02 + "%"
+                }, 500);
+                $(".count_list3").animate({
+                    "width": percent03 + "%"
+                }, 500);
+            }
+
+        </script>
+        <#include "/footer.html" />

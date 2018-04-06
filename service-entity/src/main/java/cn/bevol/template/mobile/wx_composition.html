@@ -1,0 +1,152 @@
+<#include "/wx_share_header.html" />
+<link href="https://static.bevol.cn/wx/css/wx_composition.css" rel="stylesheet" />
+<div class="mui-content">
+
+</div>
+<script type="text/plain" composition-tpl id="composition-tpl">
+			<div id="pullrefresh" class="" style="display:block;">
+				<div style='background-color:#f7f5fa;'>
+					<div id="html-composition" style="background-color:#f7f5fa;">
+						<input type="hidden" id="entityid" value="<%=id%>" />
+						<input type="hidden" id="tname" value="composition" />
+						<div style='background-color:#fff;padding:10px 15px 0 15px;'>
+							<div id="goodsreading-bieming" class="goodsreading">
+								<span><%=result.title%></span>
+							</div>
+							<div id="goodsreading-ename" class="goodsreading"><span id="english"><%=result.english%></span></div>
+							<%if(result.cas && result.cas != 0){%>
+							    <div id="goodsreading-cas" class="goodsreading">
+								    <span id="cas">CAS号：<%=result.cas%></span>
+							    </div>
+							<%}%>
+
+							<div id="goodsreading-target" style='padding-bottom: 10px;' class="goodsreading"><span id="useds">
+						<%if(result.useds.length>0){%>
+                        使用目的 ：
+                        <%}%>
+						<%for(var i= 0; i<result.useds.length; i++){%>
+						    <%=result.useds[i].title%>&nbsp;
+						<%}%>
+					</span></div>
+
+						</div>
+						<div style='padding: 10px 10px 0 10px;' id='fz-pp'>
+							<div class="fzpp-box" style="border-top-left-radius: 6px;border-bottom-left-radius: 6px;">
+								<p class="p1">安全风险</p>
+								<p><span class='label-1' id="label-safetyclass"><%=result.safety%></span></p>
+							</div>
+
+							<div class="fzpp-box" style="border-top-right-radius: 6px;border-bottom-right-radius: 6px;">
+								<p class="p1" style="border-top-right-radius: 6px;">致痘风险</p>
+								<%if(result.acneRisk != "0" && result.acneRisk != ''){%>
+								    <p class="label-danger" ></p>
+								<%}else{%>
+								    <p>-</p>
+								<%}%>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<%if(result.remark){%>
+						<div style="background-color:#fff;font-size:16px;color:#333;border-bottom:1px solid #F2F0F5;padding:10px 10px;margin-left:10px;margin-right:10px;margin-top:15px;border-top-left-radius:6px;border-top-right-radius:6px;">
+							成分说明
+						</div>
+						<div style='margin:0px 10px 10px 10px;padding:10px 10px;background-color:#fff;border-bottom-left-radius:6px;border-bottom-right-radius:6px;'>
+							<p id="minicontent_remark" class="mincontent" style="color: #262626;">
+								<%=result.remark%>
+							</p>
+
+						</div>
+						<%}%>
+
+						<div style='margin:0 10px;' id="goods-container">
+                        </div>
+					</div>
+
+				</div>
+			</div>
+</script>
+<script type="text/plain" goods-tpl id="goods-tpl">
+                        <%for(var i=0;i<data.items.length; i++){%>
+                        <a href='/product/<%=data.items[i].mgoods_id%>.html'>
+							<ul class="mui-table-view mui-grid-view goodsreading-hanchengfen-ul" style='padding-bottom:0;border-radius: 8px;margin-bottom:15px;'>
+								<li class="mui-table-view-cell mui-media mui-col-xs-4" style="border-bottom:none;">
+
+									    <%if(data.items[i].image){%>
+									        <img src="${img}/Goods/source/<%=data.items[i].image%>@80p" onerror="javascript:this.src='${img}/wx/images/default.jpg@80p'"  style="height:80px;width:80%;" />
+									    <%}else{%>
+									        <img src="${img}/wx/images/default.jpg@80p" style="height:80px;width:80%;" />
+										<%}%>
+
+								</li>
+								<li class="mui-table-view-cell mui-media mui-col-xs-8" style="height:100px;margin-left:5px;">
+
+										<p style="color: #262626;text-align: left;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;">
+											<%=data.items[i].title%>
+										</p>
+
+									<p style='text-align:left;font-size: 12px;'>
+										<!--参考价 460/30ml-->
+										参考价格：￥<%=data.items[i].price%>/<%=data.items[i].capacity%>
+									</p>
+									<div style="font-size:12px;text-align: left;position:absolute;width:100%;bottom:10px;">
+										<b style="background-color:#f6f6f6;color:#aeaeae;padding:3px 5px;border-radius: 4px;font-weight: normal;">
+	 										<%if(data.items[i].data_type == 1){%>
+	 										    进口备案
+	 										<%}else if(data.items[i].data_type == 2 || data.items[i].data_type == 3){%>
+	 										    国产备案
+									        <%}else if(data.items[i].data_type==4){%>
+									            产品标签
+									        <%}%>
+	 									</b>
+									</div>
+								</li>
+							</ul>
+						</a>
+                        <%}%>
+</script>
+<script>
+    var id=$.getUrlField("id");
+    var url = "${api_url_https!'https://api.bevol.cn'}"+"/composition/info/"+id
+    $.ajax({
+        url:url,
+        type:"post",
+        dataType:"json",
+        success:function(data){
+            var sbp=template('composition-tpl',data);
+            $('.mui-content').html(sbp);
+            var safe_color = document.getElementsByClassName("safe-color");
+            for(var i=0; i< safe_color.length; i++){
+                var numLength = safe_color[i].innerText.length;
+                var num01 = safe_color[i].innerText;
+
+                if(numLength == 1 && num01 < 3 || numLength > 1 && num01.split("-")[1] <= 3){
+                    safe_color[i].style.background = "#5cb85c";
+                }else if(numLength == 1 && num01 < 7 || numLength > 1 && num01.split("-")[1] <= 7){
+                    safe_color[i].style.background = "#f0ad4e";
+                }else if(numLength == 1 && num01 >= 7 || numLength > 1 && num01.split("-")[1] > 7){
+                    safe_color[i].style.background = "#c13636";
+                }else{
+                    safe_color[i].style.background = "";
+                }
+            }
+            getGoods(data.result.id)
+        }
+    });
+
+
+    //含有成分的产品
+    function getGoods(id){
+        var more_url = "${api_url_https!'https://api.bevol.cn'}"+"/search/composition/goodslists?compositionid="+id+"&rows=3";
+        $.ajax({
+            url:more_url,
+            dataType:"jsonp",
+            jsonp: "callback",
+            success:function(data) {
+                var cont= template("goods-tpl",data);
+                $("#goods-container").html(cont);
+
+            }
+        });
+    }
+</script>
+<#include "/wx_share_footer.html" />

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.statics.dao.mapper.TagStatiscalOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.model.TagStatiscal">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="tag_id" property="tagId" jdbcType="INTEGER"/>
+		<result column="tag_name" property="tagName" jdbcType="VARCHAR"/>
+		<result column="goods_num" property="goodsNum" jdbcType="INTEGER"/>
+		<result column="composition_num" property="compositionNum" jdbcType="INTEGER"/>
+		<result column="find_num" property="findNum" jdbcType="INTEGER"/>
+		<result column="review_num" property="reviewNum" jdbcType="INTEGER"/>
+		<result column="lists_num" property="listsNum" jdbcType="INTEGER"/>
+		<result column="talk_num" property="talkNum" jdbcType="INTEGER"/>
+		<result column="title" property="title" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+   
+	
+    <insert id="insertOrUpdateByName" parameterType="cn.bevol.statics.entity.model.TagStatiscal">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from hq_tags_record where tag_name = #{tagName}
+        </selectKey>
+        <if test="count == 0">
+        	insert into hq_tags_record(tag_id,tag_name,goods_num,composition_num,find_num,review_num,lists_num,talk_num)
+    	values
+    	(
+			#{tagId},#{tagName},#{goodsNum},#{compositionNum},#{findNum}, #{reviewNum},#{listsNum}, #{talkNum}
+    	)
+        </if>
+        <if test="count > 0">
+        	update hq_tags_record set
+			<if test="tagId!=null">tag_id=#{tagId},</if>
+		    <if test="tagName!=null">tag_name=#{tagName},</if>
+			<if test="goodsNum!=null">goods_num=#{goodsNum},</if>
+			<if test="compositionNum!=null">composition_num=#{compositionNum},</if>
+			<if test="findNum!=null">find_num=#{findNum},</if>
+			<if test="reviewNum!=null">review_num =#{reviewNum},</if>
+		    <if test="talkNum!=null">talk_num =#{talkNum},</if>
+			<if test="updateDate!=null">update_date =#{updateDate}</if>
+			WHERE tag_name = #{tagName}
+        </if>
+     </insert>
+	<insert id="insertOrUpdateById" parameterType="cn.bevol.statics.entity.model.TagStatiscal">
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			select count(*) from hq_tags_record where tag_id = #{tagId}
+		</selectKey>
+		<if test="count == 0">
+			insert into hq_tags_record(tag_id,tag_name,goods_num,composition_num,find_num,review_num,lists_num,talk_num)
+			values
+			(
+			#{tagId},#{tagName},#{goodsNum},#{compositionNum},#{findNum}, #{reviewNum},#{listsNum}, #{talkNum}
+			)
+		</if>
+		<if test="count > 0">
+			update hq_tags_record set
+			<if test="tagId!=null">tag_id=#{tagId},</if>
+			<if test="tagName!=null">tag_name=#{tagName},</if>
+			<if test="goodsNum!=null">goods_num=#{goodsNum},</if>
+			<if test="compositionNum!=null">composition_num=#{compositionNum},</if>
+			<if test="findNum!=null">find_num=#{findNum},</if>
+			<if test="reviewNum!=null">review_num =#{reviewNum},</if>
+			<if test="listsNum!=null">lists_num =#{reviewNum},</if>
+			<if test="talkNum!=null">talk_num =#{talkNum},</if>
+			<if test="updateDate!=null">update_date =#{updateDate}</if>
+			WHERE tag_id = #{tagId}
+		</if>
+	</insert>
+   <select id="findByPage" resultMap="BaseResultMap">
+	   SELECT r.*,t.title FROM hq_tags_record r
+	   LEFT JOIN hq_new_tags t ON tag_id = t.id
+
+	    <if test="wheres != null">
+	      WHERE 1=1 
+	      <if test="wheres.tagName != null">
+	        and name= #{wheres.name}
+	      </if>
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+	<select id="selectTotal" resultType="int">
+		SELECT count(*) FROM hq_tags_record
+		<if test="wheres != null">
+			WHERE 1=1
+			<if test="wheres.tagName != null">
+				and name= #{wheres.name}
+			</if>
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		SELECT tag_name,goods_num,composition_num,find_num,review_num,lists_num,talk_num
+		FROM hq_tags_record
+		WHERE id = #{id,jdbcType=INTEGER}
+	</select>
+</mapper>

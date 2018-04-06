@@ -1,0 +1,230 @@
+<#include "/wx_share_header.html" />
+<link href="https://static.bevol.cn/wx/css/wx_topic_info_20170309.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://static.bevol.cn/wx/css/comments_style.css" />
+<div id="goods-header">
+    <h1 class="mui-title"></h1>
+</div>
+
+<div class="mui-content" id="container1" style="display:block;background: #FFF;">
+    <!--下拉刷新容器-->
+    <div class="html">
+
+        <div class="hotlist_main">
+            <div class="hotlist_main_title" id="detail_header">
+
+            </div>
+
+            <!--专题点评-->
+            <div id="kbpinglun" class="comment-pinglun-title" style="background-color:#fff;font-size:14px;color:#494B60;border-bottom: 1px solid #F5F2FA;">
+                点评（1）
+            </div>
+
+            <!--评论-->
+            <div id="html-collection1" style="margin-top:0px;background: #F2F0F5;">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/plain" user-info-tpl id="user-info-tpl">
+<div class="hotlist_main_title_banner">
+    <div class="topic-banner-box">
+        <img src="<%=result.imgSrc%>" class="img_z"></div>
+</div>
+<div class="likeNum">
+	<span id="span01">
+		<img src="${img}/wx/images/lock-icon.png" class="img_see"><%=result.hitNum%>
+	</span>
+    <span id="span02">
+		<img src="${img}/wx/images/pinglun-icon.png" class="img_see1"><%=result.commentNum%>
+	</span>
+    <div class="clear"></div>
+</div>
+<div class="biaoqian-box">
+    <ul>
+        <%if(result.tags != false){%>
+            <%for(var i=0;i<result.tags.length;i++){%>
+                <li><%=result.tags[i]%></li>
+            <%}%>
+        <%}%>
+    </ul>
+    <div class="clear"></div>
+</div>
+<ul id="dpuser" class="comment-answer-ul-box">
+    <li class="comment-answer-left">
+        <img src="<%=result.userBaseInfo.headimgurl%>@90p" onerror="javascript:this.src='${img}/wx/images/newyixiujie.png@90p'" alt="" class="head-box-img-url" />
+    </li>
+    <li class="comment-answer-right">
+        <div class="span01"><%=result.userBaseInfo.nickname%></div>
+        <div class="head-skin">
+            <span><%=result.userBaseInfo.skinResults['0']%></span>
+            <span><%=result.userBaseInfo.skinResults['1']%></span>
+            <span><%=result.userBaseInfo.skinResults['2']%></span>
+            <span><%=result.userBaseInfo.skinResults['3']%></span>
+        </div>
+        <!--<div class="add-guanzhu">+ 关注</div>-->
+    </li>
+    <div class="clear"></div>
+</ul>
+
+<div id="comment-main" class="">
+<%if(result.userPartDetails){%>
+    <% for(var i=0; i<result.userPartDetails.length; i++){ %>
+        <% if(result.userPartDetails[i].type == 1){%>
+            <div class="comment-main-goods">
+                <ul class="mui-table-view">
+                    <li class="mui-table-view-cell mui-media">
+                        <a href="/product/<%=result.userPartDetails[i].mid%>.html">
+                            <img class="mui-media-object mui-pull-left"
+                                <%if(result.userPartDetails[i].image){%>
+                                    src="${img}/Goods/source/<%=result.userPartDetails[i].image%>@80p" onerror="javascript:this.src='${img}/wx/images/default.jpg@80p'">
+                                <%}else{%>
+                                    src="${img}/wx/images/default.jpg@80p">
+                                <%}%>
+                            <div class="mui-media-body">
+                                <p class='mui-ellipsis'><%=result.userPartDetails[i].title%></p>
+                                <p class='mui-ellipsis'><%=result.userPartDetails[i].alias%></p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <%}else if(result.userPartDetails[i].type == 2){%>
+            <div class="comment-answer-ul-box-text">
+            <% for(var j=0; j<result.userPartDetails[i].contents.length;j++){ %>
+                <%=result.userPartDetails[i].contents[j]%> <br />
+                <%}%>
+                </div>
+        <%}else if(result.userPartDetails[i].type == 3 && result.userPartDetails[i].imgSrc){%>
+            <div class="comment-answer-ul-box-text">
+                <img class="mui-media-object update-image-cls" src="<%=result.userPartDetails[i].imgSrc%>@80p">
+            </div>
+        <%}%>
+    <%}%>
+<%}%>
+    <div class="comment-time-box">发布于：<%=result.publish_time%></div>
+</div>
+<div class="line"></div>
+</script>
+<script type="text/plain" comments-info-tpl id="comments-info-tpl">
+<%for(var i=0; i<result.list.length; i++){%>
+<div class="comment-answer">
+    <ul id="dpuser" class="comment-answer-ul-box">
+        <li class="comment-answer-left">
+            <img src="<%=result.list[i].userInfo.headimgurl%>@90p"  onerror="javascript:this.src='${img}/wx/images/newyixiujie.png@90p'" alt="" class="head-box-img-url" />
+        </li>
+        <li class="comment-answer-right" id="comment-main">
+            <span class="span01"><%=result.list[i].userInfo.nickname%></span>
+            <div class="head-skin">
+                <span><%=result.list[i].skinResults[0]%></span>
+                <span><%=result.list[i].skinResults[1]%></span>
+                <span><%=result.list[i].skinResults[2]%></span>
+                <span><%=result.list[i].skinResults[3]%></span>
+            </div>
+            <div class="add-time"><%=result.list[i].publish_time%></div>
+            <div>
+                <%for(var k=0; k < result.list[i].score; k++){%>
+                    <img src="${img}/wx/images/xiaostar.png" class="comment-main-img" />
+                <%}%>
+            </div>
+            <%if(result.list[i].isEssence){%>
+                <button class="comment-main-button">精华</button>
+            <%}%>
+            <div id="minicontent_" class="mincontent"><%=result.list[i].content%></div>
+            <%if(result.list[i].image){%>
+                <div class="biaoqingbao">
+                    <img src="<%=result.list[i].image%>" class="biaoqingbao-img">
+                </div>
+            <%}%>
+            <div class="comment-time-box">
+                <div class="comment-time">&nbsp;</div>
+                <div class="comment-zan-box">
+                    <p class="comment-box">
+                        <img src="${img}/wx/images/mx-pinglun.png" class="pinglun">
+                        <span><%=result.list[i].commentNum%></span>
+                    </p>
+                    <p class="icon-zanzan find-child-zan">
+                        <img src="${img}/wx/images/zan.png" class="dianzan">
+                        <span><%=result.list[i].likeNum%></span>
+                    </p>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="comm-line"></div>
+        </li>
+        <div class="clear"></div>
+    </ul>
+</div>
+<%}%>
+</script>
+<script>
+    var info_id = $.getUrlField("id");
+    var url="${api_url_https!'https://api.bevol.cn'}"+"/user_part/detail/lists";
+    var tags_json = {
+            <#list tags as tag>
+                "tag${tag.id}":"${tag.title}" <#if (tag_has_next)>,</#if>
+            </#list>
+    }
+    $.ajax({
+        url:url,
+        type:'post',
+        data:{id:info_id},
+        dataType:"json",
+        success:function(data) {
+            $('.mui-title').html(data.result.title);
+            var updateDate = new Date(data.result.updateStamp * 1000);
+            var month = updateDate.getMonth() + 1;
+            var date = updateDate.getDate()
+            data.result.publish_time = month+"-"+date
+            data.result.userBaseInfo.skinResults = getSkinResluts(data.result.userBaseInfo.skinResults)
+            if(typeof data.result.tags == "undefined"){
+                data.result.tags = false;
+            }else{
+                for(var i=0;i<data.result.tags.length;i++){
+                    data.result.tags[i] = eval("tags_json.tag" +data.result.tags[i])
+                }
+            }
+            for(i=0; i<data.result.userPartDetails.length; i++){
+                if(data.result.userPartDetails[i].type==2){
+                    if(typeof(data.result.userPartDetails[i].content) == "string" ){
+                        data.result.userPartDetails[i].contents = data.result.userPartDetails[i].content.split("\n")
+                    }else{
+                        data.result.userPartDetails[i].contents = []
+                    }
+                }
+            }
+            var user_info =template('user-info-tpl',data);
+            $('#detail_header').html(user_info);
+        }
+    });
+
+    var comment_url = "${api_url_https!'https://api.bevol.cn'}"+"/entity/comment3/lists/user_part_lists?pager=1&pageSize=20"
+    $.ajax({
+        url:comment_url,
+        type:'post',
+        data:{id:info_id},
+        dataType:"json",
+        success:function(data) {
+            if(data.result.list >0 ){
+                $('#kbpinglun').html("点评（"+ data.result.list +"）")
+                for(var k=0;k<data.result.list.length;k++) {
+                    var updateDate = new Date(data.result.list[k].updateStamp * 1000);
+                    var month = updateDate.getMonth() + 1;
+                    var date = updateDate.getDate()
+                    data.result.list[k].publish_time = month+"-"+date
+                    data.result.list[k].skinResults = getSkinResluts(data.result.list[k].skinResults)
+                }
+                var comments_info =template('comments-info-tpl',data);
+                $('#html-collection1').html(comments_info);
+            }else{
+                $('#kbpinglun').hide()
+                $('#collection1').hide()
+            }
+        }
+    });
+</script>
+<#include "/wx_share_footer.html" />

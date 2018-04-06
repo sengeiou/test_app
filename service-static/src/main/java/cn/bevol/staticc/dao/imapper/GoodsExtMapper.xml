@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Created by zhangcheng on 17-3-15. -->
+<mapper namespace="cn.bevol.staticc.dao.imapper.GoodsExtMapper">
+    <insert id="addGoodsExtInfo" parameterType="cn.bevol.staticc.model.entity.GoodsExt">
+        insert into hq_goods_ext (def_cps,gc_cps,mfj_cps, def_ext_cps,cps_type,goods_id) values
+        (#{defCps},#{gcCps},#{mfjCps},#{defExtCps},
+        #{cpsType},#{goodsId})
+    </insert>
+
+    <update id="saveGoodsExtCps" parameterType="cn.bevol.staticc.model.entity.GoodsExt">
+        update hq_goods_ext
+        <set>
+            <if test="defCps != null">def_cps=#{defCps},</if>
+            <if test="gcCps != null">gc_cps=#{gcCps},</if>
+            <if test="mfjCps != null">mfj_cps=#{mfjCps},</if>
+            <if test="defExtCps != null">def_ext_cps=#{defExtCps},</if>
+            <if test="cpsType != null">cps_type=#{cpsType}</if>
+        </set>
+        where goods_id = #{goodsId}
+    </update>
+
+</mapper>

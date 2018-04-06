@@ -1,0 +1,130 @@
+<#include "/header.html" />
+<script type="text/javascript" src="${js}/composition2.js"></script>
+<link rel="stylesheet" type="text/css" href="${css}/composition2.css"/>
+<link rel="stylesheet" type="text/css" href="${css}/comment2.css"/>
+<div class="mui-content">
+    <!--成分main-->
+    <div class="composition-box" id="composition-title">
+        <#if composition.english?? && composition.english != "">
+            <p class="composition-title">${composition.title!} ( ${composition.english!} ) </p>
+            <#else />
+            <p class="composition-title">${composition.title!}</p>
+        </#if>
+        <#if composition.cas != "0">
+            <p class="composition-title">CAS号：${composition.cas!}</p>
+        </#if>
+        <ul>
+            <#if useds?size gt 0>
+                <#list useds as used>
+                    <li>${used.title}</li>
+                </#list>
+            </#if>
+            <div class="clear"></div>
+        </ul>
+    </div>
+    <div class="line"></div>
+
+    <!--成分指数-->
+    <div class="comSafe-box" id="com-safe-html">
+        <div class="comsafe-box-title">成分指数</div>
+        <div class="comsafe-img-box">
+            <p>
+                安全指数：
+                <#if composition.safety?? && composition.safety != ''>
+                    <#if composition.safeNum != 0>
+                        <#list 1..composition.safeNum as t>
+                            <img src="${img}/wx/images2/xiaostar.png" style="width: 14px;height: 14px;"/>
+                        </#list>
+                    </#if>
+                    <#if composition.middleSafeNum != 0 >
+                        <#list 1..composition.middleSafeNum as t>
+                            <img src="${img}/wx/images2/xiaobanstar.png" style="width: 14px;height: 14px;"/>
+                        </#list>
+                    </#if>
+                    <#if composition.unsafeNum != 0 >
+                        <#list 1..composition.unsafeNum as t>
+                            <img src="${img}/wx/images2/xiaostargree.png" style="width: 14px;height: 14px;"/>
+                        </#list>
+                    </#if>
+                    <#else/>
+                    -
+                </#if>
+            </p>
+            <#if composition.acneRisk != "0">
+                <p>致痘风险：<img src="${img}/wx/images2/face.png" style="width: 16px;margin-bottom: 0px; margin: 0 auto;"></p>
+                <#else/>
+                <p>致痘风险：-</p>
+            </#if>
+        </div>
+    </div>
+    <div class="line"></div>
+
+    <!--成分说明-->
+    <div class="composition-tips" id="composition-tips-html">
+        <#if composition.remark?? && composition.remark !="">
+            <div class="composition-tips-title">成分说明</div>
+            <div class="composition-tips-info" id="minicontent_remark">
+                ${composition.minicontent}
+                <#if composition.remarkLenth gt 100>
+                    <span class="zhankai" data-id="remark" style="color:#ac69fe;">全文</span>
+                </#if>
+            </div>
+            <div class="composition-tips-info" id="content_remark" style="display: none;">
+                ${composition.remark}
+                <#if composition.remarkLenth gt 100>
+                    <span class="zhankai" data-id="remark" style="color:#ac69fe;">收起</span>
+                </#if>
+            </div>
+        </#if>
+    </div>
+    <div class="line"></div>
+
+    <!--含有该成分的产品-->
+    <div class="composition-goods-more-box" id="com-goods-more">
+        <#if items?size gt 0 >
+            <div class="hotlist_box_title">
+                <ul class="mui-table-view border-bottom">
+                    <li class="border-bottom-li">
+                        <a class="hotlist_box_text">
+                            <p>
+                                含有该成分的产品
+                                <!--<img src="${img}/wx/images2/moreicon2X.png" alt="" />-->
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-box goods">
+                <ul id="goods-container" class="mui-table-view mui-table-view-chevron">
+                    <#list items as good>
+                        <li class="mui-table-view-cell goods_box goods-btn" data-mid='${good.goods_id}'>
+                            <div class='goods_list'>
+                                <#if good.image?? && good.image != ''>
+                                    <img class="imglist" src="${img}/Goods/source/${good.image}@90p" onerror="javascript:this.src='${img}/wx/images2/default.jpg'">
+                                    <#else/>
+                                    <img src="${img}/wx/images2/default.png" class='imglist' />
+                                </#if>
+                            </div>
+                            <div class='goods_text_box'>
+                                <span class="goods_text_box_title">${good.title}</span>
+                                <#if good.alias != "">
+                                    <span class="goods_text_box_en">${good.alias}</span>
+                                </#if>
+                            </div>
+                            <div class="clear"></div>
+                        </li>
+                        <#if good_index = 2>
+                            <#break/>
+                        </#if>
+                    </#list>
+                </ul>
+            </div>
+        </#if>
+    </div>
+    <div class="line"></div>
+
+    <#include "/comment.html" />
+
+</div>
+<#include "/footer.html" />
+

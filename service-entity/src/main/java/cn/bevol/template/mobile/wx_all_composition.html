@@ -1,0 +1,95 @@
+<#include "/wx_share_header.html" />
+<link href="https://static.bevol.cn/wx/css/wx_all_composition.css" rel="stylesheet" />
+<div class="mui-content">
+
+</div>
+<script type="text/plain" all-composition-tpl id="all-composition-tpl">
+    <ul id="product">
+        <li>
+            <%if(result.goods.image){%>
+                <img src="${img}/Goods/source/<%=result.goods.image%>@80p" onerror="javascript:this.src='${img}/wx/images/default.jpg@80p'"  height="85" width="86" />
+            <%}else{%>
+                <img src="${img}/wx/images/default.jpg@80p" height="85" width="86" />
+            <%}%>
+        </li>
+        <li>
+            <h2><%=result.goods.title%></h2>
+            <p><%=result.goods.alias%></p>
+        </li>
+    </ul>
+
+    <section style="width: 100%;height: 86px;">
+        <h3>本产品含<%=result.composition.length%>种成分</h3>
+        <p>
+            <%=result.cpsTypeDesc%>
+        </p>
+    </section>
+
+    <table border="0" cellspacing="" cellpadding="">
+        <tr>
+            <th>成分名称</th>
+            <th>安全风险</th>
+            <th>活性成分</th>
+            <th>致痘风险</th>
+            <th>使用目的</th>
+
+        </tr>
+        <%for(var i=0;i<result.composition.length; i++){%>
+            <tr>
+                <td><%=result.composition[i].title%></td>
+                <td><span class="safe-color"><%=result.composition[i].safety%></span></td>
+                <td>
+                    <%if(result.composition[i].active == 1){%>
+                        <span class="label label-good">赞</span>
+                    <%}else if(result.composition[i].active == 2){%>
+                        <span class="label label-info">防晒</span>
+                    <%}else if(result.composition[i].active == "UVAB"){%>
+                        <span class="label label-UVA"></span><span class="label label-UVB"></span>
+                    <%}else if(result.composition[i].active == "UVA"){%>
+                        <span class="label label-UVA">
+                    <%}else if(result.composition[i].active == "UVB"){%>
+                        <span class="label label-UVB"></span>
+                    <%}else{%>
+                        <span class="label label-info"></span>
+                    <%}%>
+                </td>
+                <td
+                    <%if(result.composition[i].acneRisk){%>
+                        class="label-danger"
+                    <%}%>
+                >
+                </td>
+                <td><%=result.composition[i].curUsedName%></td>
+            </tr>
+        <%}%>
+    </table>
+</script>
+<script>
+    var id=$.getUrlField("id");
+    var url = "${api_url_https!'https://api.bevol.cn'}"+"/goods/info/"+id
+    $.ajax({
+        url:url,
+        type:"post",
+        dataType:"json",
+        success:function(data){
+            var sbp=template('all-composition-tpl',data);
+            $('.mui-content').html(sbp);
+            var safe_color = document.getElementsByClassName("safe-color");
+            for(var i=0; i< safe_color.length; i++){
+                var numLength = safe_color[i].innerText.length;
+                var num01 = safe_color[i].innerText;
+
+                if(numLength == 1 && num01 < 3 || numLength > 1 && num01.split("-")[1] <= 3){
+                    safe_color[i].style.background = "#5cb85c";
+                }else if(numLength == 1 && num01 < 7 || numLength > 1 && num01.split("-")[1] <= 7){
+                    safe_color[i].style.background = "#f0ad4e";
+                }else if(numLength == 1 && num01 >= 7 || numLength > 1 && num01.split("-")[1] > 7){
+                    safe_color[i].style.background = "#c13636";
+                }else{
+                    safe_color[i].style.background = "";
+                }
+            }
+        }
+    });
+</script>
+<#include "/wx_share_footer.html" />

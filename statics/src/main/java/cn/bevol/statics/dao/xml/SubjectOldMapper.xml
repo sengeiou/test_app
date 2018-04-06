@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Created by mysens on 17-7-6. -->
+<mapper namespace="cn.bevol.statics.dao.mapper.SubjectOldMapper">
+
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.model.Subject">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="entity_id" property="entityId" jdbcType="INTEGER"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="SubjectListResultMap" type="cn.bevol.statics.entity.model.SubjectList">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="seo_keywords" property="seoKeywords" jdbcType="VARCHAR"/>
+        <result column="seo_description" property="seoDescription" jdbcType="VARCHAR"/>
+        <result column="seo_title" property="seoTitle" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="subjectByPage" resultMap="BaseResultMap">
+        SELECT * FROM hq_seo_subject
+        WHERE state = 1 and pid = #{pid}
+        and id >= (
+        select id from hq_seo_subject where state = 1 and pid = #{pid} limit #{pagedBegin}, 1
+        )
+        ORDER BY id desc
+        <if test="pageSize > 0">
+            LIMIT #{pageSize}
+        </if>
+    </select>
+    <select id="selectTotal" resultType="int">
+        SELECT count(*) FROM hq_seo_subject where state = 1 and pid = #{pid}
+    </select>
+
+
+    <select id="subjectListByPage" resultMap="SubjectListResultMap">
+        SELECT * FROM hq_seo_subject_list
+        WHERE state = 1
+        and id >= (
+        select id from hq_seo_subject_list where state = 1 limit #{pagedBegin}, 1
+        )
+        ORDER BY id desc
+        <if test="pageSize > 0">
+            LIMIT #{pageSize}
+        </if>
+    </select>
+    <select id="selectListTotal" resultType="int">
+        SELECT count(*) FROM hq_seo_subject_list where state = 1
+    </select>
+    <select id="findSubjectListById" resultMap="SubjectListResultMap">
+        SELECT * FROM hq_seo_subject_list where id = #{id};
+    </select>
+
+</mapper>

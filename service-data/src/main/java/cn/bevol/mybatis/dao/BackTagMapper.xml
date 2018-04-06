@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ --> 
+<mapper namespace="cn.bevol.mybatis.dao.BackTagMapper">
+      <resultMap id="BaseResultMap" type="cn.bevol.mybatis.dto.Label">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="tstamp" property="tstamp" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="top" property="top" jdbcType="INTEGER"/>
+        <result column="tabs" property="tabs" jdbcType="VARCHAR"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+    </resultMap>
+    
+	
+	
+	<select id="getTagListsByLikeTabls" resultType="Map">
+		select * from hq_new_tags where tabs like concat('%',#{tabs},'%')
+    </select>
+    
+    <select id="getComemntTagsByCategory" resultType="Map">
+		select id,title,tabs,tab_id,tag_pid from hq_new_tags where tab_id=#{tabId} and hidden=0;
+	</select>
+	
+	<select id="getGoodsParentCategory" resultType="Map">
+        SELECT id,name from hq_goods_category where parent_id=0 and hidden=0 and deleted=0
+    </select>
+    
+    <update id="updateTagByTabId">
+    	update hq_new_tags set hidden=1 where tab_id=#{tabId}
+    </update>
+    
+    <update id="updateTagByTagId">
+    	update hq_new_tags set hidden=1 where id in(${tagIds})
+    </update>
+    
+    <insert id="insertSql">
+    	${sql}
+    </insert>
+    
+    <select id="getNewTagByTabs" resultType="Map">
+		SELECT id,title FROM hq_new_tags where tabs=#{tabs} and hidden=0
+	</select>
+	
+	<select id="getPtagById" resultType="Map">
+		SELECT id,title FROM hq_tag_list where id=#{id}
+	</select>
+	
+	<insert id="saveNewTag">
+    	insert into hq_new_tags(tag_pid,title,tab_id,tabs) values(#{pid},#{title},#{tabId},#{tabs})
+    </insert>
+    
+    <update id="hiddenNewTagsByPid">
+    	update hq_new_tags set hidden=1 where tag_pid=#{pid} and tabs={tabs} and tab_id=#{tabId}
+    </update>
+    
+    <insert id="saveByTabId">
+    	insert into hq_new_tags(tabs,tab_id) values(#{tabs},#{tabId})
+    </insert>
+    
+    <select id="getTagListById" resultMap="BaseResultMap">
+		SELECT * FROM hq_tag_list where id=#{id} and delete_status=0
+	</select>
+	
+	<select id="getNewTagsByTitle" resultMap="BaseResultMap">
+		SELECT * FROM hq_new_tags where title=#{title} and tabs=#{tabs} and hidden=0
+	</select>
+	
+	<insert id="insertNewTag2">
+		insert into hq_new_tags(title,tabs,tag_pid,top) values(#{title},#{tabs},#{id},#{top})
+	</insert>
+	
+	<select id="getNewTagById" resultType="Map">
+		SELECT * FROM hq_new_tags where id=#{id}
+	</select>
+	
+	<update id="updateNewTagsById"  parameterType="cn.bevol.mybatis.dto.Label">
+		 UPDATE hq_new_tags
+			 <trim prefix="set" suffixOverrides=",">
+			  <if test="top!=null">top=#{top},</if>
+			  <if test="hidden!=null">hidden=#{hidden}</if>
+			 </trim>
+		  WHERE id=#{id}
+	</update>
+	
+	<select id="getNewTagsByTabs2" resultMap="BaseResultMap">
+		SELECT * FROM hq_new_tags where tabs=#{tabs} limit #{pager},#{pageSize}
+	</select>
+	
+    <select id="getAllTags" resultMap="BaseResultMap">
+		SELECT id,title,top FROM hq_tag_list where delete_status=0 and hidden_status=0 ORDER BY top limit #{start},#{pageSize}
+	</select>
+	
+	<select id="getTagListByTitle" resultMap="BaseResultMap">
+		SELECT id,title,top FROM hq_tag_list where title=#{title} and delete_status=0
+	</select>
+	
+	<insert id="insertNewTag">
+		insert into hq_new_tags(title,tabs,tag_pid,tab_id) values(#{title},#{tabs},#{pid},#{tabId})
+	</insert>
+	
+	<update id="delTagList">
+		update hq_tag_list set delete_status=1 where id=#{id}
+	</update>
+	
+	<update id="delNewTagsByTitle">
+		delete from hq_new_tags where title=#{title}
+	</update>
+	
+	<select id="getNewTagsByTabs" resultMap="BaseResultMap">
+		SELECT id,title FROM hq_new_tags where tabs=#{tabs}
+	</select>
+	
+	<update id="updateListTagById">
+		update hq_tag_list set title=#{title},update_time=#{updateTime} where id=#{id}
+	</update>
+	
+	<update id="updateNewTags">
+		update hq_new_tags set title=#{newTitle} where title=#{title}
+	</update>
+	
+	<select id="getNewTagsByMaxTop" resultMap="BaseResultMap">
+		SELECT id,top FROM hq_new_tags where tabs=#{tabs} order by top desc limit 0,1;
+	</select>
+	
+	<delete id="deleteTagByTagId">
+    	delete from hq_new_tags where id in(${tagIds})
+    </delete>
+    
+    <select id="getNewTagByTabsAndTabId" resultType="Map">
+		SELECT id,title,tag_pid FROM hq_new_tags where tabs=#{tabs} and tab_id=#{tabId} and hidden=0
+	</select>
+    
+</mapper>

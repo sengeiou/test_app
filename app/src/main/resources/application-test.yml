@@ -1,0 +1,68 @@
+spring:
+  datasource:
+     username: mlxx_test
+     password: Mlxx_20170906
+     url: jdbc:mysql://rm-bp18b5929qwp968x1o.mysql.rds.aliyuncs.com:3306/mlxx_test?characterEncoding=utf8
+     type: com.alibaba.druid.pool.DruidDataSource
+     #初始化连接大小
+     initialSize: 3
+     #连接池最小空闲
+     minIdle: 2
+     #连接池最大使用连接数量
+     maxActive: 3
+     #获取连接最大等待时间
+     maxWait: 60000
+     #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+     timeBetweenEvictionRunsMillis: 60000
+     #配置一个连接在池中最小生存的时间，单位是毫秒
+     minEvictableIdleTimeMillis: 300000
+
+     validationQuery: SELECT 1 FROM DUAL
+     testWhileIdle: true
+     testOnBorrow: false
+     testOnReturn: false
+     poolPreparedStatements: true
+     maxPoolPreparedStatementPerConnectionSize: 20
+  data:
+     mongodb:
+        uri: mongodb://mlxx_test:#bevol2017Test0908!@121.199.78.245:43123/bevol_test
+        database: bevol_test
+        repositories: true
+  redis:
+     host: 10.251.236.106
+     port: 16379
+     pool:
+        max-active: 100
+        max-idle: 30
+        max-wait: 30
+
+aliyun:
+  oss:
+    pcAccessId: RQgkm7sblqL7arK3
+    pcAccessKey: 5TG5PmdDo2VYFJuJAYAfHrc8IomL0B
+    pcBucket: bevol-test
+    pcEndpoint: http://oss-cn-shanghai.aliyuncs.com
+    mAccessId: RQgkm7sblqL7arK3
+    mAccessKey: 5TG5PmdDo2VYFJuJAYAfHrc8IomL0B
+    mBucket: bevol-test
+    mEndpoint: http://oss-cn-shanghai.aliyuncs.com
+    sourceAccessId: RQgkm7sblqL7arK3
+    sourceAccessKey: 5TG5PmdDo2VYFJuJAYAfHrc8IomL0B
+    sourceBucket: bevol-test
+    sourceEndpoint: http://oss-cn-shanghai.aliyuncs.com
+
+client:
+  taobao:
+    serverUrl: http://gw.api.taobao.com/router/rest
+    appKey: 23325511
+    appSecret: ee7fcc150be92eac0a10395590f96ae9
+
+  cloudsearch:
+    clientId: lMZwMNFhiR5o1TfO
+    clientSecret: Qt6ZzNDaoGtwwcHWWGAn1bhdP3qvFC
+    host: http://opensearch-cn-hangzhou.aliyuncs.com
+    opts:
+      version: v2
+      connect_timeout: 10000
+    openSearchIndexPre: test_
+    hotEntity: 0

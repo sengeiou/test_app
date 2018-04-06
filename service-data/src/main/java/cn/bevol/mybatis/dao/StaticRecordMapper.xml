@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.mybatis.dao.StaticRecordMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.mybatis.model.StaticRecord">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="data_type" property="dataType" jdbcType="VARCHAR"/>
+        <result column="data_source" property="dataSource" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="is_seo" property="isSeo" jdbcType="INTEGER"/>
+        <result column="is_again" property="isAgain" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+   
+	<select id="staticRecordByAgainPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_static_record
+	    <if test="wheres != null">
+	      WHERE 1=1
+	      <if test="wheres.state != null">
+	      	and state =#{wheres.state}
+	      </if>
+	       <if test="wheres.dataType != null">
+	      	and data_type =#{wheres.dataType}
+	      </if>
+	      <if test="wheres.dataSource != null">
+	      	and data_source =#{wheres.dataSource}
+	      </if>
+	      <if test="wheres.isSeo != null">
+	      	and is_seo =#{wheres.isSeo}
+	      </if>
+	       and is_again = 0
+	    </if>
+	    <if test="orderBy != null">
+	      ORDER BY ${orderBy}
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+	  <select id="staticRecordByPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_static_record
+	    <if test="wheres != null">
+	      WHERE 1=1
+	      <if test="wheres.state != null">
+	      	and state =#{wheres.state}
+	      </if>
+	       <if test="wheres.dataType != null">
+	      	and data_type =#{wheres.dataType}
+	      </if>
+	      <if test="wheres.dataSource != null">
+	      	and data_source =#{wheres.dataSource}
+	      </if>
+	      <if test="wheres.isSeo != null">
+	      	and is_seo =#{wheres.isSeo}
+	      </if>
+	       <if test="wheres.isAgain != null">
+	      	and is_again =#{wheres.isAgain}
+	      </if>
+	    </if>
+	    <if test="orderBy != null">
+	      ORDER BY ${orderBy}
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+	<select id="selectTotal" resultType="int">
+   		 SELECT count(*) FROM hq_static_record
+   		 <if test="wheres != null">
+	      WHERE 1=1
+	      <if test="wheres.state != null">
+	      	and state =#{wheres.state}
+	      </if>
+	       <if test="wheres.dataType != null">
+	      	and data_type =#{wheres.dataType}
+	      </if>
+	      <if test="wheres.dataSource != null">
+	      	and data_source =#{wheres.dataSource}
+	      </if>
+	      <if test="wheres.isSeo != null">
+	      	and is_seo =#{wheres.isSeo}
+	      </if>
+	       <if test="wheres.isAgain != null">
+	      	and is_again =#{wheres.isAgain}
+	      </if>
+	    </if>
+    </select> 
+     <select id="selectNoAgainTotal" resultType="int">
+   		 SELECT count(*) FROM hq_static_record
+   		 <if test="wheres != null">
+	      WHERE 1=1
+	      <if test="wheres.state != null">
+	      	and state =#{wheres.state}
+	      </if>
+	       <if test="wheres.dataType != null">
+	      	and data_type =#{wheres.dataType}
+	      </if>
+	      <if test="wheres.dataSource != null">
+	      	and data_source =#{wheres.dataSource} 
+	      </if>
+	      <if test="wheres.isSeo != null">
+	      	and is_seo =#{wheres.isSeo}
+	      </if>
+	       and is_again =0
+	    </if>
+    </select> 
+    <insert id="insert" parameterType="cn.bevol.mybatis.model.StaticRecord"  >
+    	insert into hq_static_record(mid,data_type,data_source,state,is_seo,is_again,create_time,update_time,path)
+    	values
+    	(	
+    		#{mid},	#{dataType}, #{dataSource}, #{state},#{isSeo},#{isAgain}, #{createTime}, #{updateTime},#{path}
+    	)
+    </insert>
+    <insert id="insertOrUpdate" parameterType="cn.bevol.mybatis.model.StaticRecord">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from hq_static_record where mid = #{mid} and data_source = #{dataSource} and data_type =#{dataType}
+        </selectKey>
+        <if test="count == 0">
+        	insert into hq_static_record(mid,data_type,data_source,state,is_seo,create_time,path)
+    	values
+    	(	
+    		#{mid},	#{dataType}, #{dataSource}, #{state},#{isSeo}, #{createTime},#{path}
+    	)
+        </if>
+        <if test="count > 0">
+        	update hq_static_record set
+        	 <if test="mid!=null">mid=#{mid},</if>
+			 <if test="dataType!=null">data_type=#{dataType},</if>
+			 <if test="dataSource!=null">data_source =#{dataSource},</if>
+			 <if test="state!=null">state= #{state},</if>
+			 <if test="isAgain!=null">is_again= #{isAgain},</if>
+			 <if test="updateTime!=null">update_time =#{updateTime}</if>
+       	    where mid = #{mid} and data_source = #{dataSource} and data_type =#{dataType}
+        </if>
+     </insert>
+     <update id="update" parameterType="cn.bevol.mybatis.model.StaticRecord">
+		 update hq_static_record set
+		 <if test="mid!=null">mid=#{mid},</if>
+		 <if test="dataType!=null">data_type=#{dataType},</if>
+		 <if test="dataSource!=null">data_source =#{dataSource},</if>
+		 <if test="state!=null">state= #{state},</if>
+		 <if test="isSeo!=null">is_seo= #{isSeo},</if>
+		 <if test="updateTime!=null">update_time =#{updateTime}</if>
+		where 1=1
+		 <if test="mid!=null">and mid=#{mid} </if>
+		 <if test="dataSource!=null"> and data_source = #{dataSource}</if>
+		 <if test="dataType!=null"> and data_type =#{dataType}</if>
+		 <if test="path!=null"> and path =#{path}</if>
+     </update>
+     <select id="recordTotal" resultMap="BaseResultMap">
+     	select s.data_type,s.state,s.data_source,COUNT(*) count 
+		from hq_static_record s
+		GROUP BY s.data_type,s.data_source,s.state;
+     </select>
+</mapper>

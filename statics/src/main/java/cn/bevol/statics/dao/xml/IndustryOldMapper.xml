@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.statics.dao.mapper.IndustryOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.model.Industry">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="subhead" property="subhead" jdbcType="VARCHAR"/>
+        <result column="skin" property="skin" jdbcType="VARCHAR"/>
+        <result column="header_image" property="headerImage" jdbcType="VARCHAR"/>
+        <result column="tag" property="tag" jdbcType="VARCHAR"/>
+        <result column="pc_image" property="pcImage" jdbcType="VARCHAR"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+    </resultMap>
+    
+   
+	<select id="industryByPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_industry
+	      WHERE hidden_status =0 and deleted_status=0
+			and id >= (
+			select id from hq_industry where hidden_status =0 and deleted_status=0 limit #{pagedBegin}, 1
+			)
+	      ORDER BY id desc
+	    <if test="pageSize > 0">
+	      LIMIT #{pageSize}
+	    </if>
+	  </select>
+	<select id="selectTotal" resultType="int">
+   		 SELECT count(*) FROM hq_industry where hidden_status =0 and deleted_status=0
+    </select>  
+</mapper>

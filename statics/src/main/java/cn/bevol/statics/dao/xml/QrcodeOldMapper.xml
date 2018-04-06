@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.statics.dao.mapper.QrcodeOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.model.Qrcode">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="android_url" property="androidUrl" jdbcType="VARCHAR"/>
+		<result column="ios_url" property="iosUrl" jdbcType="VARCHAR"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="ticket" property="ticket" jdbcType="VARCHAR"/>
+        <result column="parameter" property="parameter" jdbcType="VARCHAR"/>
+        <result column="parameter2" property="parameter2" jdbcType="VARCHAR"/>
+		<result column="delete_status" property="deleteStatus" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+   
+	
+    <insert id="insertOrUpdate" parameterType="cn.bevol.statics.entity.model.Qrcode">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from hq_static_qrcode where name = #{name}
+        </selectKey>
+        <if test="count == 0">
+        	insert into hq_static_qrcode(android_url,ios_url,name,ticket,parameter,parameter2,remark)
+    	values
+    	(
+			#{androidUrl},#{iosUrl},#{name},#{ticket}, #{parameter}, #{parameter2},  #{remark}
+    	)
+        </if>
+        <if test="count > 0">
+        	update hq_static_qrcode set
+		    <if test="androidUrl!=null">android_url=#{androidUrl},</if>
+			<if test="iosUrl!=null">ios_url=#{iosUrl},</if>
+			<if test="name!=null">name=#{name},</if>
+			<if test="ticket!=null">ticket=#{ticket},</if>
+			<if test="parameter!=null">parameter =#{parameter},</if>
+		    <if test="parameter2!=null">parameter2 =#{parameter2},</if>
+			<if test="remark!=null">remark =#{remark}</if>
+			where name = #{name}
+        </if>
+     </insert>
+   <select id="findByPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_static_qrcode
+	    <if test="wheres != null">
+	      WHERE 1=1 
+	      <if test="wheres.name != null">
+	        and name= #{wheres.name}
+	      </if>
+			<if test="wheres.parameter != null">
+				and parameter= #{wheres.parameter}
+			</if>
+			<if test="wheres.remark != null">
+				and remark= #{wheres.remark}
+			</if>
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+	<select id="findByPageCount" resultType="java.lang.Integer">
+		SELECT count(*) FROM hq_static_qrcode
+		<if test="wheres != null">
+			WHERE 1=1
+			<if test="wheres.name != null">
+				and name= #{wheres.name}
+			</if>
+			<if test="wheres.parameter != null">
+				and parameter= #{wheres.parameter}
+			</if>
+			<if test="wheres.remark != null">
+				and remark= #{wheres.remark}
+			</if>
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		SELECT id,android_url,ios_url,name,parameter,parameter2,delete_status,remark
+		FROM hq_static_qrcode
+		WHERE id = #{id,jdbcType=INTEGER}
+	</select>
+
+</mapper>

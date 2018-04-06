@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ --> 
+<mapper namespace="cn.bevol.internal.dao.mapper.GoodsOldMapper">
+	<resultMap id="BaseResultMap" type="cn.bevol.internal.entity.model.Goods">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="cps" property="cps" jdbcType="VARCHAR"/>
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="remark3" property="remark3" jdbcType="VARCHAR"/>
+        <result column="alias" property="alias" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="VARCHAR"/>
+        <result column="capacity" property="capacity" jdbcType="VARCHAR"/>
+        <result column="sell_capacity" property="sellCapacity" jdbcType="VARCHAR"/>
+        <result column="company_english" property="companyEnglish" jdbcType="VARCHAR"/>
+        <result column="alias_2" property="alias2" jdbcType="VARCHAR"/>
+        <result column="company" property="company" jdbcType="VARCHAR"/>
+        <result column="approval" property="approval" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="country" property="country" jdbcType="VARCHAR"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+        <result column="deleted" property="deleted" jdbcType="INTEGER"/>
+        <result column="sell_price" property="sellPrice" jdbcType="INTEGER"/>
+        <result column="data_type" property="dataType" jdbcType="INTEGER"/>
+        <result column="approval_date" property="approvalDate" jdbcType="INTEGER"/>
+         <result column="cps_type" property="cpsType" jdbcType="VARCHAR"/>
+         <result column="price_unit" property="priceUnit" jdbcType="INTEGER"/>
+    </resultMap>
+	<resultMap id="GoodsEffectUsed" type="cn.bevol.internal.entity.model.GoodsEffectUsed">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="category_cate_id" property="categoryCateId" jdbcType="INTEGER"/>
+        <result column="category_cate_name" property="categoryCateName" jdbcType="VARCHAR"/>
+        <result column="category_ids" property="categoryIds" jdbcType="VARCHAR"/>
+        <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
+        <result column="effect_id" property="effectId" jdbcType="INTEGER"/>
+         <result column="effect_name" property="effectName" jdbcType="VARCHAR"/>
+         <result column="cps_used" property="cpsUsed" jdbcType="VARCHAR"/>
+         <result column="cps_used_name" property="cpsUsedName" jdbcType="VARCHAR"/>
+         <result column="cps_active" property="cpsActive" jdbcType="VARCHAR"/>
+          <result column="cps_active_name" property="cpsActiveName" jdbcType="VARCHAR"/>
+         <result column="effect_pid" property="effectPid" jdbcType="INTEGER"/>
+         <result column="effect_pid_name" property="effectPidName" jdbcType="VARCHAR"/>
+         <result column="display_name" property="displayName" jdbcType="VARCHAR"/>
+         <result column="display_compare_name" property="displayCompareName" jdbcType="VARCHAR"/>
+         <result column="display_type" property="displayType" jdbcType="INTEGER"/>
+        <result column="display_sort" property="displaySort" jdbcType="INTEGER"/>
+        <result column="display_compare_sort" property="displayCompareSort" jdbcType="INTEGER"/>
+        <result column="display_compare" property="displayCompare" jdbcType="INTEGER"/>
+        <result column="desc" property="desc" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="GoodsUsedEffect" type="cn.bevol.internal.entity.model.GoodsUsedEffect">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="pid" property="pid" jdbcType="INTEGER"/>
+         <result column="display_compare_name" property="displayCompareName" jdbcType="VARCHAR"/>
+        <result column="display_compare_sort" property="displayCompareSort" jdbcType="INTEGER"/>
+        <result column="display_compare" property="displayCompare" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="GoodsTag" type="cn.bevol.internal.entity.vo.GoodsTagVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="create_stamp" property="createStamp" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="GoodsTagResult" type="cn.bevol.internal.entity.model.GoodsTagResult">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
+        <result column="auto_tag_ids" property="autoTagIds" jdbcType="VARCHAR"/>
+        <result column="auto_tag_names" property="autoTagNames" jdbcType="VARCHAR"/>
+        <result column="made_tag_ids" property="madeTagIds" jdbcType="VARCHAR"/>
+        <result column="made_tag_names" property="madeTagNames" jdbcType="VARCHAR"/>
+        <result column="tag_names" property="tagNames" jdbcType="VARCHAR"/>
+        <result column="tag_ids" property="tagIds" jdbcType="VARCHAR"/>
+        <result column="made_delete" property="madeDelete" jdbcType="INTEGER"/>
+        <result column="create_stamp" property="createStamp" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="GoodsRule" type="cn.bevol.internal.entity.model.GoodsRule">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="val_json" property="valJson" jdbcType="VARCHAR"/>
+        <result column="create_stamp" property="createStamp" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+   		<result column="tag_id" property="tagId" jdbcType="INTEGER"/>
+   		<result column="rule_1" property="rule1" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="GoodsTagComposition" type="cn.bevol.internal.entity.model.GoodsTagComposition">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="tag_id" property="tagId" jdbcType="INTEGER"/>
+        <result column="composition_id" property="compositionId" jdbcType="INTEGER"/>
+        <result column="not_composition_id" property="notCompositionId" jdbcType="INTEGER"/>
+        <result column="create_stamp" property="createStamp" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="is_main" property="isMain" jdbcType="INTEGER"/>
+        <result column="main_name" property="mainName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="goodsHit" type="cn.bevol.internal.entity.model.GoodsHitItems">
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="data_type" property="dataType" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="goodsByNameItem" type="cn.bevol.internal.entity.model.GoodsByNameItems">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="cps" property="cps" jdbcType="VARCHAR"/>
+        <result column="alias" property="alias" jdbcType="VARCHAR"/>
+        <result column="brand" property="brand" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getById" resultMap="BaseResultMap">
+		SELECT id,cps,category,title,image,mid,remark,remark3,alias,alias_2,capacity,price,company_english,company,crdate,tstamp,hidden,deleted,data_type,country,categoryStr,data_type FROM hq_goods WHERE  id=#{id}
+	</select>
+	
+ 	<select id="getGoodsByIds" resultMap="BaseResultMap">
+		SELECT id,cps,category,title,image,mid,data_type,remark,alias,price,capacity,sell_price
+		,sell_capacity,approval_date,company_english,company,approval,country
+		 FROM hq_goods WHERE  id in(${ids})
+	</select>
+    <select id="findByName" resultMap="goodsByNameItem">
+         SELECT id,cps,title,alias,price,brand
+        FROM hq_goods WHERE
+        (LOCATE(title, #{title,jdbcType=VARCHAR}) = 1 and title is not null and title != '')
+		OR
+		(LOCATE(alias,#{title,jdbcType=VARCHAR}) = 1 and alias is not null and alias != '')
+    </select>
+	<select id="getByGoodsByMid" resultMap="BaseResultMap">
+		SELECT id,cps,category,title,image,mid,remark,data_type,alias,price,capacity,sell_price
+		,sell_capacity,approval_date,company_english,company,approval,country,cps_type
+		 FROM hq_goods WHERE  mid=#{mid}
+	</select>
+    <select id="getGoodsByMids" resultMap="BaseResultMap">
+        SELECT id,cps,category,title,image,mid,remark,data_type,alias,price,capacity,sell_price
+        ,sell_capacity,approval_date,company_english,company,approval,country
+        FROM hq_goods WHERE  mid in
+        <foreach collection="array" item="mids"  open="(" separator="," close=")">
+            #{mids}
+        </foreach>
+    </select>
+
+    <select id="findByPage" resultMap="BaseResultMap">
+        SELECT * FROM hq_goods
+        WHERE 1=1 and mid is not null and mid !="" and deleted =0 and hidden =0
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findMidByPage" resultMap="BaseResultMap">
+        SELECT mid FROM hq_goods
+        WHERE mid is not null and mid !="" and deleted =0 and hidden =0 order by id
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+	
+	<update id="goodsType3" statementType="CALLABLE">
+        {call pro_goods_type(
+                              
+        )}
+     </update>
+     
+     <update id="goodsType12" statementType="CALLABLE">
+        {call pro_goods_type12(
+                              
+        )}
+     </update>
+
+     <select id="getAllGoodsEffectUsed" resultMap="GoodsEffectUsed">
+		SELECT * FROM hq_goods_effect_category_used 
+	</select>
+	
+	<select id="getAllGoodsUsedEffect" resultMap="GoodsUsedEffect">
+		SELECT * FROM hq_goods_used_effect
+	</select>
+	
+	<select id="getGoodsByCategory" resultMap="BaseResultMap">
+		SELECT * FROM hq_goods where category=#{categoryId} group by id asc limit 0,5
+	</select>
+	
+	<insert id="insertTable" parameterType="String">
+		insert into hq_goods_safter(
+			${fileds}		
+		)
+		values(${vals})
+	</insert>
+	
+	<insert id="insertGoodsSkin" parameterType="String">
+		insert into hq_goods_skin(
+			${fileds}		
+		)
+		values(${vals})
+	</insert>
+	
+	<select id="getSafter" resultType="java.util.Map">
+		SELECT * FROM hq_goods_safter where goods_id in(${goodsIds})
+	</select>
+	
+	<select id="getAllSafter" resultType="java.util.Map">
+		SELECT * FROM hq_goods_safter
+	</select>
+	
+	<select id="getGoodsSkin" resultType="java.util.Map">
+		SELECT * FROM hq_goods_skin where goods_id in(${goodsIds})
+	</select>
+	
+    <update id="updateSafter" parameterType="String" >  
+        UPDATE hq_goods_safter set ${updateStr}
+         WHERE goods_id = #{goodsId}  
+    </update> 
+    
+    <update id="updateGoodsSkin" parameterType="String" >  
+        UPDATE hq_goods_skin set ${updateStr}
+         WHERE goods_id = #{goodsId}  
+    </update> 
+    
+    <select id="getAllGoodsSkin" resultType="java.util.Map">
+		SELECT * FROM hq_skin
+	</select>
+	
+ 	
+    <update id="update" parameterType="String">  
+    	${strsql}
+    </update> 
+    
+    <select id="select" parameterType="String" resultType="java.util.Map">
+    	${strsql}
+    </select> 
+    
+    <delete id="delete" parameterType="String">
+    	${strsql}
+    </delete>
+    
+    <insert id="insert"  parameterType="String">
+    	${strsql}
+	</insert>
+	
+	<select id="getAllCommonGoodsCategory" resultType="java.util.Map">
+    	select * from hq_goods_common_category
+    </select> 
+    
+    <select id="getAllTag" resultMap="GoodsTag">
+		select * from hq_goods_tag where status=0
+	</select>
+	
+	<select id="getTagResultByGoodsId" resultMap="GoodsTagResult">
+		select * from hq_goods_tag_result where goods_id=#{goodsId}
+	</select>
+	
+	<select id="getAllRule" resultMap="GoodsRule">
+		select * from hq_goods_tag_rule where status=0
+	</select>
+	
+	<select id="getTagCompositionByCps" resultMap="GoodsTagComposition">
+		select * from hq_goods_tag_composition where is_main=1 and composition_id in(${cps})  and status=0
+	</select>
+	<!-- <select id="getAllTagComposition" resultMap="GoodsTagComposition">
+		select * from hq_goods_tag_composition where is_main=1   and status=0
+	</select> -->
+	
+	<select id="getAllTagComposition" resultMap="GoodsTagComposition">
+		select * from hq_goods_tag_composition where status=0
+	</select>
+	
+	<select id="getAllSpecialCategory" resultType="java.util.Map">
+    	select * from hq_goods_special_category
+    </select>
+
+    <select id="getAllEnglishCategory" resultType="java.util.Map">
+        select category_id, include, exclude, category_str from hq_goods_english_category where status = 0
+    </select>
+
+	<select id="getPolyCategryByGoodsId" resultType="java.util.Map">
+    	select * from hq_goods_poly_category where goods_id=#{goodsId}
+    </select> 
+    
+    <select id="getGoodsSearchByGoodsId" resultType="java.util.Map">
+    	select * from hq_goods_search where goods_id=#{goodsId}
+    </select> 
+    
+    <select id="getAllOutComposition" resultType="java.util.Map">
+    	select * from hq_composition_rule
+    </select>
+
+
+    <select id="findGoodsMidByPage" resultType="cn.bevol.internal.entity.model.Goods">
+        SELECT mid FROM hq_goods
+        <if test="wheres != null">
+            WHERE 1=1 and mid is not null and mid !="" and deleted =0 and hidden =0
+        </if>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+    <select id="selectTotal" resultType="java.lang.Integer">
+        SELECT count(*) FROM hq_goods  WHERE 1=1 and mid is not null and mid !="" and deleted =0 and hidden =0
+    </select>
+    
+    <update id="updatePcategory">
+    	UPDATE hq_goods_search s,hq_goods_category c SET s.p_category=c.parent_id WHERE s.category=c.id
+    </update>
+    
+    <select id="getAllGoodsCategory" resultType="java.util.Map">
+        SELECT id,parent_id,name from hq_goods_category where hidden=0 and deleted=0
+    </select>
+
+    <insert id="addGoodsBaseInfo" parameterType="cn.bevol.internal.entity.dto.GoodsDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into hq_goods (
+        <trim suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="alias != null">alias,</if>
+            <if test="alias2 != null">alias_2,</if>
+            <if test="category != null">category,</if>
+            <if test="categoryStr != null">categoryStr,</if>
+            <if test="image != null">image,</if>
+            <if test="company != null">company,</if>
+            <if test="address != null">address,</if>
+            <if test="approval != null">approval,</if>
+            <if test="approvalDate != null">approval_date,</if>
+            <if test="actualCompany != null">actual_company,</if>
+            <if test="actualCompanyAddress != null">actual_company_address,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="chinaCompany != null">china_company,</if>
+            <if test="chinaAddress != null">china_address,</if>
+            <if test="country != null">country,</if>
+            <if test="hiddenSkin != null">hidden_skin,</if>
+            <if test="cps != null">cps,</if>
+            <if test="cpsType != null">cps_type,</if>
+            <if test="recordDate != null">record_date,</if>
+            <if test="recordNum != null">record_num,</if>
+            <if test="license != null">license,</if>
+            <if test="skills != null">skills,</if>
+            <if test="content != null">content,</if>
+            <if test="price != null">price,</if>
+            <if test="priceUnit != null">price_unit,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="flag != null">flag,</if>
+            <if test="crdate != null">crdate,</if>
+            <if test="tstamp != null">tstamp,</if>
+            <if test="state != null">state,</if>
+            <if test="remark != null">remark,</if>
+            <if test="gcsort != null">gcsort,</if>
+            <if test="brandId != null">brand_id,</if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            <if test="title != null">#{title,jdbcType=VARCHAR},</if>
+            <if test="alias != null">#{alias,jdbcType=VARCHAR},</if>
+            <if test="alias2 != null">#{alias2,jdbcType=VARCHAR},</if>
+            <if test="category != null">#{category,jdbcType=INTEGER},</if>
+            <if test="categoryStr != null">#{categoryStr,jdbcType=VARCHAR},</if>
+            <if test="image != null">#{image,jdbcType=VARCHAR},</if>
+            <if test="company != null">#{company,jdbcType=VARCHAR},</if>
+            <if test="address != null">#{address,jdbcType=VARCHAR},</if>
+            <if test="approval != null">#{approval,jdbcType=VARCHAR},</if>
+            <if test="approvalDate != null">#{approvalDate,jdbcType=INTEGER},</if>
+            <if test="actualCompany != null">#{actualCompany,jdbcType=VARCHAR},</if>
+            <if test="actualCompanyAddress != null">#{actualCompanyAddress,jdbcType=VARCHAR},</if>
+            <if test="dataType != null">#{dataType,jdbcType=INTEGER},</if>
+            <if test="chinaCompany != null">#{chinaCompany,jdbcType=VARCHAR},</if>
+            <if test="chinaAddress != null">#{chinaAddress,jdbcType=VARCHAR},</if>
+            <if test="country != null">#{country,jdbcType=VARCHAR},</if>
+            <if test="hiddenSkin != null">#{hiddenSkin,jdbcType=INTEGER},</if>
+            <if test="cps != null">#{cps,jdbcType=LONGVARCHAR},</if>
+            <if test="cpsType != null">#{cpsType,jdbcType=VARCHAR},</if>
+            <if test="recordDate != null">#{recordDate,jdbcType=INTEGER},</if>
+            <if test="recordNum != null">#{recordNum,jdbcType=VARCHAR},</if>
+            <if test="license != null">#{license,jdbcType=VARCHAR},</if>
+            <if test="skills != null">#{skills,jdbcType=VARCHAR},</if>
+            <if test="content != null">#{content,jdbcType=VARCHAR},</if>
+            <if test="price != null">#{price,jdbcType=VARCHAR},</if>
+            <if test="priceUnit != null">#{priceUnit,jdbcType=VARCHAR},</if>
+            <if test="capacity != null">#{capacity,jdbcType=VARCHAR},</if>
+            <if test="flag != null">#{flag,jdbcType=INTEGER},</if>
+            <if test="crdate != null">#{crdate,jdbcType=INTEGER},</if>
+            <if test="tstamp != null">#{tstamp,jdbcType=INTEGER},</if>
+            <if test="state != null">#{state,jdbcType=INTEGER},</if>
+            <if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+            <if test="gcsort != null">#{gcsort,jdbcType=LONGVARCHAR},</if>
+            <if test="brandId != null">#{brandId,jdbcType=INTEGER},</if>
+        </trim>
+        )
+    </insert>
+
+    <sql id="goodsBaseFields">
+        <set>
+            <if test="top != null">top = #{top,jdbcType=INTEGER},</if>
+            <if test="hot != null">hot = #{hot,jdbcType=INTEGER},</if>
+            <if test="hidden != null">hidden = #{hidden,jdbcType=INTEGER},</if>
+            <if test="deleted != null">deleted = #{deleted,jdbcType=INTEGER},</if>
+            <if test="title != null">title = #{title,jdbcType=VARCHAR},</if>
+            <if test="alias != null">alias = #{alias,jdbcType=VARCHAR},</if>
+            <if test="alias2 != null">alias_2 = #{alias2,jdbcType=VARCHAR},</if>
+            <if test="category != null">category = #{category,jdbcType=INTEGER},</if>
+            <if test="image != null">image = #{image,jdbcType=VARCHAR},</if>
+            <if test="company != null">company = #{company,jdbcType=VARCHAR},</if>
+            <if test="address != null">address = #{address,jdbcType=VARCHAR},</if>
+            <if test="approval != null">approval = #{approval,jdbcType=VARCHAR},</if>
+            <if test="approvalDate != null">approval_date = #{approvalDate,jdbcType=INTEGER},</if>
+            <if test="actualCompany != null">actual_company = #{actualCompany,jdbcType=VARCHAR},</if>
+            <if test="actualCompanyAddress != null">actual_company_address = #{actualCompanyAddress,jdbcType=VARCHAR},</if>
+            <if test="dataType != null">data_type = #{dataType,jdbcType=INTEGER},</if>
+            <if test="chinaCompany != null">china_company = #{chinaCompany,jdbcType=VARCHAR},</if>
+            <if test="chinaAddress != null">china_address = #{chinaAddress,jdbcType=VARCHAR},</if>
+            <if test="country != null">country = #{country,jdbcType=VARCHAR},</if>
+            <if test="hiddenSkin != null">hidden_skin = #{hiddenSkin,jdbcType=INTEGER},</if>
+            <if test="cps != null">cps = #{cps,jdbcType=LONGVARCHAR},</if>
+            <if test="cpsType != null">cps_type = #{cpsType,jdbcType=VARCHAR},</if>
+            <if test="recordDate != null">record_date = #{recordDate,jdbcType=INTEGER},</if>
+            <if test="recordNum != null">record_num = #{recordNum,jdbcType=VARCHAR},</if>
+            <if test="license != null">license = #{license,jdbcType=VARCHAR},</if>
+            <if test="skills != null">skills = #{skills,jdbcType=VARCHAR},</if>
+            <if test="content != null">content = #{content,jdbcType=VARCHAR},</if>
+            <if test="price != null">price = #{price,jdbcType=VARCHAR},</if>
+            <if test="priceUnit != null">price_unit = #{priceUnit,jdbcType=VARCHAR},</if>
+            <if test="capacity != null">capacity = #{capacity,jdbcType=VARCHAR},</if>
+            <if test="tstamp != null">tstamp = #{tstamp,jdbcType=INTEGER},</if>
+            <if test="state != null">state = #{state,jdbcType=INTEGER},</if>
+            <if test="remark != null">remark = #{remark,jdbcType=VARCHAR},</if>
+        </set>
+    </sql>
+
+    <update id="saveGoodsBaseInfo" parameterType="cn.bevol.internal.entity.dto.GoodsDTO">
+        update hq_goods
+        <include refid="goodsBaseFields"/>
+        where id = #{id}
+    </update>
+
+    <update id="saveGoodsBaseList" parameterType="cn.bevol.internal.entity.dto.GoodsDTO">
+        update hq_goods
+        <include refid="goodsBaseFields"/>
+        where id in
+        <foreach collection="idsArr" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <update id="saveGoodsMid">
+        update hq_goods set mid=#{mid} where id = #{id}
+    </update>
+
+    <select id="getMidById" resultType="String">
+        select mid from hq_goods where id = #{id}
+    </select>
+
+    <select id="getMidListById" resultType="String">
+        select mid from hq_goods where id IN
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getPolyCategoryBygoodsIds" resultType="java.util.Map">
+        select * from hq_goods_poly_category where goods_id in(${goodsIds})
+    </select>
+    
+	<insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">
+		insert into composition_cal (id,name,total,goods_ids)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			 (#{item.id}, #{item.name},#{item.total},#{item.goods_ids})
+		</foreach>
+	</insert>
+
+    <select id="selectCategoryTotalById" resultType="int">
+        SELECT count(*) FROM hq_goods
+        WHERE image is not null and image != '' and `category`
+        in (
+        select category from hq_goods where id = #{id}
+        )
+        and hidden=0 and deleted =0
+    </select>
+
+    <select id="findOneCategoryById" resultMap="BaseResultMap">
+        SELECT * FROM hq_goods
+        WHERE image is not null and image != '' and id != #{id} and `category` in (
+        select category from hq_goods where id = #{id}
+        )
+        and hidden=0 and deleted =0 limit #{skip},1
+    </select>
+    <select id="getFindByTagId" resultMap="BaseResultMap">
+        SELECT g.* FROM hq_goods_search s
+        LEFT JOIN   hq_goods g ON s.goods_id = g.id
+        WHERE 1=1 and  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%' OR tag_ids=#{tagId} OR tag_ids LIKE '%${tagId},%'
+        LIMIT #{pagedBegin},#{pageSize}
+    </select>
+    <select id="selectTotalByTag" resultType="int">
+        SELECT count(*) FROM hq_goods_search
+        WHERE 1=1 AND  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%'  OR tag_ids LIKE '%${tagId},%'
+    </select>
+    <select id="getTopGoods" resultMap="BaseResultMap">
+        SELECT id,title,image,data_type,mid
+        FROM hq_goods
+        where hidden = 0 and deleted = 0
+        order by top desc,hit desc,  hot desc, sorting desc, id desc
+        limit 5
+    </select>
+    <select id="findGoodsHit" resultMap="goodsHit">
+        select mid,data_type from hq_goods
+        where hidden=0 AND deleted=0 AND  date_type = #{dateType}
+        limit #{pagedBegin},#{pageSize}
+    </select>
+ </mapper>

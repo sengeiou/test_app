@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    active: @mvn.bevol.profile@
+  jackson:
+    default-property-inclusion: non_null
+  redis:
+    defaults: 900
+    forever: 0
+    fiveM: 300
+    oneDay: 86400
+    thirtyM: 1800
+  session:
+    store-type: mongo
+    mongo:
+      collection-name: spring_session
+
+
+mybatis:
+  mapper-locations: cn/bevol/app/dao/xml/*Mapper.xml
+
+server:
+  session:
+    timeout: 7200
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="cn.bevol"/>
+
+    <import resource="classpath:spring/service-entity-config.xml"/>
+
+    <bean id="string_hmc" class="org.springframework.http.converter.StringHttpMessageConverter">
+        <constructor-arg value="UTF-8" index="0"/>
+        <!-- 避免出现乱码 -->
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean> 
+
+    <bean id="jackson_hmc" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <ref bean="string_hmc" />
+            <ref bean="jackson_hmc" />
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>
+
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="file://,http://local.bevol.cn,http://t.bevol.cn,http://manage.bevol.cn"
+                     allow-credentials="true" max-age="1800" allowed-methods="GET,POST"/>
+    </mvc:cors>
+
+    <bean id="redisHttpSessionConfiguration"  class="org.springframework.session.data.mongo.config.annotation.web.http.MongoHttpSessionConfiguration" >
+        <property name="maxInactiveIntervalInSeconds" value="7200" />
+        <property name="collectionName" value="spring_session"></property>
+    </bean>
+</beans>

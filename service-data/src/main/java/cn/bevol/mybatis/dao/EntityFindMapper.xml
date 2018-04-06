@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.mybatis.dao.EntityFindMapper" >
+	<resultMap id="BaseResultMap" type="cn.bevol.model.entity.EntityFind">
+	<id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="subhead" property="subhead" jdbcType="VARCHAR"/>
+        <result column="skin" property="skin" jdbcType="VARCHAR"/>
+        <result column="header_image" property="headerImage" jdbcType="VARCHAR"/>
+        <result column="tag" property="tag" jdbcType="VARCHAR"/>
+        <result column="pc_image" property="pcImage" jdbcType="VARCHAR"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+    </resultMap>
+ 	
+  	<!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->  
+	<select id="list"  resultType="EntityFind">
+		select  id,image,tag,skin,publish_time publishTime from hq_new_find where hidden=0
+		 <if test="type>0 ">  
+		   and type=#{type}
+		</if>
+		 order by id desc limit #{start},#{size}
+	</select>
+	<select id="count"  resultType="long">
+		select count(id) from hq_new_find	  where hidden=0
+		 <if test="type>0">  
+			and type=#{type}
+		</if>
+	</select>
+
+
+	<select id="findByUserId"  resultType="EntityFind">
+		select  id,title,image,tag,skin,publish_time publishTime from hq_new_find where hidden=0 and author_id=#{id}
+		order by id desc limit #{start},#{size}
+	</select>
+	<select id="countByUserId"  resultType="long">
+		select count(id) from hq_new_find	  where hidden=0 and author_id=#{id}
+	</select>
+   	
+   	<select id="industryList" resultMap="BaseResultMap"> 
+		SELECT id,title,image,header_image,subhead FROM hq_industry where  hidden_status=0  ORDER BY id DESC LIMIT #{start},#{size}
+	</select>
+	<select id="count2" resultType="long">
+		SELECT  count(id) FROM hq_industry where hidden_status=0;
+	</select>
+	
+	<select id="articleList" resultMap="BaseResultMap">
+		select id,title,subhead,image,header_image,pc_image from hq_new_find where id in(${ids})
+	</select>
+	
+	<select id="getConfigValue" resultType="String">
+		SELECT VALUE FROM hq_config AS c WHERE c.key=#{key}
+	</select>
+	
+	<update id="updateConfigValue">
+		update hq_config c set c.value=#{value} WHERE c.key=#{key}
+	</update>
+	
+	<insert id="addConfig">
+	    insert into hq_config(`key`,`value`) values(#{key},#{value})
+	</insert>
+	
+	<select id="getComemntTagsByCategory" resultType="Map">
+		select id,title,tabs from hq_new_tags where tab_id=#{tabId} and tag_pid>0;
+	</select>
+	
+</mapper>

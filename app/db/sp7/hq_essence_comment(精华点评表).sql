@@ -1,0 +1,22 @@
+CREATE TABLE `hq_essence_comment` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`user_id` int(11) NOT NULL,
+`nickname` varchar(255) NOT NULL,
+`headimgurl` varchar(255) NOT NULL,
+`user_descz` varchar(255) NOT NULL,
+`goods_id` int(11) NOT NULL,
+`goods_mid` varchar(255) NOT NULL,
+`goods_image` varchar(255) NOT NULL,
+`type` int(11) NOT NULL,
+`type_id` int(11) NOT NULL,
+`content` text NOT NULL,
+`like_num` int(11) NOT NULL,
+`is_essence` int(11) NOT NULL,
+`create_time` int(11) NOT NULL,
+`publish_time` int(11) NOT NULL,
+`hidden_status` int(11) NOT NULL,
+`goods_title` varchar(255) NOT NULL,
+`skin` varchar(255) NOT NULL,
+`skin_results` varchar(255) NOT NULL,
+PRIMARY KEY (`id`) 
+)ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='精华点评' |

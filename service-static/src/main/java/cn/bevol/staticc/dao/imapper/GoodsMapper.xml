@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bevol.staticc.dao.imapper.GoodsMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.staticc.model.entity.Goods">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="cps" property="cps" jdbcType="VARCHAR"/>
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="alias" property="alias" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="VARCHAR"/>
+        <result column="capacity" property="capacity" jdbcType="VARCHAR"/>
+        <result column="sell_capacity" property="sellCapacity" jdbcType="VARCHAR"/>
+        <result column="company_english" property="companyEnglish" jdbcType="VARCHAR"/>
+        <result column="alias" property="alias" jdbcType="VARCHAR"/>
+        <result column="company" property="company" jdbcType="VARCHAR"/>
+        <result column="approval" property="approval" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="country" property="country" jdbcType="VARCHAR"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+        <result column="deleted" property="deleted" jdbcType="INTEGER"/>
+        <result column="sell_price" property="sellPrice" jdbcType="INTEGER"/>
+        <result column="data_type" property="dataType" jdbcType="INTEGER"/>
+        <result column="approval_date" property="approvalDate" jdbcType="INTEGER"/>
+        <result column="cps_type" property="cpsType" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="goodsHit" type="cn.bevol.mybatis.model.GoodsHitItems">
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="data_type" property="dataType" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="goodsByNameItem" type="cn.bevol.model.items.GoodsByNameItems">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="cps" property="cps" jdbcType="VARCHAR"/>
+        <result column="alias" property="alias" jdbcType="VARCHAR"/>
+        <result column="brand" property="brand" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="getTopGoods" resultMap="BaseResultMap">
+        SELECT id,title,image,data_type,mid
+        FROM hq_goods
+        where hidden = 0 and deleted = 0
+        order by top desc,hit desc,  hot desc, sorting desc, id desc
+        limit 5
+    </select>
+
+    <select id="getGoodsByMids" resultMap="BaseResultMap">
+        SELECT id,cps,category,title,image,mid,remark,data_type,alias,price,capacity,sell_price
+        ,sell_capacity,approval_date,company_english,company,approval,country
+        FROM hq_goods WHERE  mid in
+        <foreach collection="array" item="mids"  open="(" separator="," close=")">
+            #{mids}
+        </foreach>
+    </select>
+
+    <select id="getGoodsByIds" resultMap="BaseResultMap">
+        SELECT id,cps,category,title,image,mid,remark,data_type,alias,price,capacity,sell_price
+        ,sell_capacity,approval_date,company_english,company,approval,country
+        FROM hq_goods WHERE  id in
+        <foreach collection="array" item="ids"  open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </select>
+    <select id="findByName" resultMap="goodsByNameItem">
+         SELECT id,cps,title,alias,price,brand
+        FROM hq_goods WHERE
+        (LOCATE(title, #{title,jdbcType=VARCHAR}) = 1 and title is not null and title != '')
+		OR
+		(LOCATE(alias,#{title,jdbcType=VARCHAR}) = 1 and alias is not null and alias != '')
+    </select>
+    <select id="findByPage" resultMap="BaseResultMap">
+        SELECT * FROM hq_goods
+        WHERE 1=1 and mid is not null and mid !="" and deleted =0 and hidden =0
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findMidByPage" resultMap="BaseResultMap">
+        SELECT mid FROM hq_goods
+        WHERE mid is not null and mid !="" and deleted =0 and hidden =0 order by id
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        SELECT count(*) FROM hq_goods  WHERE 1=1 and mid is not null and mid !="" and deleted =0 and hidden =0
+    </select>
+    <select id="getFindByTagId" resultMap="BaseResultMap">
+        SELECT g.* FROM hq_goods_search s
+        LEFT JOIN   hq_goods g ON s.goods_id = g.id
+        WHERE 1=1 and  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%' OR tag_ids=#{tagId} OR tag_ids LIKE '%${tagId},%'
+        LIMIT #{pagedBegin},#{pageSize}
+    </select>
+    <select id="selectTotalByTag" resultType="int">
+        SELECT count(*) FROM hq_goods_search
+        WHERE 1=1 AND  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%'  OR tag_ids LIKE '%${tagId},%'
+    </select>
+
+    <select id="selectCategoryTotalById" resultType="int">
+        SELECT count(*) FROM hq_goods
+        WHERE image is not null and image != '' and `category`
+         in (
+          select category from hq_goods where id = #{id}
+        )
+        and hidden=0 and deleted =0
+    </select>
+
+    <select id="findOneCategoryById" resultType="cn.bevol.staticc.model.entity.Goods">
+        SELECT * FROM hq_goods
+        WHERE image is not null and image != '' and id != #{id} and `category` in (
+          select category from hq_goods where id = #{id}
+        )
+        and hidden=0 and deleted =0 limit #{skip},1
+    </select>
+
+    <insert id="addGoodsBaseInfo" parameterType="cn.bevol.staticc.model.dto.GoodsDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into hq_goods (
+        <trim suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="alias != null">alias,</if>
+            <if test="alias2 != null">alias_2,</if>
+            <if test="category != null">category,</if>
+            <if test="image != null">image,</if>
+            <if test="company != null">company,</if>
+            <if test="address != null">address,</if>
+            <if test="approval != null">approval,</if>
+            <if test="approvalDate != null">approval_date,</if>
+            <if test="actualCompany != null">actual_company,</if>
+            <if test="actualCompanyAddress != null">actual_company_address,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="chinaCompany != null">china_company,</if>
+            <if test="chinaAddress != null">china_address,</if>
+            <if test="country != null">country,</if>
+            <if test="hiddenSkin != null">hidden_skin,</if>
+            <if test="cps != null">cps,</if>
+            <if test="cpsType != null">cps_type,</if>
+            <if test="recordDate != null">record_date,</if>
+            <if test="recordNum != null">record_num,</if>
+            <if test="license != null">license,</if>
+            <if test="skills != null">skills,</if>
+            <if test="content != null">content,</if>
+            <if test="price != null">price,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="flag != null">flag,</if>
+            <if test="crdate != null">crdate,</if>
+            <if test="tstamp != null">tstamp,</if>
+            <if test="state != null">state,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            <if test="title != null">#{title,jdbcType=VARCHAR},</if>
+            <if test="alias != null">#{alias,jdbcType=VARCHAR},</if>
+            <if test="alias2 != null">#{alias2,jdbcType=VARCHAR},</if>
+            <if test="category != null">#{category,jdbcType=INTEGER},</if>
+            <if test="image != null">#{image,jdbcType=VARCHAR},</if>
+            <if test="company != null">#{company,jdbcType=VARCHAR},</if>
+            <if test="address != null">#{address,jdbcType=VARCHAR},</if>
+            <if test="approval != null">#{approval,jdbcType=VARCHAR},</if>
+            <if test="approvalDate != null">#{approvalDate,jdbcType=INTEGER},</if>
+            <if test="actualCompany != null">#{actualCompany,jdbcType=VARCHAR},</if>
+            <if test="actualCompanyAddress != null">#{actualCompanyAddress,jdbcType=VARCHAR},</if>
+            <if test="dataType != null">#{dataType,jdbcType=INTEGER},</if>
+            <if test="chinaCompany != null">#{chinaCompany,jdbcType=VARCHAR},</if>
+            <if test="chinaAddress != null">#{chinaAddress,jdbcType=VARCHAR},</if>
+            <if test="country != null">#{country,jdbcType=VARCHAR},</if>
+            <if test="hiddenSkin != null">#{hiddenSkin,jdbcType=INTEGER},</if>
+            <if test="cps != null">#{cps,jdbcType=LONGVARCHAR},</if>
+            <if test="cpsType != null">#{cpsType,jdbcType=VARCHAR},</if>
+            <if test="recordDate != null">#{recordDate,jdbcType=INTEGER},</if>
+            <if test="recordNum != null">#{recordNum,jdbcType=VARCHAR},</if>
+            <if test="license != null">#{license,jdbcType=VARCHAR},</if>
+            <if test="skills != null">#{skills,jdbcType=VARCHAR},</if>
+            <if test="content != null">#{content,jdbcType=VARCHAR},</if>
+            <if test="price != null">#{price,jdbcType=VARCHAR},</if>
+            <if test="capacity != null">#{capacity,jdbcType=VARCHAR},</if>
+            <if test="flag != null">#{flag,jdbcType=INTEGER},</if>
+            <if test="crdate != null">#{crdate,jdbcType=INTEGER},</if>
+            <if test="tstamp != null">#{tstamp,jdbcType=INTEGER},</if>
+            <if test="state != null">#{state,jdbcType=INTEGER},</if>
+            <if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+        </trim>
+        )
+    </insert>
+
+    <sql id="goodsBaseFields">
+        <set>
+            <if test="top != null">top = #{top,jdbcType=INTEGER},</if>
+            <if test="hot != null">hot = #{hot,jdbcType=INTEGER},</if>
+            <if test="hidden != null">hidden = #{hidden,jdbcType=INTEGER},</if>
+            <if test="deleted != null">deleted = #{deleted,jdbcType=INTEGER},</if>
+            <if test="title != null">title = #{title,jdbcType=VARCHAR},</if>
+            <if test="alias != null">alias = #{alias,jdbcType=VARCHAR},</if>
+            <if test="alias2 != null">alias_2 = #{alias2,jdbcType=VARCHAR},</if>
+            <if test="category != null">category = #{category,jdbcType=INTEGER},</if>
+            <if test="image != null">image = #{image,jdbcType=VARCHAR},</if>
+            <if test="company != null">company = #{company,jdbcType=VARCHAR},</if>
+            <if test="address != null">address = #{address,jdbcType=VARCHAR},</if>
+            <if test="approval != null">approval = #{approval,jdbcType=VARCHAR},</if>
+            <if test="approvalDate != null">approval_date = #{approvalDate,jdbcType=INTEGER},</if>
+            <if test="actualCompany != null">actual_company = #{actualCompany,jdbcType=VARCHAR},</if>
+            <if test="actualCompanyAddress != null">actual_company_address = #{actualCompanyAddress,jdbcType=VARCHAR},</if>
+            <if test="dataType != null">data_type = #{dataType,jdbcType=INTEGER},</if>
+            <if test="chinaCompany != null">china_company = #{chinaCompany,jdbcType=VARCHAR},</if>
+            <if test="chinaAddress != null">china_address = #{chinaAddress,jdbcType=VARCHAR},</if>
+            <if test="country != null">country = #{country,jdbcType=VARCHAR},</if>
+            <if test="hiddenSkin != null">hidden_skin = #{hiddenSkin,jdbcType=INTEGER},</if>
+            <if test="cps != null">cps = #{cps,jdbcType=LONGVARCHAR},</if>
+            <if test="cpsType != null">cps_type = #{cpsType,jdbcType=VARCHAR},</if>
+            <if test="recordDate != null">record_date = #{recordDate,jdbcType=INTEGER},</if>
+            <if test="recordNum != null">record_num = #{recordNum,jdbcType=VARCHAR},</if>
+            <if test="license != null">license = #{license,jdbcType=VARCHAR},</if>
+            <if test="skills != null">skills = #{skills,jdbcType=VARCHAR},</if>
+            <if test="content != null">content = #{content,jdbcType=VARCHAR},</if>
+            <if test="price != null">price = #{price,jdbcType=VARCHAR},</if>
+            <if test="capacity != null">capacity = #{capacity,jdbcType=VARCHAR},</if>
+            <if test="tstamp != null">tstamp = #{tstamp,jdbcType=INTEGER},</if>
+            <if test="state != null">state = #{state,jdbcType=INTEGER},</if>
+            <if test="remark != null">remark = #{remark,jdbcType=VARCHAR},</if>
+        </set>
+    </sql>
+
+    <update id="saveGoodsBaseInfo" parameterType="cn.bevol.staticc.model.dto.GoodsDTO">
+        update hq_goods
+        <include refid="goodsBaseFields"/>
+        where id = #{id}
+    </update>
+
+    <update id="saveGoodsBaseList" parameterType="cn.bevol.staticc.model.dto.GoodsDTO">
+        update hq_goods
+        <include refid="goodsBaseFields"/>
+        where id in
+        <foreach collection="idsArr" item="id" open="(" separator="," close=")">
+          #{id}
+        </foreach>
+    </update>
+    <update id="saveGoodsMid">
+        update hq_goods set mid=#{mid} where id = #{id}
+    </update>
+
+    <select id="getMidById" resultType="String">
+        select mid from hq_goods where id = #{id}
+    </select>
+
+    <select id="getMidListById" resultType="String">
+        select mid from hq_goods where id IN
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="findGoodsHit" resultMap="goodsHit">
+        select mid,data_type from hq_goods
+         where hidden=0 AND deleted=0 AND  date_type = #{dateType}
+          limit #{pagedBegin},#{pageSize}
+    </select>
+
+</mapper>

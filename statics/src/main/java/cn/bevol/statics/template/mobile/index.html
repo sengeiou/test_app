@@ -1,0 +1,222 @@
+<#include "/header_with_download.html" />
+<script type="text/javascript" src="${js}/arttmpl.js"></script>
+<script type="text/javascript" src="${js}/index2_20170713.js"></script>
+<link rel="stylesheet" type="text/css" href="${css}/index2.css"/>
+
+<!--搜索框-->
+<header class="mui-bar mui-bar-nav" id="head_box">
+    <div class="mui-input-row">
+        <input type="search" placeholder="搜索${product_total}种化妆品的安全和功效" id="searchval" class="mui-input-clear">
+        <span class="mui-icon search-icon" style=""><img src="${img}/wx/images/search_icon.png"></span>
+    </div>
+</header>
+
+<div class="mui-content">
+    <!--热门搜索-->
+    <div class="home-hot-search">
+        <div class="hot-search-box">
+            <ul id="hot-search">
+                <li>热门搜索:</li>
+                <#list hot_keywords as hot_keyword>
+                    <li hot-search="">${hot_keyword}</li>
+                </#list>
+                <div class="clear"></div>
+            </ul>
+        </div>
+    </div>
+
+    <!--banner-->
+    <div class="home-banner">
+        <div id="slider" class="mui-slider" >
+
+            <div class="mui-slider-group mui-slider-loop">
+                <#--  freemarker注释
+                <div class="mui-slider-item mui-slider-item-duplicate">
+                    <#if banner[banner?size - 1].adId?? && banner[banner?size - 1].param.type?eval == 10>
+                        <#assign href = banner[banner?size - 1].redirectUrl />
+                    <#else/>
+                        <#assign href = banner[banner?size - 1].page.h5[banner[banner?size - 1].param.type] />
+                    </#if>
+                    <a banner-btn href="${href}" data-type="${banner[banner?size - 1].param.type}" data-id="${banner[banner?size - 1].param.id}" <#if banner[banner?size - 1].adId??>data-ad="${banner[banner?size - 1].adId}" </#if>>
+                        <img src="${banner[banner?size - 1].image}@90p">
+                    </a>
+                </div>
+            -->
+                <#assign i = 1 />
+                <#list banner as item>
+                    <#if i = (banner?size-1)>
+                        <div class="mui-slider-item">
+                            <#if item.adId?? && item.param.type?eval == 10>
+                                <#assign href = item.redirectUrl />
+                                <#else/>
+                                <#assign href = item.href />
+                            </#if>
+                            <#if item.adId??>
+                                <div class="ad_bg">AD</div>
+                            </#if>
+                            <a banner-btn href="${href}" data-type="${item.param.type}" data-id="${item.param.id}" <#if item.adId??>data-ad="${item.adId}" </#if>>
+                            <img src="${item.image}@90p">
+                            </a>
+                        </div>
+                    </#if>
+                    <#assign i=i+1 />
+                </#list>
+                <#list banner as item>
+                    <div class="mui-slider-item">
+                        <#if item.adId?? && item.param.type?eval == 10>
+                            <#assign href = item.redirectUrl />
+                        <#else/>
+                            <#assign href = item.href />
+                        </#if>
+                        <#if item.adId??>
+                            <div class="ad_bg">AD</div>
+                        </#if>
+                        <a banner-btn href="${href}" data-type="${item.param.type}" data-id="${item.param.id}" <#if item.adId??>data-ad="${item.adId}" </#if>>
+                            <img src="${item.image}@90p">
+                        </a>
+                    </div>
+                </#list>
+                <#assign j = 1 />
+                <#list banner as item>
+                    <#if j = 1 >
+                        <div class="mui-slider-item">
+                            <#if item.adId?? && item.param.type?eval == 10>
+                                <#assign href = item.redirectUrl />
+                                <#else/>
+                                <#assign href = item.href />
+                            </#if>
+                            <#if item.adId??>
+                                <div class="ad_bg">AD</div>
+                            </#if>
+                            <a banner-btn href="${href}" data-type="${item.param.type}" data-id="${item.param.id}" <#if item.adId??>data-ad="${item.adId}" </#if>>
+                            <img src="${item.image}@90p">
+                            </a>
+                        </div>
+                    </#if>
+                    <#assign j=j+1 />
+                </#list>
+            <#--　freemarker注释
+                <div class="mui-slider-item mui-slider-item-duplicate">
+                    <#if banner[0].adId?? && banner[0].param.type?eval == 10>
+                        <#assign href = banner[0].redirectUrl />
+                    <#else/>
+                        <#assign href = banner[0].page.h5[banner[0].param.type] />
+                    </#if>
+                    <a banner-btn href="${href}" data-type="${banner[0].param.type}" data-id="${banner[0].param.id}" <#if banner[0].adId??>data-ad="${banner[0].adId}" </#if>>
+                        <img src="${banner[banner?size - 1].image}@90p">
+                    </a>
+                </div>
+        -->
+            </div>
+            <div class="mui-slider-indicator">
+                <#list banner as item>
+                    <div class="mui-indicator"></div>
+                </#list>
+            </div>
+
+        </div>
+    </div>
+    <!--美修原创、热门话题入口-->
+    <div class="line"></div>
+    <div id="hottopic">
+        <div class="daren-original mx-original">
+            <img src="${img}/wx/images/daren.png" alt="" width="28" height="28"/>
+            <div>
+                <p>美修原创</p>
+                <p>更多干货不可错过</p>
+            </div>
+        </div>
+        <div style="height: 32.5px;width: 1px;border-left: 1px solid #CCCCCC;"></div>
+        <div class="daren-original mx-topic">
+            <img src="${img}/wx/images/hottopic.png" alt=""  width="28" height="28"/>
+            <div>
+                <p>热门话题</p>
+                <p>美修热门心得合集</p>
+            </div>
+        </div>
+    </div>
+    <!--精选点评-->
+    <div class="line"></div>
+    <div class="selected-reviews">
+        <div class="hotlist_box_title">
+            <ul class="mui-table-view border-bottom">
+                <li class="border-bottom-li">
+                    <a class="hotlist_box_text" a-href href="_www/goods/selectedlist.html">
+                        <p>
+                            精选点评
+                            <!--<img src="${img}/wx/images/moreicon2x.png" alt="" />-->
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="selected-reviews-main" id="jingxuandianpin-html">
+            <#list essenceComment as item>
+                <div class="selected_comments" data-id="${item.goodsId}" data-mid="${item.goodsMid}" <#if item.adId??>data-ad="${item.adId}"</#if> >
+                <#if item.adId??>
+                    <div class="ad_bg">AD</div>
+                </#if>
+                <div class="goods-info-main">
+                    <div class="goods-img-box mui-col-xs-5">
+                        <#if item.goodsImage?? && item.goodsImage!=''>
+                            <img src="${img}/Goods/source/${item.goodsImage}@70p" onerror="javascript:this.src='${img}/wx/images/default.png';" />
+                        <#else/>
+                            <img src="${img}/wx/images/default.png" />
+                        </#if>
+                    </div>
+                    <div class="goods-title-box mui-col-xs-7">
+                        <p class="p01">${item.goodsTitle}</p>
+                        <p class="p02">${item.content}</p>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <hr>
+                <div class="selected_comments_user">
+                    <#if item.type?eval = 1>
+                        <div class="v-icon"><img src="${img}/wx/images/vicon.png" class="img_z" /></div>
+                    </#if>
+                    <div class="user-headurl">
+                        <#if item.headimgurl?? && item.headimgurl != ''>
+                            <img src="${item.headimgurl}" onerror="javascript:this.src='${img}/wx/images/morenyixiu.png';" />
+                            <#else/>
+                            <img src="${img}/wx/images/morenyixiu.png" />
+                        </#if>
+                    </div>
+                    <div class="user-title-name">
+                        <#if item.type?eval == 1>
+                            <p class="user-title">${item.nickname}</p>
+                            <p class="user-title-tips">
+                               ${item.userDescz}
+                            </p>
+                            <div class="clear"></div>
+                            <#elseif item.type?eval == 2 && item.skinResults?? />
+                            <p class="user-title">${item.nickname}</p>
+                            <p class="user-title-tips">
+                            <ul>
+                            <#list item.skinDesc as skin>
+                                <li>${skin}</li>
+                            </#list>
+                            </ul>
+                            </p>
+                            <#else/>
+                            <p class="user-title-center">${item.nickname}</p>
+                        </#if>
+                    </div>
+                    <div class="comment-num">
+                        <#if item.essenceCommentNum??>
+                            ${item.essenceCommentNum}
+                            <#else/>
+                            0
+                        </#if>
+                        篇精华点评
+                    </div>
+                </div>
+                </div>
+                <div class="line"></div>
+            </#list>
+
+        </div>
+    </div>
+</div>
+<#include "/footer.html" />

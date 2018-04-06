@@ -1,0 +1,171 @@
+<#include "/header.html" />
+<link href="${css!'https://static.bevol.cn/pc/css'}/my_20170522.css" rel="stylesheet">
+<script src="${js!'https://static.bevol.cn/pc/js'}/my_20170522.js" type="text/javascript"></script>
+<script src="https://static.bevol.cn/pc/js/jquery.page.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://static.bevol.cn/pc/js/arttmpl.js"></script>
+<!--面包屑导航-->
+<div class="crumbs_nav">
+    <h1 class="crumbs_nav_text"><a href="/">首页</a> / 我的</h1>
+</div>
+
+<!--产品内容-->
+<div class="main-cosmetics-class">
+    <div class="qa-class-right main-padding-4">
+        <!--<h5>我上传的图片</h5>-->
+        <ul id="tab-nav">
+            <!--<a target="_self" href="/my/index.html"><li used="0">正在审核</li></a>-->
+            <!--<a target="_self" href="/my/index.html?used=1"><li used="1">审核通过</li></a>-->
+            <!--<a target="_self" href="/my/index.html?used=2"><li used="2">审核失败</li></a>-->
+            <!--zp 2017.5.18-->
+            <a target="_self" href="#" ><li class="active" data-flag="1" >基础资料</li></a>
+            <a target="_self" href="#" ><li data-flag="2">我上传的图片</li></a>
+            <a target="_self" href="#" ><li data-flag="3">我上传的产品</li></a>
+            <!--end-->
+        </ul>
+    </div>
+    <div class="qa-info-left main-padding-4 flag1">
+
+    </div>
+
+    <div class="qa-info-left main-padding-4 flag2" style="display:none">
+        <!--审核图片-->
+        <ul class="check-box">
+            <li class="image_status active" data-used="0"><a href="javascript:void(0)">待审核</a></li>
+            <li>|</li>
+            <li class="image_status" data-used="1"><a href="javascript:void(0)">审核通过</a></li>
+            <li>|</li>
+            <li class="image_status" data-used="2"><a href="javascript:void(0)">审核不通过</a></li>
+        </ul>
+        <!--end-->
+        <div class="my-info-title padding15" style="border-radius: 0 0 10px 10px">
+        </div>
+        <div class="tcdPageCode text-right"></div>
+    </div>
+
+    <div class="qa-info-left main-padding-4 none flag3" style="display:none">
+        <!--审核产品-->
+        <ul class="check-box">
+            <li class="product_status active" data-used="0"><a href="javascript:void(0)">待审核</a></li>
+            <li>|</li>
+            <li class="product_status" data-used="1"><a href="javascript:void(0)">审核通过</a></li>
+            <li>|</li>
+            <li class="product_status" data-used="2"><a href="javascript:void(0)">审核不通过</a></li>
+        </ul>
+        <!--end-->
+        <div class="my-info-title padding15" style="border-radius: 0 0 10px 10px">
+        </div>
+        <div class="product_tcdPageCode text-right"></div>
+    </div>
+
+    <div class="clear"></div>
+    <div class="foot-page">
+        <script type="text/plain" id="user-info-tpl">
+            <!--基础资料-->
+            <div class="user-info">
+                <div><span>头像</span> <img src="<%=headimgurl%>" alt="photo"></div>
+                <div><span>用户名</span> <input type="text" value="<%=nickname%>" style="margin-left: 36px" disabled></div>
+                <div><span>性别</span>
+                <%if(sex == 1) {%>
+                <input type="text" value="男" disabled>
+                <%}else{%>
+                <input type="text" value="女" disabled>
+                <%}%>
+                </div>
+                <div><span>年龄</span> <input type="text" value="<%=age%>" disabled></div>
+                <div><span>地区</span> <input type="text" value="<%=province+city%>" disabled></div>
+                <div><span>tips:目前修改信息只能在APP中操作哦~</span></div>
+            </div>
+    </script>
+
+        <script type="text/plain" id="image-tpl">
+            <ul class="block page-content">
+            <%if(result.length==0){%>
+    暂无图片哦！
+    <%}%>
+    <%for(var i=0;i<result.length;i++) { var item=result[i];%>
+    <li>
+    <div class="my-info-title-img">
+    <img class="img_h" src="<%=imgpath+item.image%>@50p" alt="产品图片">
+    </div>
+    <%if(item.used==0) {%>
+    <div class="my-info-title-text my-text examine">
+    <p class="p1"><a href="/product/<%=item.mid%>.html"><%=item.title%></a></p>
+    <p class="p2">正在审核中</p>
+    </div>
+    <%}else if(item.used==1) {%>
+    <div class="my-info-title-text my-text adopt">
+    <p class="p1"><a href="/product/<%=item.mid%>.html"><%=item.title%></a></p>
+    <p class="p2">审核通过</p>
+    </div>
+    <%} else  if(item.used==2){%>
+    <div class="my-info-title-text my-text fail">
+    <p class="p1"><a href="/product/<%=item.mid%>.html"><%=item.title%></a></p>
+    <p class="p2">审核不通过</p>
+    <%if (item.notype==1) {%>
+    <p class="p3">背景不符合要求</p>
+    <%}%>
+    <%if (item.notype==2) {%>
+    <p class="p3">尺寸不符合要求</p>
+    <%}%>
+    <%if (item.notype==3) {%>
+    <p class="p3">其它</p>
+    <%}%>
+    <%if (item.nodesc) {%>
+    <p class="p3"><%=item.nodesc%></p>
+    <%}%>
+    </div>
+    <%}%>
+    <div class="clear"></div>
+    </li>
+    <%}%>
+            </ul>
+    </script>
+
+        <script type="text/plain" id="product-tpl">
+            <ul class="block page-content">
+            <%if(result.length==0){%>
+    暂无产品哦！
+    <%}%>
+    <%for(var i=0;i<result.length;i++) { var item=result[i];%>
+    <li>
+    <div class="my-info-title-img">
+    <img class="img_h" src="<%=imgpath+item.image%>@50p" alt="产品图片">
+    </div>
+    <%if(item.state==0) {%>
+    <div class="my-info-title-text my-text examine">
+    <p class="p1"><a href="javascript:void(0)"><%=item.name%></a></p>
+    <p class="p2">正在审核中</p>
+    </div>
+    <%}else if(item.state==1) {%>
+    <div class="my-info-title-text my-text adopt">
+    <p class="p1"><a href="/product/<%=item.goodsMid%>.html"><%=item.name%></a></p>
+    <p class="p2">审核通过</p>
+    </div>
+    <%} else  if(item.state==2){%>
+    <div class="my-info-title-text my-text fail">
+    <p class="p1"><a href="javascript:void(0)"><%=item.name%></a></p>
+    <p class="p2">审核不通过</p>
+    <%if (item.notype==1) {%>
+    <p class="p3">背景不符合要求</p>
+    <%}%>
+    <%if (item.notype==2) {%>
+    <p class="p3">尺寸不符合要求</p>
+    <%}%>
+    <%if (item.notype==3) {%>
+    <p class="p3">其它</p>
+    <%}%>
+    <%if (item.nodesc) {%>
+    <p class="p3"><%=item.nodesc%></p>
+    <%}%>
+    </div>
+    <%}%>
+    <div class="clear"></div>
+    </li>
+    <%}%>
+            </ul>
+        </script>
+
+    </div>
+</div>
+<#include "/footer.html" />
+

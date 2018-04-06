@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_base" default="compile.module.base">
+  <dirname property="module.base.basedir" file="${ant.file.module_base}"/>
+  
+  <property name="module.jdk.home.base" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.base" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.base" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.base" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
+  
+  <property name="base.output.dir" value="${module.base.basedir}/target/classes"/>
+  <property name="base.testoutput.dir" value="${module.base.basedir}/target/test-classes"/>
+  
+  <path id="base.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="base.module.production.classpath">
+    <path refid="library.maven:_org.springframework:spring-webmvc:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-aop:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-core:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-expression:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-web:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-context-support:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-context:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-jdbc:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-tx:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-beans:4.3.1.release.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.apache.commons:commons-lang3:3.4.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.5.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.4.1.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.2.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.9.classpath"/>
+    <path refid="library.maven:_com.google.guava:guava:14.0.1.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-core:2.5.3.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.5.3.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-databind:2.5.3.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.12.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.12.classpath"/>
+  </path>
+  
+  <path id="base.runtime.production.module.classpath">
+    <pathelement location="${base.output.dir}"/>
+    <path refid="library.maven:_org.springframework:spring-webmvc:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-aop:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-core:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-expression:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-web:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-context-support:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-context:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-jdbc:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-tx:4.3.1.release.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.apache.commons:commons-lang3:3.4.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.5.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.4.1.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.2.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.9.classpath"/>
+    <path refid="library.maven:_com.google.guava:guava:14.0.1.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-core:2.5.3.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.5.3.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-databind:2.5.3.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.12.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.12.classpath"/>
+  </path>
+  
+  <path id="base.module.classpath">
+    <pathelement location="${base.output.dir}"/>
+    <path refid="library.maven:_org.springframework:spring-webmvc:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-aop:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-core:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-expression:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-web:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-context-support:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-context:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-jdbc:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-tx:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-test:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-beans:4.3.1.release.classpath"/>
+    <path refid="library.maven:_junit:junit:4.11.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.apache.commons:commons-lang3:3.4.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.5.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.4.1.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.2.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.9.classpath"/>
+    <path refid="library.maven:_com.google.guava:guava:14.0.1.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-core:2.5.3.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.5.3.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-databind:2.5.3.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.12.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.12.classpath"/>
+  </path>
+  
+  <path id="base.runtime.module.classpath">
+    <pathelement location="${base.testoutput.dir}"/>
+    <pathelement location="${base.output.dir}"/>
+    <path refid="library.maven:_org.springframework:spring-webmvc:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-aop:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-core:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-expression:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-web:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-context-support:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-context:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-jdbc:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-tx:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-test:4.3.1.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-beans:4.3.1.release.classpath"/>
+    <path refid="library.maven:_junit:junit:4.11.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.apache.commons:commons-lang3:3.4.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.5.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.4.1.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.2.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.9.classpath"/>
+    <path refid="library.maven:_com.google.guava:guava:14.0.1.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-core:2.5.3.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.5.3.classpath"/>
+    <path refid="library.maven:_com.fasterxml.jackson.core:jackson-databind:2.5.3.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.12.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.12.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.base">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.base">
+    <patternset refid="excluded.from.module.base"/>
+  </patternset>
+  
+  <path id="base.module.sourcepath">
+    <dirset dir="${module.base.basedir}">
+      <include name="src/main/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.base" depends="compile.module.base.production,compile.module.base.tests" description="Compile module base"/>
+  
+  <target name="compile.module.base.production" depends="register.custom.compilers" description="Compile module base; production classes">
+    <mkdir dir="${base.output.dir}"/>
+    <javac2 destdir="${base.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.base}/javac">
+      <compilerarg line="${compiler.args.base}"/>
+      <bootclasspath refid="base.module.bootclasspath"/>
+      <classpath refid="base.module.production.classpath"/>
+      <src refid="base.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.base"/>
+    </javac2>
+    
+    <copy todir="${base.output.dir}">
+      <fileset dir="${module.base.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.base.tests" depends="register.custom.compilers,compile.module.base.production" description="compile module base; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.base" description="cleanup module">
+    <delete dir="${base.output.dir}"/>
+    <delete dir="${base.testoutput.dir}"/>
+  </target>
+</project>

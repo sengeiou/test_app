@@ -1,0 +1,55 @@
+<#include "/header.html" />
+<script type="text/javascript" src="${js}/lists2.js"></script>
+<link rel="stylesheet" type="text/css" href="${css}/lists2.css"/>
+<link rel="stylesheet" type="text/css" href="${css}/comment2.css"/>
+<div class="mui-content">
+    <div class="mui-scroll">
+        <!--文章详情-->
+        <div class="hotlist_main" id="lists-info-html">
+            <div class="hotlist_main_title">
+                <div class="hotlist_main_title_banner"><img src="${img}/Lists/${image}@80p" class="img_z"></div>
+                <div class="hotlist_main_title_info">${descp}</div>
+                <div class="likeNum">
+                    <span id="span01">收藏：${collectionNum}</span>
+                    <span id="span02">评论：${commentNum}</span>
+                    <span id="span03">查看：${hitNum}</span>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="hotlist_main_goods">
+                <!--产品介绍-->
+                <ul id="hotlist_main_goods">
+                    <#if goods?? && goods?size gt 0 >
+                        <#list goods as good>
+                            <li data-id="${good.id!}" data-mid="${good.mid!}" a-href>
+                                <div class="goods_box">
+                                    <div class="goods_box_img">
+                                        <#if good.image?? && good.image != "">
+                                            <img src="${img}/Goods/source/${good.image}@70p" class="img_h aImg" id="aImg">
+                                            <#else/>
+                                            <img src="${img}/wx/images2/default.png" class="img_h aImg" />
+                                        </#if>
+                                    </div>
+                                    <div class="goods_box_text">
+                                        <p class="p1">${good.title}</p>
+                                        <#if good.price?? && good.price!="" && 0 lt (good.price)?eval && good.capacity?? && good.capacity != "">
+                                            <p class="p2">参考价格：￥${good.price} / ${good.capacity}</p>
+                                        </#if>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="goods_box_info">${good.content!}</div>
+                                </div>
+                            </li>
+                        </#list>
+                    </#if>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="line"></div>
+
+        <#include "/comment.html" />
+    </div>
+</div>
+<#include "/footer.html" />
+

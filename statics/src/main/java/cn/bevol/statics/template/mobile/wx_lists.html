@@ -1,0 +1,37 @@
+<#include "/wx_share_header.html" />
+<link href="https://static.bevol.cn/wx/css/wx_lists.css" rel="stylesheet" />
+<div class="mui-content" id="container1" style="display:block;">
+    <div class="mui-scroll" class="html">
+        <div class="hotlist_main">
+            <div class="hotlist_main_title">
+                <div class="hotlist_main_title_banner"><img src="${img}/Lists/${image}" class="img_z"></div>
+                <div class="hotlist_main_title_info">${descp}</div>
+            </div>
+            <div class="hotlist_main_goods">
+                <ul>
+                    <#list goods as product>
+                        <li>
+                            <a href = "https://m.bevol.cn/product/${product.mid}.html" >
+                                <div class="goods_box">
+                                    <div class="goods_box_img">
+                                        <img src="${img}/Goods/source/${product.image}@50p" class="img_z aImg" id="aImg">
+                                    </div>
+                                    <div class="goods_box_text">
+                                        <p class="p1">${product.title}</p>
+                                        <#if product.price?? && product.capacity??>
+                                            <p class="p2">￥${product.price}/${product.capacity}</p>
+                                        </#if>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="goods_box_info">${product.content}</div>
+                                </div>
+                            </a>
+                        </li>
+                    </#list>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<#include "/wx_share_footer.html" />

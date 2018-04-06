@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_null
+
+mybatis:
+  mapper-locations: cn/bevol/internal/dao/xml/*Mapper.xml

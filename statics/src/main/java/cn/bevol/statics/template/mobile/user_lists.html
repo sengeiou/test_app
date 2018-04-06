@@ -1,0 +1,109 @@
+<#include "/header.html" />
+<script type="text/javascript" src="${js}/user_lists2.js"></script>
+<link rel="stylesheet" type="text/css" href="${css}/user_lists2.css"/>
+<link rel="stylesheet" type="text/css" href="${css}/comment2.css"/>
+<div class="mui-content">
+    <!--下拉刷新容器-->
+    <div class="hotlist_main">
+        <div class="hotlist_main_title" id="detail_header">
+            <div class="hotlist_main_title_banner">
+                <div class="topic-banner-box">
+                    <img src="${result.imgSrc}" class="img_z"></div>
+            </div>
+            <div class="likeNum">
+				<span id="span01">
+                    <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                    ${hitNum}
+				</span>
+                <span id="span02">
+                    <img src="${img}/wx/images2/commNum_icon.png" class='img_zanzan'>
+                    ${commentTotal}
+				</span>
+                <div class="clear"></div>
+            </div>
+            <#if tags?? && tags?size gt 0>
+                <div class="biaoqian-box">
+                    <ul>
+                        <#list tags as tag>
+                            <li>${tag}</li>
+                        </#list>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </#if>
+        </div>
+        <ul id="dpuser" class="comment-answer-ul-box">
+            <li class="comment-answer-left">
+                <#if result.userBaseInfo.headimgurl?? && result.userBaseInfo.headimgurl != "">
+                    <img src="${result.userBaseInfo.headimgurl}" alt="" class="head-box-img-url" onerror="javascript:this.src='${img}/wx/images2/morenyixiu.png';" />
+                    <#else/>
+                    <img src="${img}/wx/images2/morenyixiu.png" alt="" class="head-box-img-url" />
+                </#if>
+            </li>
+            <li class="comment-answer-right">
+                <#if result.userBaseInfo.nickname?? && result.userBaseInfo.nickname != "">
+                    <div class="span01">${result.userBaseInfo.nickname}</div>
+                    <div class="head-skin">
+                        <#if skinDesc??>
+                            <#list skinDesc as skin>
+                                <span>${skin}</span>
+                            </#list>
+                        </#if>
+                    </div>
+                    <#else/>
+                    <div class="span02">${result.userBaseInfo.nickname}</div>
+                </#if>
+                <!--<div class="add-guanzhu">+ 关注</div>-->
+            </li>
+            <div class="clear"></div>
+        </ul>
+
+        <div id="comment-main" class="">
+            <#if result.userPartDetails?? && result.userPartDetails?size gt 0 >
+                <#list result.userPartDetails as detail>
+                    <#if detail.type = 2>
+                        <div class="comment-answer-ul-box-text">${detail.content!}</div>
+                        <#elseif detail.type = 1 />
+                        <div class="comment-main-goods">
+                            <ul class="mui-table-view">
+                                <li class="mui-table-view-cell mui-media">
+                                    <a class="goods-btn" data-id="${detail.id!}" data-mid="${detail.mid!}">
+                                        <#if detail.imgSrc?? && detail.imgSrc != "" && detail.imgSrc != "null">
+                                            <img class="mui-media-object mui-pull-left" src="${detail.imgSrc}">
+                                            <#else/>
+                                            <img class="mui-media-object mui-pull-left" src="${img}/wx/images2/default.png">
+                                        </#if>
+                                        <div class="mui-media-body">
+                                            <p class='mui-ellipsis'>
+                                                <#if detail.title?? && detail.title != "null">
+                                                    ${detail.title!}
+                                                </#if>
+                                            </p>
+                                            <p class='mui-ellipsis-en'>
+                                                <#if detail.alias?? && detail.alias != "null">
+                                                    ${detail.alias!}
+                                                </#if>
+                                            </p>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <#elseif detail.type = 3 />
+                        <#if detail.imgSrc?? && detail.imgSrc != "" && detail.imgSrc != "null">
+                            <div class="comment-answer-ul-box-text1">
+                                <img class="mui-media-object update-image-cls" src="${detail.imgSrc}">
+                            </div>
+                        </#if>
+                    </#if>
+                </#list>
+            </#if>
+            <div class="comment-time-box">发布于：${createStampText}</div>
+        </div>
+    </div>
+</div>
+<div class="line"></div>
+
+<#include "/comment.html" />
+</div>
+<#include "/footer.html" />

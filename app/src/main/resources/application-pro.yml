@@ -1,0 +1,71 @@
+spring:
+  datasource:
+    username: bevol_online
+    password: BevolOn123
+    url: jdbc:mysql://rdsoxdt0k8m3y0561p1fi.mysql.rds.aliyuncs.com:3306/bevol_online
+    type: com.alibaba.druid.pool.DruidDataSource
+    #初始化连接大小
+    initialSize: 8
+    #连接池最小空闲
+    minIdle: 5
+    #连接池最大使用连接数量
+    maxActive: 12
+    #获取连接最大等待时间
+    maxWait: 18000
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat
+  data:
+    mongodb:
+      uri: mongodb://bevol_test:bevol_test@dds-bp1c48607e161ac41.mongodb.rds.aliyuncs.com:3717,dds-bp1c48607e161ac42.mongodb.rds.aliyuncs.com:3717/bevol_test?replicaSet=mgset-1110679
+      database: bevol_test
+#        repositories: true
+  redis:
+    host: r-bp1bdba63bfff3f4.redis.rds.aliyuncs.com
+    port: 6379
+    pool:
+      max-active: 100
+      max-idle: 30
+      max-wait: 30
+    password: rediSb20180109
+
+aliyun:
+  oss:
+    pcAccessId: qMV4CnsV6ZoTOuNF
+    pcAccessKey: BvoWgRnwmCXbog5wjIUh00zrR7S41k
+    pcBucket: www-bevol
+    pcEndpoint: http://oss-cn-hangzhou.aliyuncs.com
+    mAccessId: Kjswdndtlw7PJ4Tj
+    mAccessKey: 78f7rXOd0JrycxSEgfU2h5H79uWP2P
+    mBucket: m-bevol
+    mEndpoint: http://oss-cn-hangzhou.aliyuncs.com
+    sourceAccessId: IUf7jmalKxSol1ow
+    sourceAccessKey: 8z3isV4pOc1VgqDOfMKlW0ct6isO7l
+    sourceBucket: bevol-source
+    sourceEndpoint: http://oss-cn-hangzhou.aliyuncs.com
+
+client:
+  taobao:
+    serverUrl: http://gw.api.taobao.com/router/rest
+    appKey: 23325511
+    appSecret: ee7fcc150be92eac0a10395590f96ae9
+  cloudsearch:
+    clientId: lMZwMNFhiR5o1TfO
+    clientSecret: Qt6ZzNDaoGtwwcHWWGAn1bhdP3qvFC
+    host: http://opensearch-cn-hangzhou.aliyuncs.com
+    opts:
+      version: v2
+      connect_timeout: 10000
+    openSearchIndexPre:
+    hotEntity: 0
+server:
+  port: 80
+

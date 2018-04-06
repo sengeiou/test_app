@@ -1,0 +1,105 @@
+<#include "/wx_share_header.html" />
+<link href="https://static.bevol.cn/app/css/app_trial.css" rel="stylesheet" />
+<script type="text/javascript" src="${js}/wx_trial.js"></script>
+<div class="main_page">
+
+    <#if data.image?? && data.image != ''>
+        <div class="page_head">
+            <img src="${data.imgSrc}@80p" class="img_z">
+        </div>
+    </#if>
+
+    <div class="author article_module page_info_main01">
+        <!--去掉作者卡片中的a-herf以兼容旧版本，由APP端控制-->
+        <a id="author_href" user_id="248660">
+            <div class="cp_img">
+                <div class="Vicon"><img src="${img}/Vicon.png"></div>
+                <img style="border-radius: 40px !important;width:40px;height: 40px;" class="img_z" src="https://img1.bevol.cn/UploadFile/head/bed206f7-f790-49ce-91b1-a4321ebcb55b.jpg">
+            </div>        <div class="cp_info" style="margin:0;padding:0">
+            <div class="cp_name">修修酱</div>
+            <div class="cp_jiage">美丽修行首席卖萌官。</div>        </div>
+            <div class="clear"></div>
+        </a>
+
+    </div>
+
+    <#if tagsList??>
+        <div class="biaoqian-box">
+            <ul>
+                <#list tagsList as tags>
+                    <li>${tags.tag}</li>
+                </#list>
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </#if>
+
+    <div class="article_module page_info_main trial_module">
+        <ul>
+            <li>
+                <span class="label">需要修行值：</span><span id="score">${data.doyenScore}</span>
+            </li>
+            <li>
+                <span class="label">申请人数：</span><span id="num">${data.applyNum!'0'}</span>
+            </li>
+            <li>
+                <span class="label">提供数：</span><span id="supply">${data.goodsNum}</span>
+            </li>
+            <li>
+                <span class="label">结束日期：</span><span id="stateText">${endDate}</span>
+            </li>
+        </ul>
+    </div>
+
+
+    <#list descp as des>
+        <#if des.type?eval = 1>
+            <div class="card article_module page_info_main">
+                <h2 class="card_title">${des.title!}</h2>
+                <h4 class="card_sub_title">${des.sub_title!}</h4>
+                <p class="card_content">
+                    ${des.text!}
+                </p>
+            </div>
+        </#if>
+
+        <#if des.type?eval = 2>
+            <div class="img article_module page_info_main" style="position: relative;">
+                <p style="text-align: center;">
+                    <img class="news_image" src="https://img0.bevol.cn/trial/${data.id?c}/${des.image}@90p">
+                </p>
+            </div>
+        </#if>
+
+        <#if des.type?eval = 5>
+            <div class="good article_module page_info_main">
+                <a a-href="" href="/product/${des.good_mid}.html" >
+                    <div class="cp_img">
+                        <#if des.good_image?? && des.good_image !=''>
+                            <img style="width:100px" class="img_z" src="${des.good_image}@80p">
+                            <#else/>
+                            <img style="width:100px" class="img_z" src="${img}/wx/images2/default.png@80p">
+                        </#if>
+                    </div>
+                    <div class="cp_info">
+                        <div class="cp_name">${des.title}</div>
+                        <div class="cp_jiage">
+                            <#if des.good_price?? &&
+                                    des.good_capacity?? &&
+                                    des.good_price != '' &&
+                                    des.good_capacity != ''>
+                                参考价: ￥${des.good_price}/${des.good_capacity}
+                            </#if>
+                        </div>
+                    </div>
+                    <div class="cp_jt">
+                        <img src="${img}/free/images/4xT2PJrfAm_1468466102378.png" class="img_z">
+                    </div>
+                    <div class="clear"></div>
+                </a>
+
+            </div>
+        </#if>
+    </#list>
+</div>
+<#include "/wx_share_footer.html" />

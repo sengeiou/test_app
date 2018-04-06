@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+ 
+ <mapper namespace="cn.bevol.mybatis.dao.GoodsBrandMapper">
+ 	<resultMap id="BaseResultMap" type="cn.bevol.model.entity.GoodsBrand">
+ 	<id column="id" property="id" jdbcType="INTEGER"/>
+ 	<result column="title" property="title" jdbcType="VARCHAR"/>
+ 	<result column="display_name" property="displayName" jdbcType="VARCHAR"/>
+ 	<result column="cn_name" property="cnName" jdbcType="VARCHAR"/>
+ 	<result column="en_name" property="enName" jdbcType="VARCHAR"/>
+ 	<result column="alias_name" property="aliasName" jdbcType="VARCHAR"/>
+ 	<result column="capital" property="capital" jdbcType="VARCHAR"/>
+ 	<result column="sort_index" property="sortIndex" jdbcType="INTEGER"/>
+ 	<result column="image_path" property="imgPath" jdbcType="VARCHAR"/>
+ 	<result column="description" property="description" jdbcType="VARCHAR"/>
+ 	<result column="country" property="country" jdbcType="VARCHAR"/>
+ 	<result column="tags" property="tags" jdbcType="VARCHAR"/>
+ 	<result column="display_status" property="displayStatus" jdbcType="INTEGER"/>
+ 	<result column="delete_status" property="deleteStatus" jdbcType="INTEGER"/>
+ 	<result column="publish_status" property="publishStatus" jdbcType="VARCHAR"/>
+ 	<result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+ 	<result column="create_time" property="createTime" jdbcType="INTEGER"/>
+ 	<result column="other" property="other" jdbcType="VARCHAR"/>
+ 	<result column="brand_id" property="brandId" jdbcType="INTEGER"/>
+ 	<result column="allow_comment" property="allowComment" jdbcType="INTEGER"/>
+ 	<result column="hidden_skin" property="hiddenSkin" jdbcType="INTEGER"/>
+ 	<result column="alias_search" property="aliasSearch" jdbcType="VARCHAR"/>
+ 	</resultMap>
+ 	
+
+ 	<select id="findBrandById" resultMap="BaseResultMap">
+ 		select * from hq_brands where brand_id =#{brand}
+ 	</select>
+ </mapper>

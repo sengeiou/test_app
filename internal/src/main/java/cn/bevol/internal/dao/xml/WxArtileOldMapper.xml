@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bevol.internal.dao.mapper.WxArtileOldMapper">
+<resultMap id="BaseResultMap" type="cn.bevol.internal.entity.model.WxArtile">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="key_id" property="keyId" jdbcType="INTEGER"/>
+        <id column="sort" property="sort" jdbcType="INTEGER"/>
+        <id column="hidden" property="hidden" jdbcType="INTEGER"/>
+        <id column="title" property="title" jdbcType="VARCHAR"/>
+        <id column="description" property="description" jdbcType="VARCHAR"/>
+        <id column="url" property="url" jdbcType="VARCHAR"/>
+		<id column="type" property="type" jdbcType="INTEGER"/>
+        <id column="picurl" property="picUrl" jdbcType="VARCHAR"/>
+		<id column="media_id" property="mediaId" jdbcType="VARCHAR"/>
+    </resultMap>
+	<select id="findByContent"  resultMap="BaseResultMap">
+		SELECT a.*,k.type FROM hq_wxkeywordartile a
+		LEFT JOIN hq_wxkeyword k ON a.key_id = k.id
+		WHERE hidden=0
+		<if test="title != null">
+			AND k.title = #{title}
+	      </if>
+	  </select>
+</mapper>

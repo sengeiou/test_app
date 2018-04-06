@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_null
+  session:
+    store-type: none
+
+client:
+  cloudsearch:
+    clientId: lMZwMNFhiR5o1TfO
+    clientSecret: Qt6ZzNDaoGtwwcHWWGAn1bhdP3qvFC
+    host: http://opensearch-cn-hangzhou.aliyuncs.com
+    opts:
+      version: v2
+      connect_timeout: 10000
+
+server:
+  port: 8080
+  context-path: /search.bevol.cn

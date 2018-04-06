@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ --> 
+<mapper namespace="cn.bevol.statics.dao.mapper.BackUserOldMapper">
+	<resultMap id="BaseMap" type="cn.bevol.statics.entity.model.UserBlackList">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+        <result column="start_time" property="startTime" jdbcType="INTEGER"/>
+        <result column="end_time" property="endTime" jdbcType="INTEGER"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <select id="getUserBlackList" resultMap="BaseMap">
+		SELECT id,user_id FROM hq_user_black_list WHERE  (UNIX_TIMESTAMP() &lt; end_time AND UNIX_TIMESTAMP() &gt; start_time) OR state=1
+    </select>
+    
+    <insert id="insertUserBlackList" >
+    	insert into hq_user_black_list(user_id,create_time,end_time,start_time,state,description) values(#{userId},#{createTime},#{endTime},#{startTime},#{state},#{description})
+    </insert>
+    
+    <insert id="insertUserBlackList2" >
+    	insert into hq_user_black_list(user_id,create_time,state,description) values(#{userId},#{createTime},#{state},#{description})
+    </insert>
+    
+    <delete id="deleteBlackList" >
+    	delete from hq_user_black_list where user_id=#{userId}
+    </delete>
+    
+    <update id="updateBlackList"  parameterType="cn.bevol.statics.entity.model.UserBlackList">
+		 UPDATE hq_user_black_list
+			 <trim prefix="set" suffixOverrides=",">
+			  <if test="state!=null">state=#{state},</if>
+			  <if test="startTime!=null">start_time=#{startTime},</if>
+			  <if test="endTime!=null">end_time=#{endTime},</if>
+			  <if test="description!=null">description=#{description},</if>
+			  <if test="updateTime!=null">update_time=#{updateTime} </if>
+			 </trim>
+		  WHERE user_id=#{userId} and (UNIX_TIMESTAMP() &lt; end_time or state=1)
+	</update>  
+	
+	
+	<select id="getUserBlackById" resultMap="BaseMap">
+		SELECT id,user_id FROM hq_user_black_list WHERE user_id=#{userId} and ((UNIX_TIMESTAMP() &lt; end_time AND UNIX_TIMESTAMP() &gt; start_time) OR state=1)
+    </select>
+	
+</mapper>

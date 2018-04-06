@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.mybatis.dao.UploadGoodsMapper">
+    <!-- pc用户上传图片 -->
+    <resultMap id="BaseResultMap" type="cn.bevol.mybatis.dto.UploadGoods">
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
+        <result column="notype" property="notype" jdbcType="INTEGER"/>
+        <result column="nodesc" property="nodesc" jdbcType="VARCHAR"/>
+        <result column="mid" property="mid" jdbcType="INTEGER"/>
+        <result column="userid" property="userId" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <!-- pc用户上传产品 -->
+    <resultMap id="submitGoodsMap" type="cn.bevol.mybatis.dto.UserSubmitGoods">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="goods_mid" property="goodsMid" jdbcType="VARCHAR"/>
+        <result column="img_id" property="images" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="composition_ids" property="compositionIds" jdbcType="VARCHAR"/>
+    	<result column="composition_names" property="compositionNames" jdbcType="VARCHAR"/>
+    	<result column="composition_no" property="compositionNo" jdbcType="VARCHAR"/>
+    	<result column="add_date" property="addDate" jdbcType="INTEGER"/>
+    	<result column="update_date" property="updateDate" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+    
+    <select id="getGoodsTitle" parameterType="Long" resultMap="BaseResultMap">
+		SELECT mid,title FROM hq_goods WHERE id=#{goodsId,jdbcType=INTEGER}
+	</select>
+
+	<select id="getNicknameById"  parameterType="Long" resultType="String">
+		SELECT nickname,id FROM hq_user WHERE id=#{userId,jdbcType=INTEGER}
+	</select>
+	
+	<!--提交上传文件审核  -->
+    <insert id="uploadGoods" useGeneratedKeys="true" keyProperty="id"  parameterType="cn.bevol.mybatis.dto.UploadGoods">
+        INSERT INTO `hq_upload_temp` (
+        tstamp,
+        crdate,
+        title,
+        image,
+        nickname,
+        goods_id,
+        mid,
+        userid,
+        notype
+        )
+        VALUES (#{createStamp,jdbcType=INTEGER},#{updateStamp,jdbcType=INTEGER},#{title,jdbcType=VARCHAR},#{image,jdbcType=VARCHAR},#{nickname,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}
+        ,#{mid,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},0)
+    </insert>
+    
+     <select id="count" resultType="long">
+		select count(id) from hq_upload_temp where used=#{used,jdbcType=INTEGER}  and userid=#{userId,jdbcType=INTEGER}
+	</select>
+	
+	<select id="submitGoodsCount" resultType="long">
+		select count(id) from hq_goods_user_submit where state=#{state,jdbcType=INTEGER}  and user_id=#{userId,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 我的 上传的图片 -->
+    <select id="myUploadGoods"  resultMap="BaseResultMap">
+		SELECT id,goods_id,userid,mid,title,image,used,notype,nodesc FROM hq_upload_temp WHERE used=#{used,jdbcType=INTEGER}
+		 and userid=#{userId,jdbcType=INTEGER} ORDER BY id DESC limit #{start},#{size}
+	</select>
+	
+	<!-- 我的 上传的产品 -->
+    <select id="mySubmitGoods"  resultMap="submitGoodsMap">
+		SELECT * FROM hq_goods_user_submit WHERE state=#{state,jdbcType=INTEGER}
+		 and user_id=#{userId,jdbcType=INTEGER} ORDER BY id DESC limit #{start},#{size}
+	</select>
+</mapper>

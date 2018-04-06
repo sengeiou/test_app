@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.bevol</groupId>
+    <artifactId>aggregator-internal</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>../base</module>
+        <module>../util</module>
+        <module>../redis-cli</module>
+        <module>../cache</module>
+        <module>../api-internal</module>
+        <module>../service-data-synchronized</module>
+        <module>../service-entity</module>
+        <module>../service-internal</module>
+        <module>../service-cron</module>
+        <module>../internal-client</module>
+        <module>../conf-client</module>
+        <module>../service-util</module>
+        <module>../service-data</module>
+        <module>../static-client</module>
+        <module>../advertisement-client</module>
+        <module>../service-log</module>
+    </modules>
+
+</project>

@@ -1,0 +1,187 @@
+<#include "/header.html" />
+<script type="text/javascript" src="${js}/arttmpl.js"></script>
+<script type="text/javascript" src="${js}/m_find2_20170714.js"></script>
+<script type="text/javascript" src="${js}/swiper.js"></script>
+<link rel="stylesheet" type="text/css" href="${css}/swiper.css"/>
+<link rel="stylesheet" type="text/css" href="${css}/m_find2.css"/>
+<div class="mui-content">
+    <div>
+        <div class="mui-scroll" class="html">
+            <!--2.0新加的-->
+            <div class="hotlist_main" id="topic-main-html">
+                <div class="find_title_text">
+                    <p>美修原创</p>
+                    <p>文章:<span id="find_title_num">${xxsButton.total}</span></p>
+                </div>
+                <div class="hotlist_main_title">
+                    <div class="hotlist_main_title_banner"><img src="${xxsButton.image}@70p" class="img_z" onerror="javascript:this.src='${img}/wx/images2/default.png';"></div>
+                    <div class="hotlist_main_title_info">
+                        ${xxsButton.param.content}
+                    </div>
+                </div>
+                <div class="btn-more">
+                    <img src="${img}/wx/images2/mx-arrow-down.png" class="img_more">
+                </div>
+            </div>
+
+            <div class="topic-box">
+                <div id="segmentedControl" class="mui-segmented-control">
+                    <a class="mui-control-item mui-active" href="#item2" data-sort="new">
+                        <span>最新</span>
+                    </a>
+                    <a class="mui-control-item" href="#item1" data-sort="hot">
+                        <span>最热</span>
+                    </a>
+                </div>
+                <#-- freemarker注释
+                <div class="sort-box" id="findtype-html">
+                    <div id="container" class="swiper-container swiper-container-horizontal">
+                        <div class="swiper-wrapper" id="swiper-wrapper">
+                            <#list findType as type>
+                                <div class='swiper-slide swiper-container-horizontal' listtype data-id="${type.id}" data-title="${type.title}">
+                                    <p>${type.title}</p>
+                                </div>
+                            </#list>
+                            <div class='clear'></div>
+                        </div>
+                    </div>
+                </div>
+            -->
+                <div id="item1" class="mui-control-content">
+                    <ul id="item1_append">
+                        <#list findDataArr1 as findData>
+                            <li data-id="${findData.id}" class="topiclist-btn">
+                                <div class='special_main_text01'>
+                                    <div class='special_main_text_img'>
+                                        <#if findData.header_image?? && findData.header_image!=''>
+                                            <img src="${img}/article/${findData.id}/${findData.header_image}@50p">
+                                            <#else/>
+                                            <img src="${img}/wx/images2/default.png" class='img_z'>
+                                        </#if>
+                                    </div>
+                                    <div class='special_main_title01'>
+                                        ${findData.title}
+                                    </div>
+                                    <div class='special_main_text_num'>
+                                        <#if findData.baseInfo??>
+                                            <div class='special_main_see'>
+                                                <div class="talent-header">
+                                                    <#if findData.baseInfo.headimgurl?? && findData.baseInfo.headimgurl!=''>
+                                                        <img src="${findData.baseInfo.headimgurl}" class='img_header' onerror="javascript:this.src='${img}/wx/images2/morenyixiu.png';">
+                                                        <#else/>
+                                                        <img src="${img}/wx/images2/morenyixiu.png" class='img_header'>
+                                                    </#if>
+                                                </div>
+                                                <div class="talent-title">${findData.baseInfo.nickname}</div>
+                                                <div class="Vicon">
+                                                    <img src="${img}/wx/images2/Vicon.png" class=''>
+                                                </div>
+                                            </div>
+                                            <div class='special_main_comment'>
+                                                <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                                                <#if findData.hitNum?? && findData.hitNum!=''>
+                                                    <#if findData.hitNum?eval gt 1000>
+                                                        ${(findData.hitNum?eval/1000)?floor}k+
+                                                        <#else/>
+                                                        ${findData.hitNum}
+                                                    </#if>
+                                                    <#else/>
+                                                    0
+                                                </#if>
+                                            </div>
+                                            <#else/>
+                                            <div class='special_main_comment' style="float: right;">
+                                                <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                                                <#if findData.hitNum?? && findData.hitNum!=''>
+                                                    <#if findData.hitNum?eval gt 1000>
+                                                        ${(findData.hitNum?eval/1000)?floor}k+
+                                                        <#else/>
+                                                        ${findData.hitNum}
+                                                    </#if>
+                                                    <#else/>
+                                                    0
+                                                </#if>
+                                            </div>
+                                        </#if>
+                                        <div class='clear'></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </#list>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <div id="item2" class="mui-control-content mui-active">
+                    <ul id="item2_append">
+                        <#list findDataArr2 as findData>
+                            <li data-id="${findData.id}" class="topiclist-btn">
+                                <div class='special_main_text01'>
+                                    <div class='special_main_text_img'>
+                                        <#if findData.header_image?? && findData.header_image!=''>
+                                            <img src="${img}/article/${findData.id}/${findData.header_image}@50p">
+                                            <#else/>
+                                            <img src="${img}/wx/images2/default.png" class='img_z'>
+                                        </#if>
+                                    </div>
+                                    <div class='special_main_title01'>
+                                        ${findData.title}
+                                    </div>
+                                    <div class='special_main_text_num'>
+                                        <#if findData.baseInfo??>
+                                            <div class='special_main_see'>
+                                                <div class="talent-header">
+                                                    <#if findData.baseInfo.headimgurl?? && findData.baseInfo.headimgurl!=''>
+                                                        <img src="${findData.baseInfo.headimgurl}" class='img_header' onerror="javascript:this.src='${img}/wx/images2/morenyixiu.png';">
+                                                        <#else/>
+                                                        <img src="${img}/wx/images2/morenyixiu.png" class='img_header'>
+                                                    </#if>
+                                                </div>
+                                                <div class="talent-title">${findData.baseInfo.nickname}</div>
+                                                <div class="Vicon">
+                                                    <img src="${img}/wx/images2/Vicon.png" class=''>
+                                                </div>
+                                            </div>
+                                            <div class='special_main_comment'>
+                                                <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                                                <#if findData.hitNum??  && findData.hitNum!=''>
+                                                    <#if findData.hitNum?eval gt 1000>
+                                                        ${(findData.hitNum?eval/1000)?floor}k+
+                                                        <#else/>
+                                                        ${findData.hitNum}
+                                                    </#if>
+                                                    <#else/>
+                                                    0
+                                                </#if>
+                                            </div>
+                                            <#else/>
+                                            <div class='special_main_comment' style="float: right;">
+                                                <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                                                <#if findData.hitNum??  && findData.hitNum!=''>
+                                                    <#if findData.hitNum?eval gt 1000>
+                                                        ${(findData.hitNum?eval/1000)?floor}k+
+                                                        <#else/>
+                                                        ${findData.hitNum}
+                                                    </#if>
+                                                    <#else/>
+                                                    0
+                                                </#if>
+                                            </div>
+                                        </#if>
+                                        <div class='clear'></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </#list>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            <div class="find-btn">
+                下载美丽修行，查看更多原创文章
+            </div>
+            </div>
+            <!--<div class="line"></div>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>

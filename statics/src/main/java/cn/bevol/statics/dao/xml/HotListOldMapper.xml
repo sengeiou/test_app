@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.statics.dao.mapper.HotListOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.dto.HotList">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="tag" property="tag" jdbcType="VARCHAR"/>
+        <result column="tag_ids" property="tagIds" jdbcType="VARCHAR"/>
+        <result column="descp" property="descp" jdbcType="VARCHAR"/>
+        <result column="goods_ids" property="goodsIds" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+        <result column="hide_status" property="hideStatus" jdbcType="INTEGER"/>
+        <result column="delete_status" property="deleteStatus" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="start_time" property="startTime" jdbcType="INTEGER"/>
+        <result column="last_time" property="lastTime" jdbcType="INTEGER"/>
+        <result column="mini_image" property="miniImage" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+
+    <select id="list" resultType="cn.bevol.statics.entity.dto.HotList">
+		SELECT id,title,image,type	FROM(
+select id,title,image,sort,type from hq_lists where type=0 and hide_status=0 and delete_status=0 ORDER BY sort DESC)
+oo ORDER BY sort,id DESC limit #{start},#{size}
+	</select>
+	
+ 	
+	<select id="partList" resultMap="BaseResultMap">
+		SELECT id,title,image,type,start_time,last_time, publish_time,mini_image	FROM(
+		select id,title,image,sort,type,start_time,last_time,publish_time,mini_image from hq_lists where hide_status=0 and delete_status=0 and publish_time &lt; UNIX_TIMESTAMP(ADDDATE(DATE(SYSDATE()),1)) ORDER BY publish_time DESC,sort)
+		oo ORDER BY sort,publish_time DESC,id DESC limit #{start},#{size}
+	</select>
+	
+    <select id="count" resultType="long">
+		select count(id) from hq_lists	  where hide_status=0 and delete_status=0  
+	</select>
+
+    <select id="findDetail" resultType="cn.bevol.statics.entity.dto.HotList">
+        select id,title,image,tag,descp,goods_ids as goodsIds,sort,type,start_time as startTime,last_time as lastTime from hq_lists where hide_status=0 and delete_status=0 AND id=#{id,jdbcType=INTEGER}
+    </select>
+    
+    <select id="findDetail2" resultType="cn.bevol.statics.entity.dto.HotList">
+        select id,title,image,tag,descp,goods_ids as goodsIds,sort,type,start_time as startTime,last_time as lastTime from hq_lists where id=#{id,jdbcType=INTEGER} and hide_status=0 and delete_status=0
+    </select>
+
+    <select id="findDetailGoods" resultType="cn.bevol.statics.entity.dto.HotListGood">
+   SELECT oo.id,oo.title,oo.price,oo.capacity,xx.content,oo.image,oo.mid FROM hq_goods oo LEFT JOIN hq_lists_content xx ON oo.id=xx.goods_id 
+  WHERE oo.id IN (${goods_ids}) AND xx.lists_id=#{id,jdbcType=INTEGER} ORDER BY xx.id
+</select>
+
+    <insert id="insertHotList" parameterType="cn.bevol.statics.entity.dto.HotList">
+        INSERT INTO `hq_lists` (
+        title,
+        descp,
+        goods_ids
+        )
+        VALUES (#{title,jdbcType=VARCHAR},#{descp,jdbcType=VARCHAR},#{goodsIds,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteHotList">
+        delete from hq_lists where title= #{title,jdbcType=VARCHAR} AND descp=#{descp,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertHotListGood" parameterType="cn.bevol.statics.entity.dto.HotListGood">
+        INSERT INTO `hq_lists_content` (
+        goods_id,
+        content
+        )
+        VALUES (#{id,jdbcType=INTEGER},#{content,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteHotListGood">
+        delete from hq_lists_content where content= #{content,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateGoodById">
+        UPDATE hq_lists_content SET lists_id=#{id,jdbcType=INTEGER} WHERE goods_id=#{goodsIds,jdbcType=VARCHAR} AND content=#{content,jdbcType=VARCHAR}
+    </update>
+
+    <select id="findListId" resultType="INTEGER">
+        SELECT id FROM hq_lists WHERE title=#{title,jdbcType=VARCHAR} AND descp=#{descp,jdbcType=VARCHAR};
+    </select>
+	
+	<select id="allList" resultMap="BaseResultMap">
+		SELECT id,tag,tag_ids from hq_lists where delete_status=0
+	</select>
+	
+	<update id="updateListsIds">
+        UPDATE hq_lists SET tag_ids=#{ids} WHERE id=#{id} and delete_status=0
+    </update>
+    
+    <update id="updateListsIds2">
+        UPDATE hq_lists SET tag_ids=#{tagIds},tag=#{tags} WHERE id=#{id} and delete_status=0
+    </update>
+</mapper>

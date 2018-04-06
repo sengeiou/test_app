@@ -1,0 +1,229 @@
+<#include "/wx_share_header.html" />
+<link href="https://static.bevol.cn/wx/css/wx_product.css" rel="stylesheet" />
+<div class="mui-content">
+
+</div>
+<script type="text/plain" product-tpl id="product-tpl">
+<!--下拉刷新容器-->
+			<div class="mui-scroll" class="html">
+				<!--2.0新加的-->
+				<div id="html-content">
+					<ul class="mui-table-view" id="chanpin_info">
+						<li class="mui-table-view-cell1 mui-media" style="text-align: center;">
+
+							<img class="img_wh" src="${img}/Goods/source/<%=goods.image%>">
+
+							<div class="mui-media-body" style="margin-bottom:20px">
+								<p class="p01">
+									<%=goods.title%>
+								</p>
+								<p class="p02">
+									<%if(goods.title != goods.alias){%>
+										<%if(goods.alias != ""){%>
+                    						<%=goods.alias%>
+										<%}%>
+									<%}%>
+								</p>
+
+								<p class="p03">
+									<%if(goods.remark != goods.title){%>
+										<%if(goods.remark != ""){%>
+                   							<%=goods.remark%>
+										<%}%>
+									<%}%>
+								</p>
+
+								<p class="p04">
+								<%if(goods.price && goods.capacity){%>
+										参考价格：￥<%=goods.price%>/<%=goods.capacity%>
+									<%}%>
+								</p>
+
+							</div>
+							<div style="clear: both;"></div>
+						</li>
+					</ul>
+
+					<ul id="list" class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell mui-collapse " id="beian-after ">
+							<a style="font-size: 16px; "
+							class="mui-navigate-right "
+							  href="# " id="data_type ">
+							备案信息：<span style="color:#AC69FE; ">
+							<%if(goods.dataType==1) {%>
+	  	    					<%='进口备案'%>
+	  	    				<%} else if(goods.dataType==2) {%>
+								<%='国产备案'%>
+	  	    				<%} else if(goods.dataType==3) {%>
+								<%='国产备案'%>
+	  	    				<%} else if(goods.dataType==4) {%>
+								<%='产品标签'%>
+	  	    				<%}%>
+							</span>
+						</a>
+						<%if(goods.dataType !=4) {%>
+							<ul class="mui-table-view mui-table-view-chevron ">
+								<%if(goods.approval !=''){%>
+									<li class="mui-table-view-cell ">
+										<p style="font-size: 15px;color: #4d4d4d; ">备案文号：<span id="approval "><%=goods.approval%></span></p>
+									</li>
+								<%}%>
+								<%if(goods.country !=''){%>
+									<li class="mui-table-view-cell ">
+										<p style="font-size: 15px;color: #4d4d4d; ">生产国/地区：<span id="country "><%=goods.country%></span></p>
+									</li>
+								<%}%>
+								<%if(goods.company !=''){%>
+									<li class="mui-table-view-cell ">
+										<p style="font-size: 15px;color: #4d4d4d; ">生产企业：<span id="company "><%=goods.company%></span></p>
+									</li>
+								<%}%>
+								<%if(goods.companyEnglish !=''){%>
+									<li class="mui-table-view-cell ">
+										<p style="font-size: 15px;color: #4d4d4d; ">生产企业(英文)：<span id="company_english "><%=goods.companyEnglish%></span></p>
+									</li>
+								<%}%>
+							</ul>
+						<%}%>
+						</li>
+					</ul>
+
+					<div class="goods-anquanshuo">安全说</div>
+
+					<%for(var i=0 ; i< safety.length ; i++) { %>
+						<%if(safety[i].unit == 1){%>
+							<%var xinji = safety[i].num%>
+						<%}%>
+					<%}%>
+					<ul class='mui-table-view mui-grid-view' id='safeul'>
+						<li class="mui-table-view-cell mui-media mui-col-xs-12">
+							安全星级：
+							<%for(var i=1;i<=xinji;i++) {%>
+								<img src="${img}/xiaostar.png" style="width: 14px;height: 14px; "/>
+							<%}%>
+							<% if((""+xinji).indexOf(".")>0) {%>
+								<img src="${img}/xiaobanstar.png" style="width: 14px;height: 14px; "/>
+								<%for(var i=1;i<=4-((""+xinji).substring(0,1));i++) {%>
+									<img src="${img}/xiaostargree.png" style="width: 14px;height: 14px; " />
+								<%}%>
+							<%}else{%>
+								<%for(var i=1;i<=5-((""+xinji).substring(0,1));i++) {%>
+									<img src="${img}/xiaostargree.png" style="width: 14px;height: 14px; " />
+								<%}%>
+							<%}%>
+						</li>
+						<%for(var i=0 ; i< safety.length ; i++) { %>
+							<%if(safety[i].unit != 1){%>
+								<li class="mui-table-view-cell mui-media mui-col-xs-6 aqs"><p><%=safety[i].name%>：<%=safety[i].num%>种</p></li>
+							<%}%>
+						<%}%>
+
+					</ul>
+                    <%if(effect.length>0){%>
+					<div class="goods-anquanshuo">功效说</div>
+					<ul class='mui-table-view mui-grid-view' id='effctul'>
+						<%for(var i=0 ; i< effect.length ; i++) { %>
+							<li class="mui-table-view-cell mui-media <%if(effect[i].id == -1){%>mui-col-xs-100<%}%> aqs">
+								<p class="list-p" data-id=''>
+									<%=effect[i].displayName%>：<%=effect[i].num%>种
+								</p>
+							</li>
+						<%}%>
+					</ul>
+					<%}%>
+					<div class="goods-anquanshuo">全成分表</div>
+					<ul class='mui-table-view mui-grid-view' id='effctul'>
+						<table class="table block" border="0" cellpadding="0" cellspacing="0">
+		                	<tr>
+			                    <th class="th1">成分名称</th>
+			                    <th class="th2">安全<br>风险</th>
+			                    <th class="th3">活性<br>成分</th>
+			                    <th class="th4">致痘<br>风险</th>
+			                    <th class="th5">使用<br>目的</th>
+			                </tr>
+			                <%var length =  composition.length > 3? 3:composition.length %>
+			                <%for(var i=0 ; i< length ; i++) { %>
+								<tr>
+		                        	<td class="td1"><%=composition[i].title%></td>
+	                        		<td class="td2"><span class="safe-color"><%=composition[i].safety%></span></td>
+	                        		<td class="td3">
+	                        			<%if(composition[i].active == 1) {%>
+	                        				<img style="width: 16px;" src="${img}/wx/images2/good.png" alt="活性成分"></td>
+	                        			<%}%>
+	                        		</td>
+	                        		<td class="td4">
+	                        			<%if(composition[i].acneRisk == 1) {%>
+	                        				<img style="width: 16px;margin-bottom: 0px; margin: 0 auto;" src="${img}/wx/images2/face.png" alt="致痘风险"></td>
+	                        			<%}%>
+	                        		<td class="td5"><%=composition[i].curUsedName%></td>
+		                    	</tr>
+							<%}%>
+			            </table>
+			            <div class="chakan-more">
+			            	<div class="chakan-text">
+			            		<a style="color:#FFF" onclick='javascript:window.location.href="http://istatic.bevol.cn/static/download/init/12"' >
+			            			查看全部成分
+			            		</a>
+			            	</div>
+			            </div>
+					</ul>
+				<%if(goods.doyen){%>
+					<div id="pinglun " style="margin-top: 10px;border-radius: 6px;background-color:#fff;font-size:16px;color:#494B60;border-bottom:1px solid #F2F0F5;padding:10px 10px;margin-left:10px;margin-right:10px;border-top-left-radius:6px;border-top-right-radius:6px; ">
+						修行说
+					</div>
+					<ul class='mui-table-view mui-grid-view' style='padding-right:0;margin-bottom:0;padding-bottom:0;padding-left:10px;padding-right:10px;background-color:#f5f2fa;'>
+						<li class="mui-table-view-cell mui-media mui-col-xs-2 " style="height:auto;padding:0 0;background-color:#fff;padding-bottom:6px;border-bottom: 1px solid #F2F0F5; ">
+							<a href="javascript:void(0) " style="display:block;width:40px;height:40px;border-radius:20px;margin:0 auto;margin-top:7px; ">
+
+									<img src="<%=goods.doyen.headimgurl%>" alt=" " style="width:40px;height:40px;border-radius:20px;display:inline-block;transition: linear 0.25s;line-height:0; " />
+
+							</a>
+							<div class="Vicon " style="position: absolute;width: 14px;bottom: 0px;right: 6px; "><img src="${img}/Vicon.png" class="img_z "></div>
+						</li>
+						<li class='mui-table-view-cell mui-media mui-col-xs-10' style="font-size:12px;text-align: left;vertical-align: top;padding-top:7px;padding-bottom:3px;border-bottom:1px solid #F2F0F5;border-radius: 0px;background-color:#fff; ">
+							<span style="color:#4d4d4d;font-size: 15px; "><%=goods.doyen.nickname%></span>
+							<span style="background-color:#ac69fe;color:#fff;padding:1px 2px;border-radius: 2px; ">友情特邀</span>
+							<div>
+								<%=goods.doyen.userDescz%>
+							</div>
+						</li>
+					</ul>
+					<p style='background-color:#fff;margin-bottom: 10px;margin-left:10px;margin-right:10px;border-bottom-left-radius:6px;border-bottom-right-radius: 6px;padding: 10px;font-size: 15px;color: #4d4d4d;'>
+						<%=goods.doyen.doyenComment%>
+					</p>
+				<%}%>
+
+				</div>
+			</div>
+</script>
+<script>
+    var id=$.getUrlField("id");
+    var url = "${api_url_https!'https://api.bevol.cn'}"+"/goods/info/"+id
+    $.ajax({
+        url:url,
+        type:'post',
+        data:{},
+        dataType:"json",
+        success:function(data) {
+            var comcont=template('product-tpl',data.result);
+            $('.mui-content').html(comcont);
+            //安全风险颜色显示
+            var safe_color = document.getElementsByClassName("safe-color");
+            for(var i=0; i< safe_color.length; i++){
+                var numLength = safe_color[i].innerText.length;
+                var num01 = safe_color[i].innerText;
+
+                if(numLength == 1 && num01 < 3 || numLength > 1 && num01.split("-")[1] <= 3){
+                    safe_color[i].style.background = "#5cb85c";
+                }else if(numLength == 1 && num01 < 7 || numLength > 1 && num01.split("-")[1] <= 7){
+                    safe_color[i].style.background = "#f0ad4e";
+                }else if(numLength == 1 && num01 >= 7 || numLength > 1 && num01.split("-")[1] > 7){
+                    safe_color[i].style.background = "#c13636";
+                }else{
+                    safe_color[i].style.background = "#fff";
+                }
+            }
+        }
+    });
+</script>
+<#include "/wx_share_footer.html" />

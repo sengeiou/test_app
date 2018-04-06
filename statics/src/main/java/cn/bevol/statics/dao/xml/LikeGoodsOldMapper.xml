@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.statics.dao.mapper.LikeGoodsOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.dto.LikeGoods">
+        <id column="id" property="entityId" jdbcType="INTEGER"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="num" property="num" jdbcType="INTEGER"/>
+        <result column="hot" property="hot" jdbcType="INTEGER"/>
+        <result column="data_type" property="data_type" jdbcType="INTEGER"/>
+        <result column="alias" property="alias" jdbcType="VARCHAR"/>
+        <result column="alias_2" property="alias_2" jdbcType="VARCHAR"/>
+        <result column="remark3" property="remark3" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="VARCHAR"/>
+        <result column="capacity" property="capacity" jdbcType="VARCHAR"/>
+        
+        <result column="comment_num" property="commentNum" jdbcType="INTEGER"/>
+        <result column="like_num" property="likeNum" jdbcType="INTEGER"/>
+        <result column="grade" property="grade" jdbcType="INTEGER"/>
+        <result column="safety_1_num" property="safety_1_num" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+    <insert id="insert" parameterType="cn.bevol.statics.entity.dto.LikeGoods">
+		insert into hq_like_goods_mong (entityid, skin,entityid_skin)
+		values (#{entityid,jdbcType=INTEGER}, #{skin,jdbcType=VARCHAR},
+		#{entityid_skin,jdbcType=VARCHAR})
+	</insert>
+
+    <delete id="deleteAll">
+		delete from hq_like_goods_mong
+	</delete>
+	
+<insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">
+	insert into hq_like_goods_mong (entityid, skin,entityid_skin,num)
+	values
+	<foreach collection="list" item="item" index="index" separator="," >
+		 (#{item.entityid}, #{item.skin},#{item.entityid_skin},#{item.num})
+	</foreach>
+</insert>
+    <select id="findGood" resultMap="BaseResultMap">
+		SELECT * FROM(
+		SELECT a1.id,a1.hot,a1.data_type,a1.alias,a1.alias_2,a1.remark3,a1.price,a1.capacity,a1.image,a1.mid,a1.title,a3.num,a4.`safety_1_num`,a4.`comment_num`,a4.`grade`,a4.`like_num` FROM  hq_goods a1  
+		JOIN hq_goods_category a2 ON a1.category=a2.id
+		 JOIN hq_like_goods_mong a3 ON a1.id=a3.entityid 
+		 JOIN hq_goods_search a4 ON a1.id=a4.`goods_id`
+		 WHERE 1=1 AND a1.hidden=0 AND a1.deleted=0 AND a1.hidden_skin=0
+		 AND a2.id=#{id,jdbcType=INTEGER} AND a3.skin=#{skin,jdbcType=VARCHAR}
+		  GROUP BY a3.entityid_skin ORDER BY a3.num DESC LIMIT 1,25) oo
+		ORDER BY oo.hot DESC,oo.num DESC; 
+	</select>
+
+    <!--<insert id="addLikeGoodsBatch" useGeneratedKeys="true" parameterType="java.util.List">-->
+        <!--<selectKey resultType="long" keyProperty="id" order="AFTER">-->
+            <!--SELECT-->
+            <!--LAST_INSERT_ID()-->
+        <!--</selectKey>-->
+            <!--insert into hq_like_goods_mong (entityid, skin,entityid_skin)-->
+            <!--values-->
+            <!--<foreach collection="list" item="item" index="index" separator="," >-->
+                <!--(#{item.entityId},#{item.skin},#{item.entityid_skin})-->
+            <!--</foreach>-->
+     <!--</insert>-->
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	<context:component-scan base-package="cn.bevol" />
+
+	<import resource="spring-config-cache-test.xml" />
+	<import resource="spring-config-mongo-test.xml" />
+	<import resource="spring-config-mysql-test.xml" />
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+		           <value>bevol-dp.ini</value>
+		</property>
+	</bean>
+	<bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
+		<constructor-arg value="http://gw.api.taobao.com/router/rest" />
+		<constructor-arg value="23325511" />
+		<constructor-arg value="ee7fcc150be92eac0a10395590f96ae9" />
+	</bean>
+	<bean id="KeyTypeEnumALIYUN" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField" value="com.aliyun.opensearch.object.KeyTypeEnum.ALIYUN" />
+	</bean>
+
+	<bean id="cloudsearchClient" class="com.aliyun.opensearch.CloudsearchClient">
+		<constructor-arg  value="lMZwMNFhiR5o1TfO"/>
+		<constructor-arg  value="Qt6ZzNDaoGtwwcHWWGAn1bhdP3qvFC"/>
+		<!--
+				<constructor-arg  value="http://intranet.opensearch-cn-hangzhou.aliyuncs.com"/>
+		 -->
+		<constructor-arg  value="http://opensearch-cn-hangzhou.aliyuncs.com"/>
+		<constructor-arg>
+			<bean class="java.util.HashMap"></bean>
+		</constructor-arg>
+		<constructor-arg   ref="KeyTypeEnumALIYUN"/>
+	</bean>
+
+	<bean id="ossClient" class=" com.aliyun.oss.OSSClient">
+		<constructor-arg value="oss-cn-hangzhou.aliyuncs.com"/>
+		<constructor-arg value="lMZwMNFhiR5o1TfO"/>
+		<constructor-arg value="Qt6ZzNDaoGtwwcHWWGAn1bhdP3qvFC"/>
+	</bean>
+	
+		
+	<bean id="prop"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<array>
+				<value>classpath:spring-dev.properties</value>
+			</array>
+		</property>
+	</bean>
+	
+</beans>

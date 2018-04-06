@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="cn.bevol.log"/>
+
+    <!-- 启动@AspectJ支持 -->
+    <aop:aspectj-autoproxy />
+
+    <mvc:interceptors>
+        <bean class="cn.bevol.log.interceptor.AllInterceptor"/>
+    </mvc:interceptors>
+
+    <mvc:annotation-driven  >
+        <mvc:return-value-handlers>
+            <bean class="cn.bevol.log.interceptor.ArgsHandlerMethodReturnValueHandler"/>
+        </mvc:return-value-handlers>
+    </mvc:annotation-driven>
+
+    <!-- 配置monitor service，设置log等级 -->
+    <bean id="monitorService" class="cn.bevol.log.MonitorService">
+        <property name="logLevel" value="${mvn.bevol.env}" />
+    </bean>
+</beans>

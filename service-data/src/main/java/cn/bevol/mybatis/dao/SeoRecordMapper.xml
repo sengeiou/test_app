@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.mybatis.dao.SeoRecordMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.mybatis.model.SeoRecord">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="urls" property="urls" jdbcType="VARCHAR"/>
+        <result column="results" property="results" jdbcType="VARCHAR"/>
+        <result column="operate_type" property="operateType" jdbcType="VARCHAR"/>
+        <result column="data_type" property="dataType" jdbcType="VARCHAR"/>
+        <result column="remain" property="remain" jdbcType="INTEGER"/>
+         <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+    </resultMap>
+    
+   
+	<select id="staticRecordByPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_seo_record
+	    
+	    <if test="orderBy != null">
+	      ORDER BY ${orderBy}
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+	<select id="selectTotal" resultType="int">
+   		 SELECT count(*) FROM hq_seo_record
+   		 
+    </select> 
+     
+    <insert id="insert" parameterType="cn.bevol.mybatis.model.SeoRecord"  >
+    	insert into hq_seo_record(urls,results,operate_type,state,create_time,update_time)
+    	values
+    	(	
+    		#{urls}, #{results},#{operateType},#{state}, #{createTime}, #{updateTime}
+    	)
+    </insert>
+   <insert id="insertOrUpdate" parameterType="cn.bevol.mybatis.model.SeoRecord">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from hq_seo_record where urls = #{urls} and operate_type = #{operateType} and data_type =#{dataType}
+        </selectKey>
+        <if test="count == 0">
+       		 insert into hq_seo_record(urls,results,data_type,operate_type, remain, state,create_time,update_time)
+    		values
+    		(	
+    			#{urls}, #{results},#{dataType},#{operateType},#{state},#{remain}, #{createTime}, #{updateTime}
+    		)
+        </if>
+        <if test="count > 0">
+        	update hq_seo_record set
+        	urls =#{urls},results= #{results},data_type=#{dataType}, operate_type =#{operateType},state=#{state},remain =#{remain},update_time= #{updateTime}
+        	where urls = #{urls} and operate_type = #{operateType} and data_type =#{dataType}
+        </if>
+     </insert>
+     <select id="findByPage" resultMap="BaseResultMap">
+    SELECT * FROM hq_seo_record
+    <if test="wheres != null">
+      WHERE 1=1
+      <if test="wheres.beginTime != null">
+        and update_time between #{wheres.beginTime} and #{wheres.endTime}
+      </if>
+    </if>
+    <if test="orderBy != null">
+      ORDER BY ${orderBy}
+    </if>
+    <if test="pageSize > 0">
+      LIMIT #{pagedBegin},#{pageSize}
+    </if>
+  </select>
+</mapper>

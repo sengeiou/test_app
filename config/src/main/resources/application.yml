@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_null
+  session:
+    store-type: none
+  redis:
+    defaults: 900
+    forever: 0
+    fiveM: 300
+    oneDay: 86400
+    thirtyM: 1800
+
+tomcat:
+  version: 7.0.70
+
+server:
+  port: 8080
+  context-path: /boot.config.bevol.cn

@@ -1,0 +1,376 @@
+
+
+<#include "/pc/header.ftl" />
+<script src="${img}/pc/js/jquery.page.js" type="text/javascript"></script>
+<script src="${img}/pc/js/cosmetics_info_2017010601.js" type="text/javascript"></script>
+<link href="${img}/pc/js/artDialog-master/css/ui-dialog.css" rel="stylesheet">
+<link href="${img}/pc/css/product_info.css" rel="stylesheet">
+<script src="${img}/pc/js/artDialog-master/dist/dialog-min.js" type="text/javascript"></script>
+<!--面包屑导航-->
+<div class="crumbs_nav">
+    <h2 class="crumbs_nav_text"><a href="/" target="_self">首页</a> / <a target="_self" href="/product?v=2.0&category=${goods.category!}">产品列表</a> / ${goods.title!}</h2>
+</div>
+<!--备案弹出框-->
+<div class="approval_box">
+    <h5>${goods.title!}</h5>
+    <p class="p1">药监局批准/备案文号：${goods.approval!}</p>
+    <p>生产国/地区：${goods.country!}</p>
+    <p>生产企业：${goods.company!}</p>
+<#if goods.companyEnglish != "">
+    <p>生产企业英文：${goods.companyEnglish!}</p>
+</#if>
+<#if goods.approvalDate??>
+    <p>批准日期: <span id="approval_date">${goods.approvalDate!''}</span> </p>
+</#if>
+
+</div>
+
+<!--产品内容-->
+<div class="main-cosmetics-class">
+    <div class="cosmetics-info-left main-padding-4">
+        <div class="cosmetics-info-title padding15" id="goods-info-html">
+            <div class="cosmetics-info-title-img">
+            <#if (goods.image)?? && (goods.image)?length gt 0>
+                <#assign _img = img + "/Goods/source/" + goods.image />
+            <#else/>
+                <#assign _img = img + "/Goods/default.png" />
+            </#if>
+                <img class="img_h imgloading" src='${_img}@50p' alt="${goods.title!}">
+            </div>
+            <div class="cosmetics-info-title-text cosmetics-text">
+                <h1><p class="p1">${goods.title!}</p></h1>
+            <#if goods.alias?? && goods.title != goods.alias >
+                <#if goods.alias!="">
+                <p class="p2">英文名称：${goods.alias!}</p>
+                </#if>
+            </#if>
+            <#if goods.title?? && goods.remark?? && goods.title != goods.remark>
+               <#if  goods.remark != "">
+                <p class="p3">别名：${goods.remark!}</p>
+               </#if>
+            </#if>
+            <#if goods.gxc??>
+                <p class="p4 ">主要功效：${goods.gxc!}</p>
+            </#if>
+                <p class="p5">
+                ${goods.dataTypeStr!}
+                <#if (goods.approval)?? && (goods.approval)?has_content>
+                    :${goods.approval!}
+                </#if>
+                </p>
+            </div>
+            <div class="clear"></div>
+
+        <#if (goods.image)?? && (goods.image)?length gt 0>
+
+        <#else/>
+            <div class="fanl">
+                <p>
+                    <a data-uploadify="" id="cxx" target="_self" href="javascript:void(0)">
+                        本产品图片正在补录中，欢迎点击上传图片。
+                    </a>
+                </p>
+            </div>
+        </#if>
+
+
+        </div>
+
+        <div class="cosmetics-info-title">
+            <h2>产品综述（Product Overview）</h2>
+
+            <div class="cosmetics-info-box">
+                <h4>安全说：</h4>
+                <div class="xingji">
+                    安全星级：
+                <#list safety as safe>
+                    <#if safe.unit == 1>
+                        <#assign xinji = safe.num />
+                    </#if>
+                </#list>
+                <#list 1..5 as t>
+                    <#if t lte xinji?eval >
+                        <img src="${img}/xiaostar.png" style="width: 14px;height: 14px; "/>
+                    <#else/>
+                        <#if t gt xinji?eval && t lt (xinji?eval + 1)>
+                            <img src="${img}/xiaobanstar.png" style="width: 14px;height: 14px; "/>
+                        <#else/>
+                            <img src="${img}/xiaostargree.png" style="width: 14px;height: 14px; " />
+                        </#if>
+                    </#if>
+                </#list>
+                </div>
+            <#list safety as safe>
+                <#if safe.unit != 1>
+                    <br><br>
+                    <div class="xiangjing <#if safe.num?eval gt 0>active</#if>">
+                        <a href="javascript:void(0)" target="_self" data-name="${safe.displayName}">本产品含有${safe.displayName}：${safe.num}种
+                            <#if safe.num?eval gt 0>
+                                （
+                                <#assign i = 0 />
+                                <#list safe.composition as comp>
+                                    <#if i gt 5>
+                                        ...
+                                        <#break/>
+                                    </#if>
+                                ${comp.title}
+                                    <#assign i = i+1 />
+                                    <#if i lt safe.composition?size>
+                                        、
+                                    </#if>
+                                </#list>
+                                ）
+                            </#if>
+                        </a>
+                    </div>
+                </#if>
+            </#list>
+            </div>
+
+            <div class="cosmetics-info-box">
+                <h4>${data.appCategoryCateText}：</h4>
+            <#list effects as effect>
+                <#if effect.id == -1>
+                    <div class="xiangjing <#if effect.num?eval gt 0>active</#if>">
+                        <a href="javascript:void(0)" target="_self" data-name="${effect.displayName}">本产品含有${effect.displayName}：${effect.num}种
+                            <#if effect.num?eval gt 0>
+                                （
+                                <#assign i = 0 />
+                                <#list effect.composition as comp>
+                                    <#if i gt 5>
+                                        ...
+                                        <#break/>
+                                    </#if>
+                                ${comp.title}
+                                    <#assign i = i+1 />
+                                    <#if i lt effect.composition?size>
+                                        、
+                                    </#if>
+                                </#list>
+                                ）
+                            </#if>
+                        </a>
+                    </div>
+                </#if>
+            </#list>
+            <#list effects as effect>
+                <#if effect.id != -1 && effect.displayCompare==0>
+                    <br><br>
+                    <div class="xiangjing <#if effect.num?eval gt 0>active</#if>">
+                        <a href="javascript:void(0)" target="_self" data-name="${effect.displayName}">本产品含有${effect.displayName}：${effect.num}种
+                            <#if effect.num?eval gt 0>
+                                （
+                                <#assign i = 0 />
+                                <#list effect.composition as comp>
+                                    <#if i gt 5>
+                                        ...
+                                        <#break/>
+                                    </#if>
+                                ${comp.title}
+                                    <#assign i = i+1 />
+                                    <#if i lt effect.composition?size>
+                                        、
+                                    </#if>
+                                </#list>
+                                ）
+                            </#if>
+                        </a>
+                    </div>
+                </#if>
+            </#list>
+            </div>
+
+        </div>
+
+    <#if goods.doyen?? && goods.doyen?size gt 0>
+        <div class="cosmetics-info-title">
+            <h2>修行说</h2>
+            <div class="cosmetics-info-box">
+                <div class="xxs-info-box">
+                    <div class="xxs-info-title">
+                        <div class="xxs-info-title-img"><img src="${goods.doyen.headimgurl!}" class="img_z"></div>
+                        <div class="xxs-info-title-main">
+                            <p class="p1">${goods.doyen.nickname!}</p>
+                            <p class="p2">${goods.doyen.userDescz!}</p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="xxs-info-content">
+                    ${goods.doyen.doyenComment!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </#if>
+
+        <div class="cosmetics-info-title <#if comments?? && comments?size gt 0> <#else/> margin-bottom-50</#if> chengfenbiao">
+            <h2>产品成分表（Ingredients）</h2>
+            <table class="table" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th class="th1">成分名称</th>
+                    <th class="th2">安全风险</th>
+                    <th class="th3">活性成分</th>
+                    <th class="th4">致痘风险</th>
+                    <th class="th5">使用目的</th>
+                </tr>
+            <#if composition?size ==0>
+                <tr>
+                    <td colspan="5">本产品在备案时没有提供成分表信息</td>
+                </tr>
+            <#else>
+                <#list composition as comp>
+                <tr>
+                    <td class="td1"><a href="/composition/${comp.mid!}.html">${comp.title!}</a></td>
+                    <td class="td2"><span class="safe-color">${comp.safety!}</span></td>
+                    <td class="td3">
+                        <#if comp.active=="1">
+                            <img src="${img}/pc/images/pcpicture/hxcf.png?v1.0.2" alt="活性成分">
+                        </#if>
+                        <#if comp.active=="2">
+                            <span class="label label-info">防晒</span>
+                        </#if>
+                        <#if comp.active=="UVAB">
+                            <span class="label label-UVA"></span><span class="label label-UVB"></span>
+                        </#if>
+                        <#if comp.active=="UVA">
+                        <span class="label label-UVA">
+                        </#if>
+                        <#if comp.active=="UVB">
+                            <span class="label label-UVB"></span>
+                        </#if>
+                        <#if comp.active=="">
+                            <span class="label label-info"></span>
+                        </#if>
+                    </td>
+                    <td class="td4">
+                        <#if comp.acneRisk?? && comp.acneRisk=="1">
+                            <img src="${img}/pc/images/pcpicture/zdfx.png" alt="致痘风险">
+                        </#if>
+                    </td>
+                    <td class="td5">
+                        <#if comp.useds?size gt 0>
+                                        <#list comp.useds as us>
+                        ${us.title!}
+                        </#list>
+                                    </#if>
+                    </td>
+                </#list>
+            </#if>
+
+            </table>
+        <#if composition?size gt 10>
+            <div class="chakan-more">
+                <a href="javascript:void(0);">查看全部成分</a>
+            </div>
+        </#if>
+        </div>
+    <#include "/pc/comment.ftl" />
+    </div>
+
+<#list effects_detail?keys as mKey>
+    <#assign item = effects_detail[mKey]>
+    <div class="anquanshuo-box" data="${mKey}">
+        <h4 style="font-size: 16px;color: #8d63ae;text-align: center;padding: 20px 0;">功效说</h4>
+        <table class="table" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+                <th class="th1">成分名称</th>
+                <th class="th2">安全风险</th>
+                <th class="th3">活性成分</th>
+                <th class="th4">致痘风险</th>
+                <th class="th5">使用目的</th>
+            </tr>
+
+                <#list item as itemValue>
+                <tr>
+                    <td class="td1"><a href="/composition/${itemValue.mid}.html">${itemValue.title}</a></td>
+                    <td class="td2"><span class="safe-color" style="background: rgb(92, 184, 92);">${itemValue.safety}</span></td>
+                    <td class="td3">
+                        <#if itemValue.active=="1">
+                            <img src="${img}/pc/images/pcpicture/hxcf.png?v1.0.2" alt="活性成分">
+                        </#if>
+                        <#if itemValue.active=="2">
+                            <span class="label label-info">防晒</span>
+                        </#if>
+                        <#if itemValue.active=="UVAB">
+                            <span class="label label-UVA"></span><span class="label label-UVB"></span>
+                        </#if>
+                        <#if itemValue.active=="UVA">
+                            <span class="label label-UVA"></span>
+                        </#if>
+                        <#if itemValue.active=="UVB">
+                            <span class="label label-UVB"></span>
+                        </#if>
+                        <#if itemValue.active=="">
+                            <span class="label label-info"></span>
+                        </#if>
+                    </td>
+                    <td class="td4">
+                        <#if itemValue.acneRisk?? && itemValue.acneRisk=="1">
+                            <img src="${img}/pc/images/pcpicture/zdfx.png?v1.0.2" alt="致痘风险">
+                        </#if>
+                    </td>
+                    <td class="td5">${itemValue.curUsedName}</td>
+                </tr>
+                </#list>
+
+            </tbody>
+        </table>
+    </div>
+</#list>
+
+<#list safety_detail?keys as mKey>
+    <#assign item = safety_detail[mKey]>
+    <div class="anquanshuo-box" data="${mKey}">
+        <h4 style="font-size: 16px;color: #8d63ae;text-align: center;padding: 20px 0;">安全说</h4>
+        <table class="table" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+                <th class="th1">成分名称</th>
+                <th class="th2">安全风险</th>
+                <th class="th3">活性成分</th>
+                <th class="th4">致痘风险</th>
+                <th class="th5">使用目的</th>
+            </tr>
+
+                <#list item as itemValue>
+                <tr>
+                    <td class="td1"><a href="/composition/${itemValue.mid}.html">${itemValue.title}</a></td>
+                    <td class="td2"><span class="safe-color" style="background: rgb(92, 184, 92);">${itemValue.safety}</span></td>
+                    <td class="td3">
+                        <#if itemValue.active=="1">
+                            <img src="${img}/pc/images/pcpicture/hxcf.png?v1.0.2" alt="活性成分">
+                        </#if>
+                        <#if itemValue.active=="2">
+                            <span class="label label-info">防晒</span>
+                        </#if>
+                        <#if itemValue.active=="UVAB">
+                            <span class="label label-UVA"></span><span class="label label-UVB"></span>
+                        </#if>
+                        <#if itemValue.active=="UVA">
+                            <span class="label label-UVA"></span>
+                        </#if>
+                        <#if itemValue.active=="UVB">
+                            <span class="label label-UVB"></span>
+                        </#if>
+                        <#if itemValue.active=="">
+                            <span class="label label-info"></span>
+                        </#if>
+                    </td>
+                    <td class="td4">
+                        <#if itemValue.acneRisk?? && itemValue.acneRisk=="1">
+                            <img src="${img}/pc/images/pcpicture/zdfx.png?v1.0.2" alt="致痘风险">
+                        </#if>
+                    </td>
+                    <td class="td5">${itemValue.curUsedName}</td>
+                </tr>
+                </#list>
+
+            </tbody>
+        </table>
+    </div>
+</#list>
+
+<#include "/pc/sidebar.ftl" />
+</div>
+<#include "/pc/footer.ftl" />

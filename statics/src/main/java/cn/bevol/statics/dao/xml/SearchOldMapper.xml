@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.statics.dao.mapper.SearchOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.dto.SeachComposition">
+    	<result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="composition_ids" property="composition_ids" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="BaseResultMapByPro" type="cn.bevol.statics.entity.dto.SeachFind">
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+    <select id="ruleOutComposition" resultMap="BaseResultMap">
+        SELECT title,composition_ids FROM hq_composition_rule WHERE delete_status=0 AND hidden_status=0
+    </select>
+
+	<select id="ruleOutCompositionByInit4" resultMap="BaseResultMap">
+        SELECT title,id FROM hq_composition_rule WHERE delete_status=0 AND hidden_status=0
+    </select>
+
+    <select id="ruleOutGoods" resultMap="BaseResultMapByPro">
+        SELECT id as entityId,name as title FROM hq_goods_category
+    </select>
+
+    <insert id="insertComposition" parameterType="cn.bevol.statics.entity.dto.SeachComposition">
+        INSERT INTO `hq_composition_rule` (
+        title,
+        composition_ids,
+        delete_status,
+        create_time,
+        update_time,
+        hidden_status
+        )
+        VALUES (#{title,jdbcType=VARCHAR}, #{composition_ids,jdbcType=VARCHAR}, #{delete_status,jdbcType=INTEGER},
+        #{create_time,jdbcType=INTEGER}, #{update_time,jdbcType=INTEGER}, #{hidden_status,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteComposition">
+        delete from hq_composition_rule where title= #{title,jdbcType=VARCHAR}
+    </delete>
+</mapper>

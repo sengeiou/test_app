@@ -1,0 +1,153 @@
+<#include "/header.html" />
+<script type="text/javascript" src="${js}/swiper.js"></script>
+<script type="text/javascript" src="${js}/arttmpl.js"></script>
+<script type="text/javascript" src="${js}/topic2.js"></script>
+<link rel="stylesheet" type="text/css" href="${css}/topic2.css"/>
+<div class="mui-content">
+    <!--<div id="pullrefresh" class="mui-scroll-wrapper" style="padding-top: 44px;">-->
+        <div class="mui-scroll" class="html">
+            <!--2.0新加的-->
+            <div class="hotlist_main" id="topic-main-html">
+                <div class="hotlist_main_title">
+                    <div class="hotlist_main_title_banner"><img src="${img}/Lists/${image}@70p" class="img_z" onerror="javascript:this.src='${img}/wx/images2/bg.png';"></div>
+                    <div class="hotlist_main_title_info">
+                       ${descp}
+                    </div>
+                    <#if type?? && type = "2">
+                        <div class="tioiclist-time">
+                            【活动时间】${startTime} - ${lastTime}
+                        </div>
+                    </#if>
+                </div>
+                <div class="btn-more">
+                    <img src="${img}/wx/images2/mx-arrow-down.png" class="img_more">
+                </div>
+            </div>
+
+            <div class="topic-box">
+                <div id="segmentedControl" class="mui-segmented-control">
+                    <a class="mui-control-item mui-active" href="#item1" data-sort="hot">
+                        <span>最热</span>
+                    </a>
+                    <a class="mui-control-item" href="#item2" data-sort="new">
+                        <span>最新</span>
+                    </a>
+                </div>
+                <div id="item1" class="mui-control-content mui-active">
+                    <ul id="item1_append">
+                        <#if user_lists_hot?? && user_lists_hot?size gt 0>
+                            <#list user_lists_hot as lists>
+                                <li data-id="${lists.id}" class="topiclist-btn">
+                                    <div class='special_main_text01'>
+                                        <div class='special_main_text_img'>
+                                            <#if lists.imgSrc?? && lists.imgSrc != "">
+                                                <img src="${lists.imgSrc}@50p" class='img_z'>
+                                                <#else/>
+                                                <img src="${img}/wx/images2/default.png" class='img_z'>
+                                            </#if>
+                                        </div>
+                                        <div class='special_main_title01'>
+                                            ${lists.title}
+                                        </div>
+                                        <div class='special_main_text_num'>
+                                            <#if lists.userBaseInfo??>
+                                                <div class='special_main_see'>
+                                                    <div class="talent-header">
+                                                        <#if lists.userBaseInfo.headimgurl?? && lists.userBaseInfo.headimgurl!="">
+                                                            <img src="${lists.userBaseInfo.headimgurl}" class='img_header' onerror="javascript:this.src='${img}/wx/images2/morenyixiu.png';">
+                                                            <#else/>
+                                                            <img src="${img}/wx/images2/morenyixiu.png" class='img_header'>
+                                                        </#if>
+                                                    </div>
+                                                    <div class="talent-title">${lists.userBaseInfo.nickname}</div>
+                                                </div>
+                                                <div class='special_main_comment'>
+                                                    <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                                                    <#if lists.hitNum??  && lists.hitNum!=''>
+                                                        ${lists.hitNum}
+                                                        <#else/>
+                                                        0
+                                                    </#if>
+                                                </div>
+                                                <#else/>
+                                                <div class='special_main_comment' style="float: right;">
+                                                    <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                                                    <#if lists.hitNum??  && lists.hitNum!=''>
+                                                        ${lists.hitNum}
+                                                        <#else/>
+                                                        0
+                                                    </#if>
+                                                </div>
+                                            </#if>
+                                            <div class='clear'></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </#list>
+                        </#if>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <div id="item2" class="mui-control-content">
+                    <ul id="item2_append">
+                        <#if user_lists_latest?? && user_lists_latest?size gt 0>
+                            <#list user_lists_latest as lists>
+                                <li data-id="${lists.id}" class="topiclist-btn">
+                                    <div class='special_main_text01'>
+                                        <div class='special_main_text_img'>
+                                            <#if lists.imgSrc?? && lists.imgSrc != "">
+                                                <img src="${lists.imgSrc}@50p" class='img_z'>
+                                                <#else/>
+                                                <img src="${img}/wx/images2/default.png" class='img_z'>
+                                            </#if>
+                                        </div>
+                                        <div class='special_main_title01'>
+                                            ${lists.title}
+                                        </div>
+                                        <div class='special_main_text_num'>
+                                            <#if lists.userBaseInfo??>
+                                                <div class='special_main_see'>
+                                                    <div class="talent-header">
+                                                        <#if lists.userBaseInfo.headimgurl?? && lists.userBaseInfo.headimgurl!="">
+                                                            <img src="${lists.userBaseInfo.headimgurl}" class='img_header' onerror="javascript:this.src='${img}/wx/images2/morenyixiu.png';">
+                                                            <#else/>
+                                                            <img src="${img}/wx/images2/morenyixiu.png" class='img_header'>
+                                                        </#if>
+                                                    </div>
+                                                    <div class="talent-title">${lists.userBaseInfo.nickname}</div>
+                                                </div>
+                                                <div class='special_main_comment'>
+                                                    <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                                                    <#if lists.hitNum??  && lists.hitNum!=''>
+                                                        ${lists.hitNum}
+                                                        <#else/>
+                                                        0
+                                                    </#if>
+                                                </div>
+                                                <#else/>
+                                                <div class='special_main_comment' style="float: right;">
+                                                    <img src="${img}/wx/images2/lock-icon.png" class='img_zanzan'>
+                                                    <#if lists.hitNum?? && lists.hitNum!=''>
+                                                        ${lists.hitNum}
+                                                        <#else/>
+                                                        0
+                                                    </#if>
+                                                </div>
+                                            </#if>
+                                            <div class='clear'></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </#list>
+                        </#if>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="topic-btn">
+                下载美丽修行，查看更多用户心得
+            </div>
+        <!--</div>-->
+    </div>
+</div>
+<#include "/footer.html" />

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.bevol"/>
+    <import resource="classpath*:spring/mysql-config.xml"/>
+    <import resource="classpath*:spring/mongo-config.xml"/>
+    <import resource="classpath*:spring/cache-config.xml"/>
+
+    <!--<bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
+        <constructor-arg value="http://gw.api.taobao.com/router/rest" />
+        <constructor-arg value="23325511" />
+        <constructor-arg value="ee7fcc150be92eac0a10395590f96ae9" />
+    </bean>
+
+    <bean id="KeyTypeEnumALIYUN" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+        <property name="staticField" value="com.aliyun.opensearch.object.KeyTypeEnum.ALIYUN" />
+    </bean>
+
+    <bean id="cloudsearchClient" class="com.aliyun.opensearch.CloudsearchClient">
+        <constructor-arg  value="lMZwMNFhiR5o1TfO"/>
+        <constructor-arg  value="Qt6ZzNDaoGtwwcHWWGAn1bhdP3qvFC"/>
+        &lt;!&ndash;
+                <constructor-arg  value="http://intranet.opensearch-cn-hangzhou.aliyuncs.com"/>
+         &ndash;&gt;
+        <constructor-arg  value="http://opensearch-cn-hangzhou.aliyuncs.com"/>
+        <constructor-arg>
+            <bean class="java.util.HashMap"></bean>
+        </constructor-arg>
+        <constructor-arg   ref="KeyTypeEnumALIYUN"/>
+    </bean>-->
+</beans>

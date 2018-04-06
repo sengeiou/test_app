@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bevol.mybatis.dao.GoodsExtendMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.mybatis.model.GoodsExtend">
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="num" property="num" jdbcType="INTEGER"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="crdate" property="crdate" jdbcType="INTEGER"/>
+        <result column="tstamp" property="tstamp" jdbcType="INTEGER"/>
+        <result column="data_type" property="dataType" jdbcType="INTEGER"/>
+        <result column="add_date" property="addDate" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+    <select id="getGoodsByMid" resultMap="BaseResultMap">
+		SELECT mid,num,state,crdate,tstamp,data_type,add_date
+		 FROM hq_goods_extend WHERE  mid = #{mid}
+	</select>
+
+    <select id="findByPage" resultMap="BaseResultMap">
+        SELECT * FROM hq_goods_extend
+        <if test="wheres != null">
+            WHERE 1=1
+            <if test="wheres.state!=null">
+                AND state = #{wheres.state}
+            </if>
+        </if>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+    <select id="selectTotal" resultType="int">
+        SELECT count(*) FROM hq_goods  WHERE 1=1
+        <if test="wheres != null">
+            WHERE 1=1
+            <if test="wheres.state!=null">
+                AND state = #{wheres.state}
+            </if>
+        </if>
+    </select>
+    <update id="updateByMid" parameterType="cn.bevol.mybatis.model.GoodsExtend">
+        UPDATE  hq_goods_extend SET
+         state=#{state},
+         num=#{num},
+         update_date = #{updateDate}
+        WHERE mid=#{mid}
+    </update>
+</mapper>

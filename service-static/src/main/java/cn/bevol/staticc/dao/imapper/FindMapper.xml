@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.staticc.dao.imapper.FindMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.staticc.model.entity.Find">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="subhead" property="subhead" jdbcType="VARCHAR"/>
+        <result column="skin" property="skin" jdbcType="VARCHAR"/>
+        <result column="header_image" property="headerImage" jdbcType="VARCHAR"/>
+        <result column="tag" property="tag" jdbcType="VARCHAR"/>
+        <result column="pc_image" property="pcImage" jdbcType="VARCHAR"/>
+		<result column="tag_ids" property="tagIds" jdbcType="VARCHAR"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+    </resultMap>
+	<resultMap id="ResultTagMap" type="cn.bevol.mybatis.model.Tags">
+		<result column="tag" property="tag" jdbcType="VARCHAR"/>
+		<result column="tag_ids" property="id" jdbcType="VARCHAR"/>
+	</resultMap>
+     <select id="findByPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_new_find
+	      WHERE 1=1 and hidden =0 and deleted = 0
+		 <if test="wheres != null">
+	      <if test="wheres.beginTime != null">
+	        and update_time between #{wheres.beginTime} and #{wheres.endTime}
+	      </if>
+	    </if>
+	    <if test="orderBy != null">
+	      ORDER BY ${orderBy}
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+    
+    <select id="selectTotal" resultType="int">
+    	SELECT count(*) FROM hq_new_find
+    	WHERE 1=1 and hidden =0 and deleted = 0
+  </select>
+	<select id="findTagByPage" resultMap="ResultTagMap">
+		SELECT tag_ids FROM hq_new_find
+		WHERE 1=1 and hidden =0 and deleted = 0
+		<if test="pageSize > 0">
+			LIMIT #{pagedBegin},#{pageSize}
+		</if>
+	</select>
+	<select id="getFindByTagId" resultMap="BaseResultMap">
+		SELECT * FROM hq_new_find
+		WHERE 1=1 and  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%' OR tag_ids=#{tagId} OR tag_ids LIKE '%${tagId},%'
+			LIMIT #{pagedBegin},#{pageSize}
+	</select>
+	<select id="selectTotalByTag" resultType="int">
+		SELECT count(*) FROM hq_new_find
+		WHERE 1=1 AND  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%'  OR tag_ids LIKE '%${tagId},%'
+	</select>
+</mapper>

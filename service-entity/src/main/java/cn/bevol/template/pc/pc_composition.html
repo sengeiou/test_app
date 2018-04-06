@@ -1,0 +1,349 @@
+<#include "/header.html" />
+<link href="${css!'https://static.bevol.cn/pc/css'}/composition_index_info_20170518.css" rel="stylesheet">
+<script src="${js!'https://static.bevol.cn/pc/js'}/composition_index_20170627.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://static.bevol.cn/wx/js/arttmpl.js"></script>
+<script src="https://static.bevol.cn/pc/js/jquery.page.js" type="text/javascript"></script>
+<link href="https://static.bevol.cn/pc/js/artDialog-master/css/ui-dialog.css" rel="stylesheet">
+<script src="https://static.bevol.cn/pc/js/artDialog-master/dist/dialog-min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://static.bevol.cn/pc/css/jquery-ui-autocomplete.min.css">
+<script src="https://cdn.bootcss.com/jqueryui/1.11.4/jquery-ui.js"></script>
+<!--面包屑导航-->
+<div class="crumbs_nav">
+    <h2 class="crumbs_nav_text"><a href="/" target="_self">首页</a> / 成分查询</h2>
+</div>
+
+<div class="main-cosmetics-class">
+    <!--<div class="outer-cosmetics-class-left main-padding-4">
+        <div class="cosmetics-class-left single-composition">
+            <div class="composition-title-box">
+                ▪ 单一成分查询
+            </div>
+            <div class="composition-search-box">
+                <div class="search-box-left">
+                    <div class="search-box-button" id="search-btn">
+                        <img class="" src="${img}/pc/images/pcpicture/search-icon-ccc.png">
+                    </div>
+                    <div class="search-box-text">
+                        <input id="search_form" type="text" value="" placeholder="输入成分中／英文名" tname="composition">
+                    </div>
+                </div>
+                <div class="search-box-right">
+                    <div class="single-composition-search-button">
+                        <input type="button" value="搜成分" />
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="cosmetics-class-left multiple-composition">
+            <div class="composition-title-box">
+                ▪ 多成分查询
+            </div>
+            <div class="composition-search-box">
+                <div class="search-box-left">
+                    <div class="search-box-text">
+                        <textarea placeholder="成分与成分之间请用逗号隔开啦～"></textarea>
+                    </div>
+                </div>
+                <div class="search-box-right">
+                    <div class="multiple-composition-search-button">
+                        <input type="button" value="搜成分" />
+                    </div>
+                </div>
+                <div class="search-box-tips">
+                    <p>tips：一次贴上完整成份表，无须再逐一查询，我们将为您全自动分析出各成分参数</p>
+                </div>
+                <div class="search-box-tips">
+                    <p>如果该成分表对应产品美丽修行暂未收录，请在查询后至下方协助填写品牌及名称，帮助我们扩充产品库啦～么么哒</p>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="composition-result">
+            <div class="cosmetics-class-left composition-details">
+                <div class="goods-main-info-box">
+                    <table class="composition_list table" border="0" cellpadding="0" cellspacing="0" >
+                    </table>
+                </div>
+            </div>-->
+
+    <div class="outer-cosmetics-class-left main-padding-4" style="display: inline-block;padding: 10px;width:62%;background-color: #FAFAFA;border-radius: 10px">
+        <span id="single-search" style="color: #8F65AC;cursor: pointer;font-size: 14px">单一成分查询</span>
+        <span style="margin-left: 5px">|</span>
+        <span id="mult-search" style="margin-left: 5px;color: #999999;cursor: pointer;font-size: 14px">批量成分查询</span>
+        <div id="single">
+            <table class="tab-search" style="margin-top:12px;width: 100%">
+                <tr style="width: 100%">
+                    <th style="width: 40%">成分名</th>
+                    <th style="width: 40%">译名</th>
+                    <th style="width: 20%"></th>
+                </tr>
+                <tr>
+                    <td><input tname="composition" class="tags c_tags" autofocus="autofocus"></td>
+                    <td> <input class="tags" disabled></td>
+                    <td style="background-color: transparent">
+                        <div class="add-row">
+                            +
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <!--热搜索-->
+            <div class="hot-search">
+                <span>热门搜索：</span>
+                <ul>
+                    <li>烟酰胺</li>
+                    <li>甘草酸二钾</li>
+                    <li>尿囊素</li>
+                    <li>水杨酸</li>
+                    <li>视黄醇</li>
+                    <li>角鲨烷</li>
+                    <li>透明质酸钠</li>
+                    <li>苯氧乙醇</li>
+                    <li>神经酰胺3</li>
+                </ul>
+            </div>
+            <div class="now-search">立即搜索</div>
+        </div>
+
+
+        <!--<div class="cosmetics-class-left single-composition">-->
+        <!--<div class="composition-title-box">-->
+        <!--▪ 单一成分查询-->
+        <!--</div>-->
+        <!--<div class="composition-search-box">-->
+        <!--<div class="search-box-left">-->
+        <!--<div class="search-box-button" id="search-btn">-->
+        <!--<img class="" src="https://img0.bevol.cn/pc/images/pcpicture/search-icon-ccc.png">-->
+        <!--</div>-->
+        <!--<div class="search-box-text">-->
+        <!--<input id="search_form" type="text" value="" placeholder="输入成分中／英文名" tname="composition">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="search-box-right">-->
+        <!--<div class="single-composition-search-button">-->
+        <!--<input type="button" value="搜成分" />-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="clear"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="cosmetics-class-left multiple-composition" style="position:relative;display: none;margin-top: 12px;width: 100%">
+            <!--<div class="composition-title-box">-->
+            <!--▪ 多成分查询-->
+            <!--</div>-->
+            <div class="composition-search-box">
+                <div class="search-box-left">
+                    <div class="search-box-text">
+                        <textarea placeholder="一次贴上完整成份表，无须再逐一查询，我们将为您全自动分析出各成分参数"></textarea>
+                    </div>
+                </div>
+                <!--<div class="search-box-right">-->
+                <!--<div class="multiple-composition-search-button">-->
+                <!--<input type="button" value="搜成分" />-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="search-box-tips">-->
+                <!--<p>tips：一次贴上完整成份表，无须再逐一查询，我们将为您全自动分析出各成分参数</p>-->
+                <!--</div>-->
+                <div class="search-box-tips" style="font-size: 12px;color:#999999;padding-left: 10px">
+                    <p>如果该成分表对应产品美丽修行暂未收录，请在查询后至下方协助填写品牌及名称，帮助我们扩充产品库啦～么么哒</p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="now-search">立即搜索</div>
+        </div>
+        <div style="clear: both"></div>
+
+        <div class="composition-result">
+            <div class="cosmetics-class-left composition-details">
+                <div class="goods-main-info-box">
+                    <table class="composition_list table" border="0" cellpadding="0" cellspacing="0" >
+                    </table>
+                </div>
+            </div>
+
+            <!----添加此产品---->
+            <div class="cosmetics-class-left black_border add_goods_box">
+                <div class="add-goods">
+                    <input type="hidden" name="image1" />
+                    <input type="hidden" name="image2" />
+                    <input type="hidden" name="image3" />
+                    <p class="add-goods-text">添加此产品</p>
+                    <p class="add-goods-tips">如果该成分表对应产品美丽修行暂未收录，请在查询后至下方协助填写品牌及名称，帮助我们扩充产品库啦～么么哒</p>
+                    <div class="add-goods-text">名称：<input type="text" placeholder="请输入品牌和产品名称哦～" name="title" class="add-goods-title add-goods-input"></div>
+                    <div class="add-goods-text">上传产品图片：<input type="button" data-image="0" data-uploadify="" id="cxx" class="add-goods-button" value="点击上传"><span class="add-goods-tips">请提交白底官方无水印图片哦～</span></div>
+                    <div class="add-goods-text">
+                        <ul>
+                            <li class="add-goods-type">成分表来源：</li>
+                            <li class="add-goods-type">
+                                <input type="radio" name="type" value="1" />国家药监局
+                            </li>
+                            <li class="add-goods-type">
+                                <input type="radio" name="type" value="2" />官方网站
+                            </li>
+                            <li class="add-goods-type">
+                                <input type="radio" name="type" value="3" />其他网站
+                            </li>
+                            <li class="add-goods-type">
+                                <input type="radio" name="type" value="4" />瓶身包装
+                            </li>
+                            <li class="add-goods-type">
+                                <input type="radio" name="type" value="5"  checked="checked" />不清楚
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="add-goods-text center">
+                        <input type="button" class="add-goods-submit add-goods-button" value="添加此产品">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <#include "/sidebar.html" />
+    <div class="foot-page">
+        <div class="tcdPageCode"></div>
+    </div>
+</div>
+<#include "/footer.html" />
+<script type="text/plain" id="comlist-tpl">
+<%if(data.items.length>0){%>
+                <tr>
+                    <th class="th6_1">中文名称</th>
+                    <th class="th6_2">英文名称</th>
+                    <th class="th6_3">安全风险</th>
+                    <th class="th6_4">活性成分</th>
+                    <th class="th6_5">致痘风险</th>
+                    <th class="th6_6">使用目的</th>
+                </tr>
+
+<%for(var i=0;i<data.items.length;i++){%>
+	         <tr>
+                    <td class="td6_1"><a href="/composition/<%=data.items[i].mid%>.html"><%=data.items[i].name%></a></td>
+                    <td class="td6_2">
+                        <a href="/composition/<%=data.items[i].mid%>.html">
+                            <%if(data.items[i].english && data.items[i].english!="#N/A"){%>
+                                <%=data.items[i].english%>
+                            <%}%>
+                        </a>
+                    </td>
+                    <td class="td6_3"><span class="safe-color"><%=data.items[i].safety%></span></td>
+                    <td class="td6_4">
+                        <%if(data.items[i].active && data.items[i].active =="1"){%>
+                            <img src="${img}/pc/images/pcpicture/hxcf.png" alt="活性成分">
+                        <%}%>
+                    </td>
+                    <td class="td6_5">
+                        <%if(data.items[i].acne_risk > 0){%>
+                            <img src="${img}/pc/images/pcpicture/zdfx.png" alt="致痘风险">
+                        <%}%>
+                     </td>
+                    <td class="td6_6">
+                        <%if(data.items[i].usedtitle){%>
+                            <%=data.items[i].usedtitle%>
+                        <%}else{%>
+                            补录中
+                        <%}%>
+                    </td>
+                </tr>
+<%}%>
+<%}else{%>
+	   		<div id="search-more" style="">
+				<p class="empty-title" style="color:#E57215;font-size:18px;">对不起，该成分没有搜索结果，</p>
+	            <p class="empty-title" style="color:#E57215;font-size:18px;">可能因为以下原因：</p><br>
+	            <p class="empty-info">1 ) 成分名称有不同版本。建议尝试搜索其他相关别名。</p>
+	            <p class="empty-info">2 ) 多个关键词叠加。建议在关键词中间加入空格，例如“甘 油”。</p>
+				<br>
+			</div>
+  <%}%>
+</script>
+<script type="text/plain" id="multiple-comlist-tpl">
+<%if(result.length>0){%>
+                <tr>
+                    <th class="th6_1">中文名称</th>
+                    <th class="th6_2">英文名称</th>
+                    <th class="th6_3">安全风险</th>
+                    <th class="th6_4">活性成分</th>
+                    <th class="th6_5">致痘风险</th>
+                    <th class="th6_6">使用目的</th>
+                </tr>
+
+<%for(var i=0;i<result.length;i++){%>
+    <%if(result[i].title){%>
+	         <tr>
+	                <td class="td6_1" data-mid="<%=result[i].mid%>" data-title="<%=result[i].title%>"><a href="/composition/<%=result[i].mid%>.html"><%=result[i].title%></a></td>
+	                <td class="td6_2"><a href="/composition/<%=result[i].mid%>.html"><%=result[i].english%></a></td>
+                    <td class="td6_3"><span class="safe-color"><%=result[i].safety%></span></td>
+                    <td class="td6_4">
+                        <%if(result[i].active && result[i].active=="1"){%>
+                            <img src="${img}/pc/images/pcpicture/hxcf.png" alt="活性成分">
+                        <%}%>
+                    </td>
+                    <td class="td6_5">
+                        <%if(result[i].acneRisk > 0){%>
+                            <img src="${img}/pc/images/pcpicture/zdfx.png" alt="致痘风险">
+                        <%}%>
+                    </td>
+                    <td class="td6_6">
+                        <%if(result[i].used_title){%>
+                            <%=result[i].used_title%>
+                        <%}else{%>
+                            补录中
+                        <%}%>
+                    </td>
+                </tr>
+    <%}else{%>
+            <tr>
+                <td class="td1" data-user_title="<%=result[i].user_title%>"><%=result[i].user_title%></td>
+                <td colspan=5 class="td1">无符合资料</td>
+            </tr>
+    <%}%>
+<%}%>
+<%}else{%>
+	   		<div id="search-more" style="">
+				<p class="empty-title" style="color:#E57215;font-size:18px;">对不起，该成分没有搜索结果，</p>
+	            <p class="empty-title" style="color:#E57215;font-size:18px;">可能因为以下原因：</p><br>
+	            <p class="empty-info">1 ) 成分名称有不同版本。建议尝试搜索其他相关别名。</p>
+	            <p class="empty-info">2 ) 多个关键词叠加。建议在关键词中间加入空格，例如“甘 油”。</p>
+				<br>
+			</div>
+  <%}%>
+</script>
+<script type="text/plain" id="composition-relation-add-tpl">
+    <%if(goods.length>0){%>
+    <!----您可能正在查找的产品---->
+    <div class="cosmetics-class-left related-goods-box black_border margin-bottom-20">
+        <div class="related-goods">
+            <p class="related-goods-text">您可能正在查找的产品:</p>
+            <ul>
+                <%for(var i=0;i<goods.length;i++){%>
+                    <a href="/product/<%=goods[i].mid%>.html" alt="<%=goods[i].title%>">
+                        <li>
+                            <div class="related-goods-box">
+                                <div class="related-img-box">
+                                    <%if(goods[i].image){%>
+                                        <img src="${img}/Goods/source/<%=goods[i].image%>@50p" class="related-goods-img" />
+                                    <%}else{%>
+                                        <img src="${img}/Goods/default.png@50p" class="related-goods-img" />
+                                    <%}%>
+                                </div>
+                                <div class="related-goods-title">
+                                    <h4 class="center"><%=goods[i].title%></h4>
+                                    <%if(goods[i].english){%>
+                                        <h5 class="center"><%=goods[i].english%></h5>
+                                    <%}%>
+                                </div>
+                            </div>
+                        </li>
+                    </a>
+                <%}%>
+            </ul>
+        </div>
+    </div>
+    <%}%>
+</script>

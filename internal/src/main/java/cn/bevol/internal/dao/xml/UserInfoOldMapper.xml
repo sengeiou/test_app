@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.internal.dao.mapper.UserInfoOldMapper">
+	<resultMap type="cn.bevol.internal.entity.user.UserInfo" id="UserInfoResult">
+	    <result column="id" property="id" jdbcType="INTEGER" />  
+	    <result column="tstamp" property="updateStamp" jdbcType="INTEGER" />  
+	    <result column="crdate" property="createStamp" jdbcType="INTEGER" />  
+	     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+	     <result column="phone" property="phone" jdbcType="VARCHAR" />
+	     <result column="test" property="test" jdbcType="VARCHAR" />  
+	    <result column="result" property="result" jdbcType="VARCHAR" />  
+		 <result column="age" property="age" jdbcType="INTEGER" />
+	     <result column="headimgurl" property="headimgurl" jdbcType="VARCHAR" />  
+	    <result column="province" property="province" jdbcType="VARCHAR" />  
+	    <result column="city" property="city" jdbcType="VARCHAR" />  
+	    <result column="skin_results" property="skinResults" jdbcType="VARCHAR" />  
+	  	<result column="yunfu" property="yunfu" jdbcType="INTEGER" />  
+	  	<result column="unionid" property="unionid" jdbcType="VARCHAR" />  
+	  	<result column="wxmbopenid" property="wxmbopenid" jdbcType="VARCHAR" />  
+		<result column="hidden" property="hidden" jdbcType="INTEGER" />  
+	  	<result column="deleted" property="deleted" jdbcType="INTEGER" />  
+	  	 <result column="descz" property="descz" jdbcType="VARCHAR" /> 
+	  	 <result column="email" property="email" jdbcType="VARCHAR" /> 
+	  	 <result column="sex" property="sex" jdbcType="INTEGER" />  
+	  	 <result column="wxpcopenid" property="wxpcopenid" jdbcType="VARCHAR" />  
+	  	 <result column="skin_test_time" property="skinTestTime" jdbcType="INTEGER" />
+	  	 <result column="first_skin_test_time" property="firstSkinTestTime" jdbcType="INTEGER" />
+	  	 <result column="role" property="role" jdbcType="INTEGER" />
+	</resultMap>  
+	
+	
+<update id="updateOne"  parameterType="cn.bevol.internal.entity.user.UserInfo">
+ UPDATE hq_user
+ <trim prefix="set" suffixOverrides=",">
+  <if test="unionid!=null">unionid=#{unionid},</if>
+  <if test="wxmbopenid!=null">wxmbopenid=#{wxmbopenid},</if>
+  <if test="wxpcopenid!=null">wxpcopenid=#{wxpcopenid},</if>
+  <if test="loginTime!=null">logintime=#{loginTime},</if>
+  <if test="sex!=null">sex=#{sex},</if>
+  <if test="age!=null">age=#{age},</if>
+  <if test="nickname!=null">nickname=#{nickname},</if>
+  <if test="headimgurl!=null">headimgurl=#{headimgurl},</if>
+ 	<if test="city!=null">city=#{city},</if>
+  <if test="yunfu!=null">yunfu=#{yunfu},</if>
+  <if test="language!=null">language=#{language},</if>
+    <if test="phone!=null">phone=#{phone},</if>
+     <if test="password!=null">password=#{password},</if>
+  <if test="country!=null">country=#{country},</if>
+    <if test="usercode!=null">usercode=#{usercode},</if>
+    <if test="email!=null">email=#{email},</if>
+ </trim>
+ WHERE id=#{id}
+</update>
+	
+  	<!-- 注册 -->   
+	<insert id="register" parameterType="cn.bevol.internal.entity.user.UserInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into hq_user(tstamp,crdate,nickname,password,headimgurl,province,city,usercode,phone,logintime,username,unionid,wxmbopenid,wxpcopenid,country,language,email,role,sex) 
+		values(#{updateStamp},#{createStamp},#{nickname},#{password},#{headimgurl},#{province},#{city},#{usercode},#{phone},#{loginTime},#{nickname},#{unionid},#{wxmbopenid},#{wxpcopenid},#{country},#{language},#{email},#{role},#{sex})
+	</insert>
+	
+   	  	<!--手机 登录 -->  
+	<select id="phoneLogin" resultMap="UserInfoResult">
+		select id,hidden,deleted,sex,age,tstamp updateStamp,crdate createStamp,nickname,headimgurl,province,city,phone,result,skin_results skinResults,test,yunfu,wxmbopenid,unionid,wxpcopenid,descz,email,skin_test_time,first_skin_test_time,role from hq_user where phone=#{phone} and password=#{password}  and hidden!=3
+	</select>
+	
+	<!--邮箱 登录 -->  
+	<select id="emailLogin" resultMap="UserInfoResult">
+		select id,hidden,deleted,sex,age,tstamp updateStamp,crdate createStamp,nickname,headimgurl,province,city,phone,result,skin_results skinResults,test,yunfu,wxmbopenid,unionid,wxpcopenid,descz,email,skin_test_time,first_skin_test_time,role from hq_user where email=#{email} and password=#{password}  and hidden!=3
+	</select>
+   	
+   	
+   	 <!--查找字段 -->  
+	<select id="findFeild"  resultMap="UserInfoResult">
+		select id,hidden,deleted,sex,age,tstamp updateStamp,crdate createStamp,nickname,headimgurl,province,city,phone,result,skin_results skinResults,test,yunfu,wxmbopenid,unionid,wxpcopenid,descz,email,skin_test_time,first_skin_test_time,role from hq_user where ${feild}=#{val} and hidden!=3 limit 0,1
+	</select>
+	
+	<!--查找字段 -->  
+	<select id="findFeild2_6"  resultMap="UserInfoResult">
+		select id,hidden,deleted,sex,age,tstamp updateStamp,crdate createStamp,nickname,headimgurl,province,city,phone,result,skin_results skinResults,test,yunfu,wxmbopenid,unionid,wxpcopenid,descz,email,skin_test_time,first_skin_test_time,password,role from hq_user where ${feild}=#{val} and hidden!=3 limit 0,1
+	</select>
+	<!--查询手机号 -->  
+	<select id="getPhoneById"  resultType="String">
+		select phone from hq_user where id=#{id}
+	</select>
+		<!--查询用户昵称 -->  
+	<select id="getNickNameById"  resultType="String">
+		select nickname from hq_user where id=#{id}
+	</select>
+		<!--查询用户头像-->  
+	<select id="getHeadImgUrl"  resultType="String">
+		select headimgurl from hq_user where id=#{id}
+	</select>
+	
+   	 <!--重置密码 -->  
+	<update id="restPassword" >
+		update hq_user set password=#{password},usercode=#{usercode} where phone=#{phone} 
+	</update>
+	
+	<update id="restPassword2" >
+		update hq_user set password=#{password} where phone=#{phone} and hidden!=3
+	</update>
+	
+	<update id="restPassword3" >
+		update hq_user set password=#{password} where email=#{email}  and hidden!=3
+	</update>
+	
+	<update id="updatePasswordById" >
+		update hq_user set password=#{password} where id=#{id} 
+	</update>
+	
+	<!--更新用户信息 -->  
+	<update id="updateUserInfo"  >
+		update hq_user set nickname=#{nickname},age=#{age},sex=#{sex},city=#{city},headimgurl=#{headimgurl},province=#{province},yunfu=#{yunfu}  where id=#{id} 
+	</update>
+	
+	<!--更新用户信息2.6 -->  
+	<update id="updateUserInfo2_6"  parameterType="cn.bevol.internal.entity.user.UserInfo">
+		 UPDATE hq_user
+		 <trim prefix="set" suffixOverrides=",">
+		  <if test="sex!=null">sex=#{sex},</if>
+		  <if test="age!=null">age=#{age},</if>
+		  <if test="nickname!=null">nickname=#{nickname},</if>
+		  <if test="headimgurl!=null">headimgurl=#{headimgurl},</if>
+		  <if test="city!=null">city=#{city},</if>
+		  <if test="yunfu!=null">yunfu=#{yunfu},</if>
+		  <if test="language!=null">language=#{language},</if>
+		  <if test="phone!=null">phone=#{phone},</if>
+		  <if test="country!=null">country=#{country},</if>
+		  <if test="email!=null">email=#{email},</if>
+		  <if test="province!=null">province=#{province}</if>
+		 </trim>
+		 WHERE id=#{id}
+    </update>
+	
+	<update id="updateUserById"  >
+		update hq_user set nickname=#{nickname},age=#{age},city=#{city},headimgurl=#{headimgurl},province=#{province},yunfu=#{yunfu},sex=#{sex}  where id=#{id} 
+	</update>
+	
+		<!--更新肤质信息 -->  
+	<update id="updateSKin" >
+		update hq_user  
+	<trim prefix="set" suffixOverrides=",">
+	  	<if test="result!=null">result=#{result},</if>
+	  	<if test="skinResults!=null">skin_results=#{skinResults},</if>
+	      <if test="skinTestTime!=null">skin_test_time=#{skinTestTime},</if>
+	      <if test="firstSkinTestTime!=null">first_skin_test_time=#{firstSkinTestTime},</if>
+	 </trim>    where id=#{id} 
+	</update>
+	
+			<!--更新肤质信息 -->  
+	<update id="userbindPhoneById" >
+		update hq_user set phone=#{phone},password=#{password}  where id=#{id} 
+	</update>
+	
+	
+	
+	<update id="updateField" >
+		update hq_user set  ${key}=#{val}  where  ${feild}=#{fval}
+	</update>
+	<delete id="deleteField">
+			delete from hq_user where  ${feild}=#{val} 
+	</delete>
+   	
+   	
+   	   	  	<!--查找用户 -->  
+	<select id="findUserinfoByIds" resultType="cn.bevol.internal.entity.user.UserInfo">
+		select id,nickname,headimgurl,descz,role from hq_user where id in(${ids}) 
+	</select>
+
+
+	<select id="findDoyenTotalById" resultType="INTEGER">
+		select COUNT(id) from hq_doyen where hidden_status=0 AND delete_status=0 and user_id=#{id}
+	</select>
+
+	<select id="findTotalById" resultType="INTEGER">
+		select COUNT(id) from hq_new_find where hidden=0 and author_id=#{id}
+	</select>
+	
+	<select id="getSkinTitle" resultType="java.util.Map">
+		select id,title,remark from hq_survey_title where id in(${ids}) 
+	</select>
+	
+	<select id="getSkinQuestion" resultType="java.util.Map">
+		select id,question,survey_title_id,tip from hq_survey_question where survey_title_id in(${titleIds}) 
+	</select>
+	
+	<select id="getSkinAnswer" resultType="java.util.Map">
+		select id,answer,survey_question_id,score from hq_survey_answer
+	</select>
+	
+	<select id="getRegisterDayNum" resultType="Long">
+		SELECT count(*) FROM hq_user WHERE crdate BETWEEN UNIX_TIMESTAMP(ADDDATE(DATE(SYSDATE()),0)) AND UNIX_TIMESTAMP(ADDDATE(DATE(SYSDATE()),1)) AND phone IS NOT NULL AND phone!=''
+	</select>
+	
+</mapper>

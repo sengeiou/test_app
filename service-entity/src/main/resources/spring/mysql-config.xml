@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="dataSource"   class="com.mchange.v2.c3p0.ComboPooledDataSource"   destroy-method="close">
+        <property name="driverClass" value="${mvn.bevol.mysql.driverclass}"/>
+        <property name="jdbcUrl" value="${mvn.bevol.mysql.connect.url}"/>
+        <property name="user" value="${mvn.bevol.mysql.connect.username}"/>
+        <property name="password" value="${mvn.bevol.mysql.connect.password}"/>
+        <property name="acquireIncrement" value="${mvn.bevol.c3p0.acquireIncrement}"/>
+        <property name="initialPoolSize" value="${mvn.bevol.c3p0.initialPoolSize}"/>
+        <property name="maxIdleTime" value="${mvn.bevol.c3p0.maxIdleTime}"/>
+        <property name="maxPoolSize" value="${mvn.bevol.c3p0.maxPoolSize}"/>
+        <property name="minPoolSize" value="${mvn.bevol.c3p0.minPoolSize}"/>
+        <property name="acquireRetryDelay" value="1000"/>
+        <property name="acquireRetryAttempts" value="60"/>
+        <property name="breakAfterAcquireFailure" value="false"/>
+    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.bevol.mybatis.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+    <bean id="txManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="txManager" />
+
+</beans>

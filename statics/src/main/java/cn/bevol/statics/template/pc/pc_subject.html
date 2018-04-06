@@ -1,0 +1,72 @@
+<#include "/header.html" />
+
+<!--面包屑导航-->
+<div class="crumbs_nav">
+    <h1 class="crumbs_nav_text"><a target="_self" href="/">首页</a> / 专题详细</h1>
+</div>
+
+<!--分类内容-->
+<div class="main-cosmetics-class">
+    <div class="cosmetics-class-left main-padding-4">
+
+        <#list lists as list>
+            <div class="goods-main-info-box">
+                <ul class="page-content">
+                    <#switch list.type>
+                        <#case 1>
+                            <#assign path = "/find/" >
+                            <#assign imagePath = img+"/Find/" >
+                        <#break/>
+                        <#case 11>
+                            <#assign path = "/industry/" >
+                            <#assign imagePath = img+"/Industry/" >
+                        <#break/>
+                        <#case 5>
+                            <#assign path = "/product/" >
+                            <#if list.image?? && list.image != ''>
+                                    <#assign imagePath = img+"/Goods/source/" >
+                                <#else/>
+                                    <#assign imagePath = img+"/Goods/default.png" >
+                            </#if>
+
+                        <#break/>
+                        <#case 6>
+                            <#assign path = "/composition/" >
+                            <#assign imagePath = img+"/composition/default.png" >
+                        <#break/>
+                    </#switch>
+                    <#if list.mid?? && list.mid != ''>
+                        <#assign id=list.mid />
+                        <#else/>
+                        <#assign id=list.entityId />
+                    </#if>
+                    <a href="${path!}${id}.html" alt="${list.title}">
+                        <li class="cursor">
+                            <div class="goods-main-info-img w268">
+                                <#if list.pcImage?? && list.pcImage != '' && list.pcImage != '0'>
+                                    <img class="h186" src="${imagePath}/{$list.pcImage}@80p" alt="${list.title}">
+                                    <#elseif  list.image?? && list.image != '' && list.image!='0' />
+                                    <img class="h186" src="${imagePath}${list.image!}@80p" alt="${list.title}">
+                                    <#else/>
+                                    <img class="h186" src="${imagePath}@80p" alt="${list.title}">
+                                </#if>
+                            </div>
+                            <div class="article-main-info-text">
+                                <p class="p1">${list.title}</p>
+                            </div>
+                            <div class="clear"></div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </#list>
+
+    </div>
+
+    <#include "/sidebar.html" />
+
+
+    <#include "/page.html" />
+
+</div>
+<#include "/footer.html" />

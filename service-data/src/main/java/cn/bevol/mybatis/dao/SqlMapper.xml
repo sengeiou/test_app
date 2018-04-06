@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Created by mysens on 17-6-19. -->
+<mapper namespace="cn.bevol.mybatis.dao.SqlMapper">
+
+    <update id="update" parameterType="String">
+        ${strsql}
+    </update>
+
+    <select id="select" parameterType="String" resultType="Map">
+        ${strsql}
+    </select>
+
+    <delete id="delete" parameterType="String">
+        ${strsql}
+    </delete>
+
+    <insert id="insert"  parameterType="String">
+        ${strsql}
+    </insert>
+
+</mapper>

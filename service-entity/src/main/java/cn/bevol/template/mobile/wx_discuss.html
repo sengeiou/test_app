@@ -1,0 +1,54 @@
+<!--评论-->
+<div class="comments-box" id="comments-html">
+    <#if discuss??>
+        <div class="comments-title">讨论(${discussTotal})</div>
+        <#if discuss.userInfo?? >
+            <div class="comment-answer">
+                <ul id="dpuser" class="comment-answer-ul-box">
+                    <li class="comment-answer-left">
+                        <#if discuss.userInfo.headimgurl?? && discuss.userInfo.headimgurl !=''>
+                            <img src="${discuss.userInfo.headimgurl!}" alt="" class="head-box-img-url" onerror="javascript:this.src='${img}/wx/images2/morenyixiu.png';" />
+                            <#else/>
+                            <img src="${img}/wx/images2/morenyixiu.png" alt="" class="head-box-img-url" />
+                        </#if>
+                    </li>
+                    <li class="comment-answer-right" id="comment-main">
+                        <#if discuss.skinResults??>
+                            <span class="span01">${discuss.userInfo.nickname!}</span>
+                            <div class="head-skin">
+                                <#list discuss.skinArr as skin>
+                                    <span>${skin!}</span>
+                                </#list>
+                            </div>
+                            <#else/>
+                            <span id="span_my" class="span02">${discuss.userInfo.nickname!}</span>
+                        </#if>
+                        <div class="add-time">${discuss.createStampText!}</div>
+                        <div>
+                            <div style="height: 0px;"></div>
+                            <div id="minicontent_${discuss.id}" class="mincontent comments-text-style">${discuss.content!}</div>
+                            <#if discuss.image?? && discuss.image != "">
+                                <div class="biaoqingbao">
+                                    <img src="${discuss.image}@60p" class="biaoqingbao-img">
+                                </div>
+                            </#if>
+
+                            <div class="comment-time-box">
+                                <div class="comment-time">&nbsp;</div>
+                                <div class="comment-zan-box">
+                                    <p class="icon-zanzan find-child-zan" title="${discuss.id}" id="clikecount">
+                                        <img src="${img}/wx/images2/zan.png" class="dianzan">
+                                        <span>${discuss.likeNum}</span>
+                                    </p>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="comm-line"></div>
+                        </div>
+                    </li>
+                    <div class="clear"></div>
+                </ul>
+            </div>
+        </#if>
+    </#if>
+</div>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.app.dao.mapper.ListsOldMapper">
+    <resultMap id="ListsResultMap" type="cn.bevol.app.entity.model.Lists">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="delete_status" property="deleted" jdbcType="INTEGER"/>
+        <result column="hide_status" property="hidden" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateStamp" jdbcType="INTEGER"/>
+        <result column="create_time" property="createStamp" jdbcType="INTEGER"/>
+       <result column="mini_image" property="miniImage" jdbcType="VARCHAR"/>
+        <result column="tag_ids" property="tagIds" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultTagMap" type="cn.bevol.app.entity.model.Tags">
+        <result column="tag" property="tag" jdbcType="VARCHAR"/>
+        <result column="tag_ids" property="id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getById" resultMap="ListsResultMap">
+		SELECT * FROM hq_lists WHERE  id=#{id}
+	</select>
+
+    <select id="findByPage" resultMap="ListsResultMap">
+        SELECT * FROM hq_lists
+        WHERE 1=1 and delete_status =0 and hide_status=0
+        <if test="wheres != null">
+            <if test="wheres.beginTime != null">
+                and update_time between #{wheres.beginTime} and #{wheres.endTime}
+            </if>
+        </if>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        SELECT count(*) FROM hq_lists
+        WHERE 1=1 and hide_status =0 and delete_status=0
+    </select>
+    <select id="findTagByPage" resultMap="ResultTagMap">
+        SELECT tag_ids FROM hq_lists
+        WHERE 1=1
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+    <select id="getListsByTagId" resultMap="ListsResultMap">
+        SELECT * FROM hq_lists
+        WHERE 1=1 and  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%' OR tag_ids=#{tagId} OR tag_ids LIKE '%${tagId},%'
+        LIMIT #{pagedBegin},#{pageSize}
+    </select>
+    <select id="selectTotalByTag" resultType="int">
+        SELECT count(*) FROM hq_lists
+        WHERE 1=1 AND  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%'  OR tag_ids LIKE '%${tagId},%'
+    </select>
+</mapper>

@@ -1,0 +1,124 @@
+<#include "/wx_share_header.html" />
+<link href="https://static.bevol.cn/wx/css/wx_find.css" rel="stylesheet" />
+<div class="main_page">
+
+    ${content}
+
+
+
+    <div class="sbp-tpl"></div>
+</div>
+<script type="text/plain" sbp-tpl id="sbp-tpl">
+<%if(result.commentNum>0) {%>
+<div id="pinglun" style="background-color:#fff;font-size:14px;color:#494B60;padding:10px 10px;">
+	专题点评 (<%=result.commentNum%>)
+</div>
+<div class="comment-tpl"></div>
+<%if(result.commentNum > 5){%>
+<ul class="mui-table-view" style='background-color:#f5f2fa;text-align:center;top: 1px;padding-bottom: 12px;'>
+	<li class="mui-table-view-cell">
+		<a href="http://istatic.bevol.cn/static/download/init/13" class="mui-navigate-right" id='qbpl'>
+									<span style='color:#ac69fe;font-size:15px;'>
+										查看全部<%=result.commentNum%>条评论
+									</span>
+		</a>
+	</li>
+</ul>
+<%}else{%>
+<br>
+<%}%>
+<%}%>
+</script>
+<script type="text/plain" comment-tpl id="comment-tpl">
+	<%for(var k=0;k<result.length;k++) {  var comment=result[k] %>
+<ul id='dpuser' class='mui-table-view mui-grid-view'>
+	<li class="mui-table-view-cell mui-media mui-col-xs-2 radius_left" style="height:auto;padding:0 0;background-color:#fff;padding-bottom:0px;">
+		<a href="javascript:void(0)" style="display:block;width:40px;height:40px;border-radius:40px;margin:0 auto;margin:6px">
+			<%if(comment.userInfo.headimgurl && comment.userInfo.headimgurl.indexOf('file:') != 0){%>
+			<img src="<%=comment.userInfo.headimgurl%>" alt="" style="width:40px;height:40px;border-radius:20px;display:inline-block;transition: linear 0.25s;line-height:0;" />
+			<%}else {%>
+			<img src="${img}/morenyixiu.png" alt="" style="width:40px;height:40px;border-radius:20px;display:inline-block;transition: linear 0.25s;line-height:0;" />
+			<%}%>
+		</a>
+	</li>
+	<li class='mui-table-view-cell mui-media mui-col-xs-10 radius_right' style='font-size:12px;text-align: left;vertical-align: top;padding-top:5px;padding-bottom:5px;background-color:#fff;position:relative;'>
+
+
+		<%if(comment.skinResults) {%>
+		<span style="color:#9d7db1;border:1px solid transparent;"><%=comment.userInfo.nickname%></span>
+		<div style="background: #fff;height: 21px;">
+			<%for(var i=0; i<comment.skinDesc.length; i++){%>
+			<span id="mark_box"><%=comment.skinDesc[i]%></span>
+			<%}%>
+			<span style="float:right;font-size:12px;color:#a570c4;text-align:center;padding:3px 0;margin-right: 5px;" class="mui-icon iconfont find-child-zan"><img src="${img}/zan.png" style="width: 12px;margin-bottom: -1px;"><span style="padding-left: 5px;"><%=comment.likeNum%></span>
+		</div>
+		<%}else{%>
+		<span id="span_my" style="color:#9d7db1;line-height: 42px;"><%=comment.userInfo.nickname%></span>
+		<%}%>
+	</li>
+</ul>
+<div style='background-color:#fff;padding: 5px 10px;font-size: 15px;margin-bottom:5px;'>
+
+	<%if(comment.isEssence) {%>
+	<button style="font-size:12px;background-color:#A570C4;height:18px;line-height:18px;padding:1px 4px;display:inline-block;margin-left:0px;border:none;color:#fff;margin-top:0px;">精华</button>
+	<%}%>
+
+
+	<p id="minicontent_<%=comment.id%>" class="mincontent" >
+		<a href="#delete" class="jubao" title="<%=comment.id%>" style="color: #4d4d4d;">
+			<%=comment.content%>
+		</a>
+	</p>
+</div>
+<%if(comment.subComments&&comment.subComments.length>0) {%>
+<% for(var j=0;j<comment.subComments.length;j++) {%>
+<p style='background-color:#fff;margin-left:10px;margin-right:10px;border-radius:8px;margin-top:10px;padding:10px 10px;font-size: 15px;color: #4d4d4d;'>
+	<span style='color:#ac69fe;'><%=comment.subComments[j].nickname%>回复：</span>
+	<%=comment.subComments[j].content%>
+</p>
+<%}%>
+<%}%>
+<%}%>
+</script>
+<script>
+    var id = ${id}
+    var url="${api_url_https!'https://api.bevol.cn'}"+"/entity/state/find";
+    $.ajax({
+        url:url,
+        type:'post',
+        data:{id:id},
+        dataType:"json",
+        success:function(data) {
+            var comcont=template('sbp-tpl',data);
+            $('.sbp-tpl').replaceWith(comcont);
+        }
+    });
+    var comment_url="${api_url_https!'https://api.bevol.cn'}"+"/entity/comment/lists/find";
+    $.ajax({
+        url:comment_url,
+        type:'post',
+        data:{id:id},
+        dataType:"json",
+        success:function(data) {
+            for(var k=0;k<data.result.length;k++) {
+                data.result[k].skinDesc = getSkinResluts(data.result[k].skinResults)
+            }
+            var comcont=template('comment-tpl',data);
+            $('.comment-tpl').replaceWith(comcont);
+        }
+    });
+
+    var skintype={"DZ":"重干", "DQ":"轻干", "OQ":"轻油", "OZ":"重油", "RZ":"重耐", "RQ":"轻耐", "SQ":"轻敏", "SZ":"重敏", "N":"非色素", "P":"色素", "T":"紧致", "W":"皱纹"}
+    function getSkinResluts(skinResults) {
+        var skinDesc=[];
+        if(skinResults) {
+            skinResults=skinResults.split("_");
+            skinDesc[0]=skintype[skinResults[0]];
+            skinDesc[1]=skintype[skinResults[1]];
+            skinDesc[2]=skintype[skinResults[2]];
+            skinDesc[3]=skintype[skinResults[3]];
+        }
+        return skinDesc;
+    }
+</script>
+<#include "/wx_share_footer.html" />

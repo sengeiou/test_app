@@ -1,0 +1,203 @@
+<#include "/header.html" />
+    <script src="${js}/jquery.page.js" type="text/javascript"></script>
+    <script src="${js}/cosmetics_class.js" type="text/javascript"></script>
+    <!--面包屑导航-->
+    <div class="crumbs_nav">
+        <h2 class="crumbs_nav_text"><a href="/">首页</a> / 成分相关化妆品</h2>
+    </div>
+
+    <!--分类内容-->
+    <div class="main-cosmetics-class">
+        <div class="cosmetics-class-left main-padding-4">
+
+            <h6>共有 ${goodsTotal!} 款产品含有该成分</h6>
+
+            <div class="goods-main-info-box">
+                <ul class="page-content">
+                    <#list items as item>
+                        <a href="/product/${item.mgoods_id}.html" alt="${item.title}" >
+                            <li class="cursor" a-href data-mid="111">
+                                <div class="goods-main-info-img w186">
+                                    <#if (item.image)??  && (item.image)?length gt 0>
+                                        <img class="h186" src="${img}/Goods/source/${item.image}@80p" alt="${item.title}">
+                                        <#else/>
+                                        <img class="h186" src="${img}/Goods/source/default.png@80p" alt="${item.title}">
+                                    </#if>
+                                </div>
+                                <div class="goods-main-info-text">
+                                    <p class="p1">${item.title}</p>
+                                    <#if item.english??>
+                                        <p class="p2">${item.english}</p>
+                                        <#else/>
+                                        <p class="p2"></p>
+                                    </#if>
+                                    <#if item.alias??>
+                                        <p class="p3">别名：${item.alias}</p>
+                                        <#else/>
+                                        <p class="p3"></p>
+                                    </#if>
+                                    <p class="absolute p4">
+                                        <#if item.data_type??>
+                                            <#if item.data_type == "1">
+                                                进口备案
+                                            </#if>
+                                            <#if item.data_type == "2">
+                                                国产备案
+                                            </#if>
+                                            <#if item.data_type == "3">
+                                                国产备案
+                                            </#if>
+                                            <#if item.data_type == "4">
+                                                产品标签
+                                            </#if>
+                                            :${item.approval!}
+                                            <#else/>
+                                            暂待
+                                        </#if>
+                                    </p>
+
+                                </div>
+                                <div class="clear"></div>
+                            </li>
+                        </a>
+                    </#list>
+                </ul>
+                <#if items?size==0>
+                    <div id="search-more" style="">
+                        <p class="p1">对不起，没有搜索到您要的结果，美丽修行建议您：</p><br />
+                        <p class="p2">核对产品名称</p><br>
+                        <p class="p3">建议核对产品包装上的正式名称，避免错别字或者同义词。<br />
+                            ● 名称错误：如欧泊莱，正确名为欧珀莱<br />
+                            ● 产品类型：如洁面产品，名称可能为洁颜，洗颜，洗面等。</p><br /><br />
+                        <p class="p2">海淘产品补录</p><br>
+                        <p class="p3">部分海淘产品尚未录入，期待您提供产品成分表和图片，发到邮箱qinyuping@bevol.cn，以便我们及时补录。</p><br /><br />
+                        <p class="p2">国产产品</p><br>
+                        <p class="p3">美丽修行只收录在药监局CFDA备案的国产产品。查不到的国产产品，大部分是由于产品没有备案，美丽修行不会补录。<br />
+                            我们一般会在3个月之内把药监局备案的产品收录到数据库（页面会注明“国产备案”），如果这个产品是新备案的，可能需要等一段时间才能在美丽修行查询到。</p>
+                        <br>
+                    </div>
+                </#if>
+            </div>
+        </div>
+        <#include "/sidebar.html" />
+        <div class="foot-page">
+            <div class="tcdPageCode"></div>
+        </div>
+    </div>
+    <#include "/footer.html" />
+
+    <script type="text/plain" page-tpl id="page-tpl">
+<%for(var i=0;i<items.length;i++) { var item=items[i];%>
+
+    <a href="/product/<%=item.mid%>.html" title="<%=item.title%>" >
+        <li class="cursor" a-href data-mid="111">
+            <div class="goods-main-info-img w186">
+                <%if(!item.image){%>
+                <img class="h186" src="<%='https://img0.bevol.cn/Goods/default.png'%>" alt="<%=item.title%>">
+                <%}else {%>
+                <img class="h186" src="<%='https://img0.bevol.cn/Goods/source/'+item.image+'@80p'%>" alt="<%=item.title%>">
+                <%}%>
+            </div>
+            <div class="goods-main-info-text">
+                <p class="p1"><%=item.title%></p>
+                <%if(item.alias){%>
+                <p class="p2"><%=item.alias%></p>
+                <%}else{%>
+                <p class="p2"></p>
+                <%}%>
+                <%if(item.remark){%>
+                <p class="p3">别名：<%=item.remark%></p>
+                <%}else{%>
+                <p class="p3"></p>
+                <%}%>
+                <p class="absolute p4">
+                <%if(item.data_type){%>
+                    <%if(item.data_type==1) {%>
+                        <%='进口备案'%>
+                    <%} else if(item.data_type==2) {%>
+                        <%='国产备案'%>
+                    <%} else if(item.data_type==3) {%>
+                        <%='国产备案'%>
+                    <%} else if(item.data_type==4) {%>
+                        <%='产品标签'%>
+                    <%}else{%>
+                        暂待
+                    <%}%>：<%=item.approval%>
+                <%}%>
+                </p>
+
+            </div>
+            <div class="clear"></div>
+        </li>
+    </a>
+<%}%>
+<%if(items.length==0) {%>
+    <div id="search-more" style="">
+        <p class="p1">对不起，没有搜索到您要的结果，美丽修行建议您：</p><br />
+        <p class="p2">核对产品名称</p><br>
+        <p class="p3">建议核对产品包装上的正式名称，避免错别字或者同义词。<br />
+        ● 名称错误：如欧泊莱，正确名为欧珀莱<br />
+        ● 产品类型：如洁面产品，名称可能为洁颜，洗颜，洗面等。</p><br /><br />
+        <p class="p2">海淘产品补录</p><br>
+        <p class="p3">部分海淘产品尚未录入，期待您提供产品成分表和图片，发到邮箱qinyuping@bevol.cn，以便我们及时补录。</p><br /><br />
+        <p class="p2">国产产品</p><br>
+        <p class="p3">美丽修行只收录在药监局CFDA备案的国产产品。查不到的国产产品，大部分是由于产品没有备案，美丽修行不会补录。<br />
+        我们一般会在3个月之内把药监局备案的产品收录到数据库（页面会注明“国产备案”），如果这个产品是新备案的，可能需要等一段时间才能在美丽修行查询到。</p>
+        <br>
+    </div>
+<%}%>
+</script>
+    <script type="text/javascript" src="${js}/arttmpl.js?v1.0.2"></script>
+    <script>
+        //重新 remove;
+        //按照分类搜索
+        $(".goods-category li a").on("click",function() {
+            var id=$(this).data("id");
+            $("#search_form").data("category",id);
+            search();
+        });
+        //选择分类
+        var category=$.getUrlField("category");
+
+        //成分id
+        var composition_id = ${(composition.id)?c};
+
+        var composition_title=$.getUrlField("composition_title");
+        if(composition_id&&composition_title)
+            $("#composition_title").text("含有"+decodeURI(composition_title)+"的产品");
+
+        $("#search_form").data("category",category);
+        category=category||0;
+        cosmetics_class.cosmetics.refresh=function(p) {
+            location.href="/composition/goods/${composition.mid}.html?p="+p;
+
+        }
+        $("ul [data-id="+category+"]").addClass("active");
+        var keywords= $("#search_form").val();
+        cosmetics_class.cosmetics.remote=function(curr,call) {
+            curr=curr||1;
+            keywords=$.trim(keywords);
+            var url="https://api.bevol.cn/search/goods/index?p="+curr+'&keywords='+keywords;
+            if(category) {
+                url+="&category="+category;
+            }
+            if(composition_id) {
+                url+="&cps="+composition_id;
+            }
+            $.ajax({
+                url:url,
+                dataType:"jsonp",
+                jsonp: "callback",
+                success:function(data){
+                    data=data.data;
+                    var comlist=template('page-tpl',data);
+                    $(".page-content").html(comlist);
+                    $(".cosmetics-class-left h6").html("共有 " + data.total + " 款产品含有该成分");
+                    var pageto;
+                    var pagesize=20;
+                    if(call)
+                        call(curr,pagesize,data.total)
+                }
+            });
+        }
+    </script>

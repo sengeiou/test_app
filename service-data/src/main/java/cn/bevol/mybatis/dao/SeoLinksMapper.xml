@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Created by mysens on 17-7-19. -->
+<mapper namespace="cn.bevol.mybatis.dao.SeoLinksMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.mybatis.model.SeoLinks">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectAll" resultType="cn.bevol.mybatis.model.SeoLinks">
+        select title,url from hq_seo_links where hidden = 1
+    </select>
+</mapper>

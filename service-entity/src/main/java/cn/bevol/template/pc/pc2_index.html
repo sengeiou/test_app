@@ -1,0 +1,263 @@
+<#include "/header2.html" />
+<div class="container">
+    <div id="app-img">
+        <img src="https://img1.bevol.cn/pc/images/iphone.png" alt="">
+    </div>
+    <div class="intro-container">
+        <p>美丽是一种修行</p>
+        <p>查询${product_total}种化妆品安全系数，最懂安全和功效的护肤神器</p>
+        <div class="search">
+            <ul id="search-ul">
+                <li class="item-active">产品</li>
+                <li>成分</li>
+            </ul>
+            <div id="search-container">
+                <input type="search" placeholder="搜索${product_total}种化妆品">
+                <div class="search-button">
+                    <i class="fa fa-search" aria-hidden="true" style="margin-right: 5px"></i>
+                </div>
+            </div>
+        </div>
+        <div class="hot-word">
+            <#list hot_keywords as hot_keyword>
+                <a href="">${hot_keyword}</a>
+            </#list>
+        </div>
+        <div id="download-app">
+            <i class="fa fa-download fa-x" aria-hidden="true" style="vertical-align: middle;font-size: 20px;color: white"></i>
+            <span>下载美丽修行</span>
+        </div>
+    </div>
+</div>
+
+<div class="sort-container" id="product-container">
+    <div class="top-line">
+        <div id="rotate-container">
+            <i class="fa fa-angle-double-up fa-x" aria-hidden="true"></i>
+        </div>
+    </div>
+    <p id="product-sort">妆品分类</p>
+    <ul class="sort">
+        <#list categories as category>
+            <li>${category[0]}</li>
+        </#list>
+    </ul>
+    <p id="prod-name">${categories[0][1][0].title}</p>
+    <hr>
+    <p id="prod-alias">${categories[0][1][0].alias}</p>
+
+    <div id="v-container">
+        <#list categories as category>
+            <!-- 妆品 part -->
+            <div  class="swiper-container-${category_index} <#if category_index ==0>block<#else/>none</#if>" style="width: 1070px">
+                <ul class="swiper-wrapper block">
+                    <#list category[1] as goods>
+                        <li class="swiper-slide product-slide" data-name="${goods.title}" data-alias="${goods.alias}">
+                            <img src="${img}/Goods/source/${goods.image}@50p" alt="" width="216" height="216">
+                        </li>
+                    </#list>
+                </ul>
+                <div id="first-scroll" class="swiper-scrollbar"></div>
+            </div>
+        </#list>
+    </div>
+    <div class="check-more">查看更多</div>
+</div>
+<!--行业资讯-->
+<div class="news-container">
+    <div class="news">
+        <img src="https://img1.bevol.cn/Industry/597559441a928.jpg@80p" alt="" width="250" height="250">
+        <section>
+            <p>行业资讯</p>
+            <p>美修为您带来最全的护肤前沿资讯，这里有最全的化妆品前沿咨询这里有最全的化妆品前沿咨询。</p>
+            <a href="industry.html"><div class="more-news">更多资讯</div></a>
+        </section>
+    </div>
+</div>
+
+<div id="find" class="sort-container" style="border: none">
+    <!--文章列表-->
+    <p id="second-title">文章列表</p>
+    <ul class="sort">
+        <li class="sort-active">最新</li>
+        <li>最热</li>
+    </ul>
+    <div class="flex-container">
+        <div class="swiper-button-prev swiper-button-black" id="position-left"></div>
+        <!-- part1 -->
+        <div id="new-find" class="swiper-container block" style="margin-bottom: 32px;width: 75%">
+            <div class="swiper-wrapper">
+                <#list new_find as find>
+                    <#if find_index lt 8>
+                        <div class="swiper-slide first-slide" style="width:300px;">
+                            <div class="find">
+                                <div class="find-img-container">
+                                    <img src="${img}/Find/${find.pc_image}@50p" alt="" width="100%">
+                                </div>
+                                <section>
+                                    <p>${find.title}</p>
+                                </section>
+                                <p class="more">ReadMore</p>
+                                <hr>
+                            </div>
+                        </div>
+                    </#if>
+                </#list>
+            </div>
+        </div>
+
+        <!-- part2 -->
+        <div id="hot-find" class="swiper-container" style="margin-bottom: 32px;width: 75%">
+            <div class="swiper-wrapper">
+                <#list hot_find as find>
+                    <#if find_index lt 8>
+                        <div class="swiper-slide first-slide" style="width:300px;">
+                            <div class="find">
+                                <div class="find-img-container">
+                                    <img src="${img}/Find/${find.pc_image}@50p" alt="" width="100%">
+                                </div>
+                                <section>
+                                    <p>${find.title}</p>
+                                </section>
+                                <p class="more">ReadMore</p>
+                                <hr>
+                            </div>
+                        </div>
+                    </#if>
+                </#list>
+            </div>
+        </div>
+
+        <div class="swiper-button-next swiper-button-black" id="position-right"></div>
+    </div>
+</div>
+<!--关于我们-->
+<div class="about-us">
+    <p>
+        关于我们
+    </p>
+</div>
+
+<!--下载&关注 -->
+<div class="download-container">
+    <div class="download">
+        <img src="${img}/pc/images2/k1.png" alt="">
+        <p>下载&关注</p>
+        <p id="download-intro"><i class="fa fa-quote-left" aria-hidden="true"></i>拯救全世界用错化妆品的妹子<i
+                class="fa fa-quote-right" aria-hidden="true"></i></p>
+        <div class="download-logo-container">
+            <a href="http://istatic.bevol.cn/static/download/init/6">
+                <div class="download-logo">
+                    <i class="fa fa-apple" aria-hidden="true"></i>
+                    <p>Iphone</p>
+                </div>
+            </a>
+            <!--<img src="https://img0.bevol.cn/pc/images/pcpicture/qr-code.png" alt="">-->
+            <a href="http://istatic.bevol.cn/static/download/init/7">
+                <div class="download-logo">
+                    <i class="fa fa-android" aria-hidden="true"></i>
+                    <p>Android</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://static.bevol.cn/pc/js2/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+//          swiper轮播配置
+        var mySwiper = $('#new-find').swiper({
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            autoplay: 3000,
+            slidesPerView: 'auto',
+        });
+        var secSwiper = $('.swiper-container-0').swiper({
+            slidesPerView: 'auto',
+            scrollbar: '.swiper-scrollbar',
+            scrollbarHide: false,
+        });
+        //产品，成分切换
+        $("#search-ul").on("click","li",function () {
+            $("#search-ul li").removeClass("item-active");
+            $(this).addClass("item-active")
+        });
+        //    页面上滑按钮
+        $("#rotate-container").click(function () {
+//              var h=document.documentElement.clientHeight * 0.9 - 60;
+            var chuangkou = $("html,body");
+            chuangkou.stop();
+            chuangkou.animate({scrollTop: 540}, 400);
+        });
+//   产品hover的时候其它都被遮罩,产品图上面出现相应的信息
+        $("#v-container ul").on("mouseover", "li", function () {
+            var $pro = $("#prod-name");
+            var $proAlias = $("#prod-alias");
+            $pro[0].innerText = this.getAttribute("data-name");
+            $proAlias[0].innerText = this.getAttribute("data-alias");
+        });
+//    下载美丽修行弹框出现
+        $("#download-app, #btn-download").click(function () {
+            $("#download").css({
+                display: 'block'
+            });
+            $("#download-container").animate({top: '200px'}, 500, "swing");
+            $("#download-container").animate({top: '150px'}, 300);
+        });
+        $("#download-delete").click(function () {
+            $("#download-container").animate({top: '200px'}, 300);
+            $("#download-container").animate({top: '-350px'}, 500, "swing");
+            setTimeout(function () {
+                $("#download").css({
+                    display: 'none'
+                });
+            }, 800);
+        });
+//        妆品切换
+        $("#product-container .sort").on("click","li",function () {
+            var index = $(this).index();
+            $("#product-container .sort li").removeClass("sort-active");
+            $(this).addClass("sort-active");
+
+            $("#v-container > div").removeClass("block");
+            $("#v-container > div").eq(index).addClass("block");
+            var secSwiper = $('.swiper-container-'+index+'').swiper({
+                slidesPerView: 'auto',
+                scrollbar: '.swiper-scrollbar',
+                scrollbarHide: false,
+                scrollbarDraggable : true
+            });
+        });
+//        文章切换
+        $("#find .sort").on("click","li",function () {
+            var index = $(this).index();
+            $("#find .sort li").removeClass("sort-active");
+            $(this).addClass("sort-active");
+            if(index == 0) {
+                $('#new-find').addClass("block");
+                $('#hot-find').removeClass("block");
+                var mySwiper = $('#new-find').swiper({
+                    nextButton: '.swiper-button-next',
+                    prevButton: '.swiper-button-prev',
+                    autoplay: 3000,
+                    slidesPerView: 'auto',
+                    scrollbarDraggable : true
+                });
+            }else if(index == 1){
+                $('#new-find').removeClass("block");
+                $('#hot-find').addClass("block");
+                var mySwiper = $('#hot-find').swiper({
+                    nextButton: '.swiper-button-next',
+                    prevButton: '.swiper-button-prev',
+                    autoplay: 3000,
+                    slidesPerView: 'auto',
+                    scrollbarDraggable : true
+                });
+            }
+        })
+    })
+</script>
+<#include "/footer2.html" />

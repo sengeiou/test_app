@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.bevol.mybatis.dao.DownloadRecordMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.mybatis.model.DownloadRecord">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+		<id column="qrcode_id" property="qrcodeId" jdbcType="INTEGER"/>
+        <result column="data_type" property="dataType" jdbcType="VARCHAR"/>
+		<result column="pc_total" property="pcTotal" jdbcType="INTEGER"/>
+		<result column="weixin_total" property="weixinTotal" jdbcType="INTEGER"/>
+		<result column="mobile_total" property="mobileTotal" jdbcType="INTEGER"/>
+		<result column="android_total" property="androidTotal" jdbcType="INTEGER"/>
+		<result column="ios_total" property="iosTotal" jdbcType="INTEGER"/>
+        <result column="total_num" property="totalNum" jdbcType="INTEGER"/>
+		<result column="statistics_date" property="statisticsDate" jdbcType="INTEGER"/>
+		<result column="create_date" property="createDate" jdbcType="INTEGER"/>
+        <result column="update_date" property="updateDate" jdbcType="INTEGER"/>
+    </resultMap>
+    
+   <select id="findByQrcodeId" resultMap="BaseResultMap">
+	   SELECT * FROM hq_download_record
+	   WHERE 1=1
+	   <if test="statisticsDate != null">
+		   AND statistics_date = #{statisticsDate}
+	   </if>
+	   <if test="qrcodeId !=null">
+		   AND qrcode_id = #{qrcodeId}
+	   </if>
+	   limit 0,1
+   </select>
+
+	<insert id="insert" parameterType="cn.bevol.mybatis.model.DownloadRecord">
+			insert into hq_download_record(qrcode_id,data_type,pc_total,mobile_total,android_total,ios_total,total_num,statistics_date,create_date)
+    	values
+    	(
+    		#{qrcodeId},#{dataType}, #{pcTotal}, #{mobileTotal}, #{androidTotal}, #{iosTotal}, #{totalNum},#{statisticsDate},#{createDate}
+    	)
+	</insert>
+	<update id="update" parameterType="cn.bevol.mybatis.model.DownloadRecord">
+		update hq_download_record set
+		<if test="qrcodeId">qrcode_id = #{qrcodeId},</if>
+		<if test="dataType!=null">data_type=#{dataType},</if>
+		<if test="pcTotal!=null">pc_total = #{pcTotal},</if>
+		<if test="mobileTotal!=null">mobile_total = #{mobileTotal},</if>
+		<if test="androidTotal!=null">android_total = #{androidTotal},</if>
+		<if test="weixinTotal!=null">weixin_total = #{weixinTotal},</if>
+		<if test="iosTotal!=null">ios_total = #{iosTotal},</if>
+		<if test="totalNum!=null">total_num = #{totalNum},</if>
+		<if test="statisticsDate!=null">statistics_date =#{statisticsDate},</if>
+		<if test="updateDate!=null">update_date =#{updateDate}</if>
+
+		where qrcode_id = #{qrcodeId}  AND statistics_date = #{statisticsDate}
+	</update>
+
+    <insert id="insertOrUpdate" parameterType="cn.bevol.mybatis.model.DownloadRecord">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from hq_download_record where statistics_date = #{statisticsDate}
+        </selectKey>
+        <if test="count == 0">
+        	insert into hq_download_record(qrcode_id,data_type,pc_total,weixin_total,android_total,ios_total,total_num,statistics_date,create_date)
+    	values
+    	(	
+    		#{qrcodeId},#{dataType}, #{pcTotal}, #{weixinTotal}, #{androidTotal}, #{iosTotal}, #{totalNum},#{statisticsDate},#{createDate}
+    	)
+        </if>
+        <if test="count > 0">
+			update hq_download_record set
+			<if test="qrcodeId">qrcode_id = #{qrcodeId},</if>
+			<if test="dataType!=null">data_type=#{dataType},</if>
+			<if test="pcTotal!=null">pc_total = #{pcTotal},</if>
+			<if test="mobileTotal!=null">mobile_total = #{mobileTotal},</if>
+			<if test="androidTotal!=null">android_total = #{androidTotal},</if>
+			<if test="weixinTotal!=null">weixin_total = #{weixinTotal},</if>
+			<if test="iosTotal!=null">ios_total = #{iosTotal},</if>
+			<if test="totalNum!=null">total_num = #{totalNum},</if>
+			<if test="statisticsDate!=null">statistics_date =#{statisticsDate},</if>
+			<if test="updateDate!=null">update_date =#{updateDate}</if>
+        </if>
+     </insert>
+   <select id="findByPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_download_record
+	    <if test="wheres != null">
+	      WHERE 1=1 
+	      <if test="wheres.beginTime != null">
+	        and statistics_date between #{wheres.beginTime} and #{wheres.endTime}
+	      </if>
+	    </if>
+	    <if test="orderBy != null">
+	      ORDER BY ${orderBy}
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+	<select id="findByPageCount" resultType="int">
+		SELECT count(*) FROM hq_download_record
+		<if test="wheres != null">
+		WHERE 1=1
+			<if test="wheres.beginTime != null">
+				and statistics_date between #{wheres.beginTime} and #{wheres.endTime}
+			</if>
+		</if>
+	</select>
+
+</mapper>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <#if staticType??>
+        <#if staticType=="find">
+            <#assign findClass="active" />
+            <#elseif staticType=="product" />
+            <#assign goodsClass="active" />
+            <#elseif staticType=="composition" />
+            <#assign compositionClass="active" />
+            <#elseif staticType=="index" />
+            <#assign indexClass="active" />
+            <#elseif staticType=="download" />
+            <#assign downloadClass="active" />
+            <#elseif staticType=="contact" || staticType=="about"/>
+            <#assign contactClass="active" />
+            <#elseif staticType=="question" />
+            <#assign qaClass="active" />
+            <#elseif staticType=="my/index" />
+            <#assign myClass="active" />
+            <#elseif staticType=="industry" />
+            <#assign industryClass="active" />
+            <#elseif staticType=="zt" />
+            <#assign subjectClass="active" />
+        </#if>
+    </#if>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="${description!}">
+    <meta name="keywords" content="${keywords!}">
+    <link rel="shortcut icon" href="${img}/www.ico.la_af49e6c91a9a793c3aa1e02f8f22f91a_30x30.ico"/>
+    <title>${title!}</title>
+    <#if back??>
+        <!--回源操作：禁止搜索引擎扫描-->
+        <meta name="robots" content="none" />
+        <base target="_blank" href="https://www.bevol.cn/"/>
+        <#else/>
+        <base target="_blank" />
+    </#if>
+    <link href='https://cdn.webfont.youziku.com/webfonts/nomal/104030/46614/5941df0cf629d819603f3ebb.css' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="${css!'https://static.bevol.cn/pc/css'}/pc_style_20170710.css" />
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="${js!'https://static.bevol.cn/pc/js'}/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $.getUrlField=function(key) {
+            var hurl=location.href;
+            if(hurl.indexOf("#")!=-1) {
+                hurl=hurl.substring(0,hurl.indexOf("#"));
+            }
+            //处理 oid 中包含id的参数
+            var ki=hurl.lastIndexOf("&"+key+"=");
+            if(ki!=-1) {
+                key="&"+key+"=";
+            } else {
+                ki=hurl.lastIndexOf("?"+key+"=");
+                if(ki==-1) return "";
+                key="?"+key+"=";
+            }
+            var keyindex=ki+key.length;
+            var keywords=hurl.substring(keyindex);
+            if(keywords.indexOf("&")!=-1) {keywords=keywords.substring(0,keywords.indexOf("&"))}
+            return keywords;
+        }
+    </script>
+</head>
+<body>
+<!--下载app模态框 zp 2017.5.15-->
+<div id="download" style="display: none">
+    <div class="top-download-app"></div>
+    <div id="download-container">
+        <div id="download-delete">
+            <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
+        </div>
+        <div style="display: inline-block">
+            <h1>扫描二维码直接下载</h1>
+            <img src="${img}/pc/images/pcpicture/qr-code.png" alt="" style="margin-left: -50px">
+        </div>
+        <div style="display: inline-block;vertical-align: top">
+            <h1>直接下载</h1>
+            <div class="ios-android" style="margin-top: 80px;background-color: #D3A3E8;"><a href="http://istatic.bevol.cn/static/download/init/6" style="text-decoration: none;color: white"><i class="fa fa-apple fa-2x" aria-hidden="true" style="vertical-align: middle;color: white"></i>&nbsp;&nbsp;iPhone下载</a></div>
+            <div class="ios-android" style="margin-top: 20px;background-color: #D3A3E8;"><a href="http://istatic.bevol.cn/static/download/init/5" style="text-decoration: none;color: white"><i class="fa fa-android fa-2x" aria-hidden="true" style="vertical-align: middle;color: white"></i>&nbsp;&nbsp;Android下载</a></div>
+        </div>
+    </div>
+</div>
+<!--end-->
+<div class="container">
+    <!--头部导航-->
+    <div class="main-header-container">
+        <div class="main-header">
+            <div class="header-logo">
+                <img src="${img}/pc/images/pcpicture/logo.png" alt="美丽修行">
+            </div>
+            <div class="main-col"></div>
+            <div class="header-nav">
+                <ul>
+                    <ul>
+                        <li><a data-index target="_self" href="/" alt="首页" class="${indexClass!}">首页</a></li>
+                        <!--<li><a data-download target="_self" href="/download.html" alt="下载APP" class="${downloadClass!}">下载APP</a></li>-->
+                        <li><a data-product target="_self" href="/product" class="${goodsClass!}" alt="妆品查询">妆品查询</a></li>
+                        <li><a data-composition target="_self" href="/composition" class="${compositionClass!}" alt="成分查询">成分查询</a></li>
+                        <li><a data-find target="_self" href="/find" class="${findClass!}" alt="往期文章">往期文章</a></li>
+                        <li><a data-industry target="_self" href="/industry" class="${industryClass!}" alt="行业资讯">行业资讯</a></li>
+                        <!--<li><a data-find target="_self" href="/zt" class="${subjectClass!}" alt="专题">专题</a></li>-->
+                        <!--<li><a data-contact target="_self" href="/about.html" alt="关于我们" class="${contactClass!}">关于我们</a></li>-->
+                        <li><a data-question target="_self" href="/question.html" alt="Q&A" class="${qaClass!}">Q&A</a></li>
+                        <li>&nbsp;</li>
+                        <li>
+                            <a data-download href="/download.html" alt="下载APP" class="" style="margin-left: -40px;padding-left:15px;padding-right:15px;background-color:#D2A4E6;height: 30px;line-height: 30px;border-radius: 5px;color: white">
+                                <i class="fa fa-mobile fa-x" aria-hidden="true" style="vertical-align: middle;font-size: 20px"></i>&nbsp;下载APP
+                            </a>
+                        </li>
+                        <li><a data-my target="_self" href="/my/index.html" id="myinfo" alt="登录" class="${myClass!}">登录</a></li>
+                        <li id="logout" style="display:none"><a target="_self" href="javascript:void(0)" alt="退出">退出</a></li>
+                        <div class="clear"></div>
+                    </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>

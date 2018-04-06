@@ -1,0 +1,47 @@
+
+		<div class="comment-alert" id="comment-alert">
+			<div class="comment-alert-main" id="comment-alert-main">
+				<div class="comment-person">
+					<img src=${headImgUrl} />
+				</div>
+				<p class="comment-name">${nickName}</p>
+				<div class="comment-skin">
+					<#if skin??>
+						<#list skin as sk>
+							<span>${sk}</span>
+						</#list>
+					</#if>
+				</div>
+				<div class="comment-star">
+					评星：
+					<#list 1..5 as t>
+                         <#if t lte score?eval >
+                             <img src="https://img0.bevol.cn/wx/images2/xiaostar.png" style="width: 14px;height: 14px; "/>
+                           <#else/>
+                             <#if t gt score?eval && t lt (score?eval + 1)>
+                                 <img src="https://img0.bevol.cn/wx/images2/xiaobanstar.png" style="width: 14px;height: 14px; "/>
+                           <#else/>
+                                 <img src="https://img0.bevol.cn/wx/images2/xiaostargree.png" style="width: 14px;height: 14px; " />
+                             </#if>
+                         </#if>
+                     </#list>
+				</div>
+				<p class="comment-content">
+					${content}
+				</p>
+				<div class="comment-content-goods">
+					<span class="goods-img">
+						<img src="${imgSrc!'https://img0.bevol.cn/Goods/default.png'}" alt="" />
+					</span>
+					<span class="goods-name-box">
+						<p class="goods-en">${title!}</p>
+						<#if alias??> 
+    					<p class="goods-cn">${alias!}</p>
+    					</#if>
+					</span>
+				</div>
+		<div class="close">
+			<img src="https://img0.bevol.cn/wx/images2/close_icon2.png" id="closeImg" />
+		</div>
+			</div>
+</div>

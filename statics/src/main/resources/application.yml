@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_null
+
+mybatis:
+  mapper-locations: cn/bevol/statics/dao/xml/*Mapper.xml
+
+bevol:
+  wx:
+    account: 美丽修行APP
+    appid: wx5c4d30c0bfde3818
+    appsecret: dcecc2310f1edb3c7656e713bac2943c
+    requiredUrl: http://bevol.ngrok.cc/wxapi/bevol/message
+    token: bevl

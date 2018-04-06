@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.app.dao.mapper.FindOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.app.entity.dto.Label">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="tstamp" property="tstamp" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="top" property="top" jdbcType="INTEGER"/>
+        <result column="tabs" property="tabs" jdbcType="VARCHAR"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMapFind" type="cn.bevol.app.entity.model.Find">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+        <result column="deleted" property="deleted" jdbcType="INTEGER"/>
+        <result column="crdate" property="updateStamp" jdbcType="INTEGER"/>
+        <result column="crdate" property="createStamp" jdbcType="INTEGER"/>
+        <result column="subhead" property="subhead" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="tag" property="tag" jdbcType="VARCHAR"/>
+        <result column="tag_ids" property="tagIds" jdbcType="VARCHAR"/>
+        <result column="descp" property="descp" jdbcType="VARCHAR"/>
+        <result column="header_image" property="headerImage" jdbcType="VARCHAR"/>
+        <result column="pc_image" property="pcImage" jdbcType="VARCHAR"/>
+        <result column="author_id" property="authorId" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="skin" property="skin" jdbcType="VARCHAR"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultTagMap" type="cn.bevol.app.entity.model.Tags">
+        <result column="tag" property="tag" jdbcType="VARCHAR"/>
+        <result column="tag_ids" property="id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findByPage" resultMap="BaseResultMapFind">
+        SELECT * FROM hq_new_find
+        WHERE 1=1 and hidden =0 and deleted = 0
+        <if test="wheres != null">
+            <if test="wheres.beginTime != null">
+                and update_time between #{wheres.beginTime} and #{wheres.endTime}
+            </if>
+        </if>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        SELECT count(*) FROM hq_new_find
+        WHERE 1=1 and hidden =0 and deleted = 0
+    </select>
+    <select id="findTagByPage" resultMap="ResultTagMap">
+        SELECT tag_ids FROM hq_new_find
+        WHERE 1=1 and hidden =0 and deleted = 0
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+    <select id="getFindByTagId" resultMap="BaseResultMapFind">
+        SELECT * FROM hq_new_find
+        WHERE 1=1 and  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%' OR tag_ids=#{tagId} OR tag_ids LIKE '%${tagId},%'
+        LIMIT #{pagedBegin},#{pageSize}
+    </select>
+    <select id="selectTotalByTag" resultType="int">
+        SELECT count(*) FROM hq_new_find
+        WHERE 1=1 AND  tag_ids LIKE '%,${tagId},%' OR tag_ids LIKE '%,${tagId}%'  OR tag_ids LIKE '%${tagId},%'
+    </select>
+
+    <select id="getById" resultMap="BaseResultMapFind">
+		SELECT id,title,descp, header_image,tag, image,tstamp,crdate,hidden,crdate,pc_image,author_id FROM hq_new_find WHERE  id=#{id}
+	</select>
+
+    <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+
+    <select id="findLabelList" resultMap="BaseResultMap">
+		SELECT id,title,top FROM hq_tags WHERE top &gt; 0 ORDER BY top LIMIT 0,20
+	</select>
+
+    <select id="findArticle" resultMap="BaseResultMap">
+        SELECT id,image,concat_ws('','http://img.bevol.cn/Find/',image,'@30p?t=',unix_timestamp(now())) path,tstamp,sort
+        FROM hq_new_find WHERE 1=1
+        <if test="id!=null">
+            AND id &lt; #{id}
+        </if>
+          ORDER BY id DESC LIMIT 0,3;
+    </select>
+
+    <select id="findType" resultMap="BaseResultMap">
+        SELECT id,title,image FROM hq_find_type WHERE hidden_status=0 AND delete_status=0 ORDER BY sort DESC  
+    </select>
+
+    <insert id="insertFindType" parameterType="cn.bevol.app.entity.dto.Label">
+        INSERT INTO `hq_find_type` (
+        title,
+        image
+        )
+        VALUES (#{title,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteFindType">
+        delete from hq_find_type where title= #{title,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertFindTags" parameterType="cn.bevol.app.entity.dto.Label">
+        INSERT INTO `hq_tags` (
+        title,
+        tabs,
+        type,
+        create_time,
+        update_time,
+        top
+        )
+        VALUES (#{title,jdbcType=VARCHAR},#{tabs,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+        #{createTime,jdbcType=INTEGER},#{updateTime,jdbcType=INTEGER},#{top,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteFindTags">
+        delete from hq_tags where title= #{title,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertNewFind" parameterType="cn.bevol.app.entity.dto.Label">
+        INSERT INTO `hq_new_find` (
+        title,
+        image,
+        tstamp,
+        crdate,
+        sort
+        )
+        VALUES (#{title,jdbcType=VARCHAR},#{image,jdbcType=VARCHAR},#{tstamp,jdbcType=INTEGER},#{crdate,jdbcType=INTEGER},#{sort,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteNewFind">
+        delete from hq_new_find where image= #{image,jdbcType=VARCHAR}
+    </delete>
+    
+	<update id="delNewTagsByTitle2">
+		delete from hq_new_tags where title=#{title} and tabs=#{tabs}
+	</update>
+	
+	<update id="updateNewTags2">
+		update hq_new_tags set title=#{newTitle} where title=#{title} and tabs=#{tabs}
+	</update>
+	
+	<select id="getAllTagList" resultMap="BaseResultMap">
+		SELECT * FROM hq_tag_list where delete_status=0
+	</select>
+	
+	<select id="getAllFind" resultMap="BaseResultMapFind">
+		SELECT id,title,tag,tag_ids FROM hq_new_find
+	</select>
+	
+	<update id="updateFindIds">
+		update hq_new_find set tag_ids=#{ids} where id=#{id}
+	</update>
+	
+	<update id="updateFindIds2">
+		update hq_new_find set tag_ids=#{tagIds},tag=#{tags} where id=#{id}
+	</update>
+	
+	<select id="getNewTagsByTitle2" resultMap="BaseResultMap">
+		SELECT * FROM hq_new_tags where title=#{title} and hidden=0
+	</select>
+	
+	<select id="getUserTag" resultType="java.util.Map">
+		SELECT id,title FROM hq_new_tags where tabs=#{tabs} and top>0 and hidden=0 order by top
+	</select>
+	
+	<insert id="insertListTags">
+		insert into hq_tag_list(title,create_time) values(#{title},#{createTime})
+	</insert>
+	
+	<update id="updateTabs">
+		update hq_new_tags set tag_ids=#{ids} where id=#{id}
+	</update>
+	
+	<delete id="excut" parameterType="String">
+		${strsql}
+	</delete>
+	
+</mapper>

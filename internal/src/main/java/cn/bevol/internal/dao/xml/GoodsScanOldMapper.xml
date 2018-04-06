@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="cn.bevol.internal.dao.mapper.GoodsScanOldMapper">
+	
+	<resultMap id="BaseResultMap" type="cn.bevol.internal.entity.model.Goods">
+		<id column="index_id" property="id" jdbcType="INTEGER"/>
+		<id column="title" property="title" jdbcType="VARCHAR"/>
+		<id column="thumbnail_one" property="image" jdbcType="VARCHAR"/>
+		<id column="made_country" property="country" jdbcType="VARCHAR"/>
+		<id column="brand" property="brand" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="findGoodsByBarcode" resultMap="BaseResultMap">
+		select brand,index_id,title,thumbnail_one,made_country from hq_goods_prepare where ean=#{ean} limit ${size}
+	</select>
+	
+		<select id="findGoodsById" resultMap="BaseResultMap">
+		select brand,index_id,title,thumbnail_one,made_country from hq_goods_prepare where index_id=#{goodsId}
+	</select>
+	
+	<update id="updateFields" >
+		update hq_goods_prepare set is_pass=#{isPass} where index_id=#{goodsId}
+	</update>
+	
+	<insert id="insertGoodsInfo">
+		INSERT into hq_upc (ean,goods_id,goods_mid,goods_title,state,hidden_status,deleted_status,create_time,update_time) select ean,goods_id,goods_mid,goods_title,state,hidden_status,deleted_status,create_time,update_time from hq_upc where ean=#{ean}
+	</insert>
+	
+	<update id="updateEan">
+		update hq_upc set ean=#{str} where ean =#{ean} ORDER BY id desc limit 1
+	</update>
+	
+	<insert id="insertGoodsPrepare">
+		INSERT into hq_goods_prepare (id,record_num,title,series,brand,company,final_company,country,publish_time,p_category_name,category_name,price_usa,public_name,pack_size,pack_capacity,pack_category,pack_material,listing_type,private_brand,currency,local_currency_price,ean,production_code,thumbnail_one,product_ingredients,spf,pack_specifications,patent_num,ingredients,formats,aroma_group,aroma,made_country,importers,distributor,manufacturer,is_pass) 
+		select id,record_num,title,series,brand,company,final_company,country,publish_time,p_category_name,category_name,price_usa,public_name,pack_size,pack_capacity,pack_category,pack_material,listing_type,private_brand,currency,local_currency_price,ean,production_code,thumbnail_one,product_ingredients,spf,pack_specifications,patent_num,ingredients,formats,aroma_group,aroma,made_country,importers,distributor,manufacturer,is_pass from hq_goods_prepare where ean=#{ean}
+	</insert>
+	
+	<update id="updatePrepareEan">
+		update hq_goods_prepare set ean=#{str} where ean =#{ean} ORDER BY id desc limit 1
+	</update>
+	
+</mapper>

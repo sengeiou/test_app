@@ -1,0 +1,112 @@
+<#if sidebarGoodsList??>
+	<div class="cosmetics-class-right main-padding-4">
+		<div class="concern">
+			<h6>热门产品：</h6>
+			<#list sidebarGoodsList as list>
+				<a href="/product/${list.mid}.html">
+					<section class="new-article">
+						<div class="goods-main-info-img w130">
+							<img class="h130" src="${img}/Goods/source/${list.image}@90p" alt="${list.title}">
+						</div>
+						<div class="sidebar-goods-main-info-text">
+							<p class="p1" style="word-wrap: break-word;">${list.title}</p>
+							<#if list.alias?? && list.alias !=''>
+								<p class="p2">${list.alias}</p>
+							</#if>
+							<#if list.remark?? && list.remark !=''>
+								<p class="p3">${list.remark}</p>
+							</#if>
+							<#-- freemarker注释
+							<#switch list.dataType>
+							<#case 1>
+								<p class="absolute p4">
+									进口备案:${list.approval}
+								</p>
+								<#break/>
+								<#case 2>
+									<p class="absolute p4">
+										国产备案: ${list.approval}
+									</p>
+									<#break/>
+									<#case 3>
+										<p class="absolute p4">
+											国产备案: ${list.approval}
+										</p>
+										<#break/>
+										<#case 4>
+											<p class="absolute p4">
+												产品标签
+											</p>
+											<#break/>
+											</#switch>
+											-->
+						</div>
+						<div class="clear"></div>
+					</section>
+				</a>
+			</#list>
+		</div>
+	</div>
+	<div style="clear:right"></div>
+</#if>
+<#if sidebarGoodsList??>
+	<div class="cosmetics-class-right main-padding-4" style="margin-top: 10px">
+		<div class="concern">
+			<h6>热门文章：</h6>
+			<#list sidebarFindList as list>
+				<section class="new-article">
+					<a href="/find/${list.id}.html">
+						<div class="img-container">
+							<#if list.pcImage?? && list.pcImage !='0'>
+								<img src="${img}/Find/${list.pcImage}@80p" alt="${list.title}">
+								<#else/>
+								<img src="${img}/Find/${list.image}@80p" alt="${list.title}">
+							</#if>
+						</div>
+						<p>${list.title}</p>
+					</a>
+				</section>
+			</#list>
+		</div>
+	</div>
+	<div style="clear:right"></div>
+</#if>
+<div class="cosmetics-class-right main-padding-4" <#if sidebarGoodsList??>style="margin-top: 10px"</#if>>
+<div class="ad-box">
+	<img class="w335" src="${img!'https://img0.bevol.cn'}/pc/images/pcpicture/ad.jpg" alt="广告">
+</div>
+<div class="concern">
+	<h6>关注我们：</h6>
+	<ul>
+		<li>
+			<a href="https://weibo.com/u/5643631703" target="_blank">
+				<img src="${img!'https://img0.bevol.cn'}/pc/images/pcpicture/weibo.png" alt="微博">
+				<p>微博</p>
+			</a>
+		</li>
+		<li class="gzh-hover">
+			<a href="javascript: void(0);">
+				<img src="${img!'https://img0.bevol.cn'}/pc/images/pcpicture/weixin.png" alt="微信">
+				<p>微信</p>
+			</a>
+		</li>
+
+		<div class="clear"></div>
+	</ul>
+	<div class="gzhewm"><img src="${img!'https://img0.bevol.cn'}/pc/images/pcpicture/gzhewm.png" alt="微信公众号二维码"></div>
+</div>
+<div class="qr-code-box">
+	<div class="qr-code-img">
+		<img src="${img!'https://img0.bevol.cn'}/pc/images/pcpicture/download-code.png" alt="二维码">
+	</div>
+	<div class="qr-code-main">
+		<img src="${img!'https://img0.bevol.cn'}/pc/images/pcpicture/mxlogo.png" alt="logo">
+	</div>
+	<div class="qr-code-text">
+		<h5>美丽修行</h5>
+		<p>最懂安全和功效的护肤神器！</p>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+<div class="clear"></div>

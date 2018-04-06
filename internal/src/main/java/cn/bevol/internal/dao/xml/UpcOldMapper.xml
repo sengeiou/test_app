@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Created by mysens on 17-5-25. -->
+<mapper namespace="cn.bevol.internal.dao.mapper.UpcOldMapper">
+    <insert id="addUpcRelation" parameterType="cn.bevol.internal.entity.dto.UpcDTO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `hq_upc` (
+        <trim suffixOverrides=",">
+            <if test="ean != null">ean,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="goodsMid != null">goods_mid,</if>
+            <if test="goodsTitle != null">goods_title,</if>
+            <if test="state != null">state,</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="ean != null">#{ean,jdbcType=VARCHAR},</if>
+            <if test="goodsId != null">#{goodsId,jdbcType=INTEGER},</if>
+            <if test="goodsMid != null">#{goodsMid,jdbcType=VARCHAR},</if>
+            <if test="goodsTitle != null">#{goodsTitle,jdbcType=VARCHAR},</if>
+            <if test="state != null">#{state,jdbcType=INTEGER},</if>
+        </trim>
+        )
+    </insert>
+
+    <update id="saveUpcRelation" parameterType="cn.bevol.internal.entity.dto.UpcDTO">
+        update `hq_upc`
+        <set>
+            <if test="ean != null">ean = #{ean,jdbcType=VARCHAR},</if>
+            <if test="goodsId != null">goods_id = #{goodsId,jdbcType=INTEGER},</if>
+            <if test="goodsMid != null">goods_mid = #{goodsMid,jdbcType=VARCHAR},</if>
+            <if test="goodsTitle != null">goods_title = #{goodsTitle,jdbcType=VARCHAR},</if>
+            <if test="state != null">state = #{state,jdbcType=INTEGER},</if>
+            <if test="hiddenStatus != null">hidden_status = #{hiddenStatus,jdbcType=INTEGER},</if>
+            <if test="deletedStatus != null">deleted_status = #{deletedStatus,jdbcType=INTEGER},</if>
+        </set>
+        where
+        <choose>
+            <when test="id != null">
+                id = #{id}
+            </when>
+            <otherwise>
+                ean = #{ean}
+            </otherwise>
+        </choose>
+    </update>
+
+    <update id="saveUpcRelationList" parameterType="cn.bevol.internal.entity.dto.UpcDTO">
+        update `hq_upc`
+        <set>
+            <if test="hiddenStatus != null">hidden_status = #{hiddenStatus,jdbcType=INTEGER},</if>
+            <if test="deletedStatus != null">deleted_status = #{deletedStatus,jdbcType=INTEGER},</if>
+        </set>
+        where id in
+        <foreach collection="idsArr" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <insert id="addUpcSource" parameterType="java.util.List">
+        insert into `hq_upc_source` (ean, goodsTitle, source)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.ean,jdbcType=VARCHAR}, #{item.goodsTitle,jdbcType=INTEGER},#{item.source,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <update id="saveUpcSource" parameterType="cn.bevol.internal.entity.dto.UpcSourceDTO">
+        update `hq_upc_source`
+        <set>
+            <if test="state != null">state = #{state,jdbcType=INTEGER},</if>
+            <if test="deletedStatus != null">deleted_status = #{deletedStatus,jdbcType=INTEGER},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="saveUpcSourceByBatch" parameterType="cn.bevol.internal.entity.dto.UpcSourceDTO">
+        update `hq_upc_source`
+        <set>
+            <if test="state != null">state = #{state,jdbcType=INTEGER},</if>
+            <if test="deletedStatus != null">deleted_status = #{deletedStatus,jdbcType=INTEGER},</if>
+        </set>
+        where id in
+        <foreach collection="idsArr" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    
+    <!--根据字段查询产品  -->
+    <select id="selectGoods" resultType="Integer">
+    	select goods_id from hq_upc where ean=#{field}
+    </select>
+    
+    
+    <select id="selectGoodsNewEan" resultType="Integer">
+    	select goods_id from hq_upc where ean_new=#{ean}
+    </select>
+    
+    <update id="addNewUpc">
+    	update hq_upc set ean_new =#{str} where ean=#{ean}
+    </update>
+</mapper>

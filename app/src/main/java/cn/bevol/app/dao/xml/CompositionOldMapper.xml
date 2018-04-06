@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.app.dao.mapper.CompositionOldMapper">
+	<resultMap id="BaseResultMap" type="cn.bevol.app.entity.model.Composition">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="name" property="title" jdbcType="VARCHAR"/>
+		<result column="tstamp" property="updateStamp" jdbcType="INTEGER"/>
+		<result column="crdate" property="createStamp" jdbcType="INTEGER"/>
+		<result column="deleted" property="deleted" jdbcType="INTEGER"/>
+		<result column="hidden" property="hidden" jdbcType="INTEGER"/>
+
+		<result column="efficacy" property="efficacy" jdbcType="INTEGER"/>
+		<result column="english" property="english" jdbcType="VARCHAR"/>
+		<result column="frequency" property="frequency" jdbcType="INTEGER"/>
+		<result column="active" property="active" jdbcType="VARCHAR"/>
+		<result column="safety" property="safety" jdbcType="VARCHAR"/>
+		<result column="name" property="title" jdbcType="VARCHAR"/>
+
+		<result column="acne_risk" property="acneRisk" jdbcType="INTEGER"/>
+		<result column="cas" property="cas" jdbcType="VARCHAR"/>
+		<result column="other_title" property="otherTitle" jdbcType="VARCHAR"/>
+		<result column="remark" property="remark" jdbcType="VARCHAR"/>
+		<result column="used_num" property="usedNum" jdbcType="INTEGER"/>
+		<result column="safety" property="safety" jdbcType="VARCHAR"/>
+		<result column="shenyong" property="shenyong" jdbcType="VARCHAR"/>
+		<result column="used" property="used" jdbcType="VARCHAR"/>
+		<result column="pid" property="pid" jdbcType="INTEGER"/>
+		<result column="mpid" property="mPid" jdbcType="VARCHAR"/>
+		<result column="mid" property="mid" jdbcType="VARCHAR"/>
+		<result column="used_name" property="usedTitle" jdbcType="VARCHAR"/>
+		<result column="cm_name" property="cmTitle" jdbcType="VARCHAR"/>
+		<result column="cm_english" property="cmEnglish" jdbcType="VARCHAR"/>
+
+	</resultMap>
+
+	<resultMap id="DirtyCompositionMap" type="cn.bevol.app.entity.dto.DirtyCompositionDTO">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<id column="name" property="name" jdbcType="VARCHAR"/>
+		<id column="pid" property="pid" jdbcType="INTEGER"/>
+		<id column="crdate" property="crdate" jdbcType="VARCHAR"/>
+		<id column="tstamp" property="tstamp" jdbcType="VARCHAR"/>
+		<id column="delete_status" property="deleteStatus" jdbcType="INTEGER"/>
+		<id column="alias" property="alias" jdbcType="INTEGER"/>
+		<id column="cm_name" property="cmName" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap id="cpsResultMap" type="cn.bevol.app.entity.vo.CompositionName">
+		<result column="name" property="title" jdbcType="VARCHAR"/>
+		<result column="english" property="english" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<select id="compositionByMid" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition WHERE  mid=#{mid} and hidden=0 and deleted=0
+	</select>
+	<select id="compositionById" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition WHERE  id=#{id} and hidden=0 and deleted=0
+	</select>
+	<select id="getById" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition WHERE  id=#{id} and hidden=0 and deleted=0
+	</select>
+	<select id="getByIds" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition WHERE  id in
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getDirtyById" resultMap="DirtyCompositionMap">
+		SELECT * FROM hq_dirty_composition WHERE  id=#{id}
+	</select>
+
+	<select id="getDirtyByIds" resultMap="DirtyCompositionMap">
+		SELECT * FROM hq_dirty_composition WHERE  id IN
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<insert id="addDirtyComposition" parameterType="cn.bevol.app.entity.dto.DirtyCompositionDTO" useGeneratedKeys="true" keyProperty="id">
+		insert into hq_dirty_composition (
+		<trim suffixOverrides=",">
+			<if test="name != null">`name`,</if>
+			<if test="pid != null">`pid`,</if>
+			<if test="alias != null">`alias`,</if>
+			<if test="cmName != null">`cm_name`,</if>
+		</trim>
+		)
+		VALUES
+		(
+		<trim suffixOverrides=",">
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="pid != null">#{pid,jdbcType=INTEGER},</if>
+			<if test="alias != null">#{alias,jdbcType=INTEGER},</if>
+			<if test="cmName != null">#{cmName,jdbcType=VARCHAR},</if>
+		</trim>
+		)
+		on DUPLICATE KEY UPDATE
+		<trim suffixOverrides=",">
+			<if test="pid != null">pid = #{pid,jdbcType=INTEGER},</if>
+			<if test="alias != null">alias = #{alias,jdbcType=INTEGER},</if>
+			<if test="cmName != null">cm_name = #{cmName,jdbcType=VARCHAR},</if>
+			<if test="deleteStatus != null">delete_status = #{deleteStatus,jdbcType=INTEGER},</if>
+		</trim>
+	</insert>
+
+	<sql id="DirtyCompositionFields">
+		<set>
+			<if test="name != null">`name` = #{name,jdbcType=VARCHAR},</if>
+			<if test="pid != null">pid = #{pid,jdbcType=INTEGER},</if>
+			<if test="alias != null">alias = #{alias,jdbcType=INTEGER},</if>
+			<if test="cmName != null">cm_name = #{cmName,jdbcType=VARCHAR},</if>
+			<if test="deleteStatus != null">delete_status = #{deleteStatus,jdbcType=INTEGER},</if>
+		</set>
+	</sql>
+
+	<update id="saveDirtyComposition" parameterType="cn.bevol.app.entity.dto.DirtyCompositionDTO">
+		update hq_dirty_composition
+		<include refid="DirtyCompositionFields"/>
+		where id = #{id}
+	</update>
+
+	<update id="saveDirtyCompositionList" parameterType="cn.bevol.app.entity.dto.DirtyCompositionDTO">
+		update hq_dirty_composition
+		<include refid="DirtyCompositionFields"/>
+		where id in
+		<foreach collection="idsArr" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<select id="getByMid" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition WHERE  mid=#{mid}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition
+	</select>
+
+	<select id="getCompositionByPid" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition where id in(${ids})
+	</select>
+
+
+	<select id="getUsedsByUid" resultType="cn.bevol.app.entity.model.Used">
+		SELECT * FROM hq_used where id in(${used}) order by field(id,${used})
+	</select>
+
+	<select id="getAllUsed" resultType="cn.bevol.app.entity.model.Used">
+		SELECT * FROM hq_used
+	</select>
+
+	<select id="findByNames" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition where name in
+		<foreach item="item" index="index" collection="namess" open="(" separator="," close=")">
+			#{item}
+		</foreach> or english in
+		<foreach item="item" index="index" collection="namess" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		group by name ;
+	</select>
+
+	<select id="findByLikeNames" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition where
+		<foreach item="item" index="index" collection="namess" open="" separator="or" close="">
+			name like  '%${item}%' or english like  '%${item}%'
+		</foreach>
+	</select>
+
+	<select id="findByName" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition where name=#{name} or english=#{name}  limit 0,1 
+	</select>
+
+	<select id="findCleanMarkByName" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition where cm_name=#{name} or cm_english=#{name}  limit 0,1 
+	</select>
+
+	<select id="findTmpByNames" resultMap="BaseResultMap">
+		SELECT * FROM hq_dirty_composition where name in
+		<foreach item="item" index="index" collection="namess" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		group by name ;
+	</select>
+	<select id="findCompositionByIds" resultMap="cpsResultMap">
+		SELECT `name`,english FROM hq_composition WHERE  id IN
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+	<select id="findTmpCleanMarkByName" resultMap="BaseResultMap">
+		SELECT * FROM hq_dirty_composition where cm_name=#{name}  limit 0,1 
+	</select>
+	<select id="findFormatCps" resultType="String">
+		SELECT if(pid, pid, id) as id from hq_composition where id in
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+	<insert id="insertdirtyComposition" parameterType="cn.bevol.app.entity.model.Composition" useGeneratedKeys="true" keyProperty="id">
+		insert into hq_dirty_composition(`name`,pid,crdate) value(#{title},0,#{crdate})
+	</insert>
+
+	<select id="findCompositionKeyIdByPage" resultType="java.util.List">
+		SELECT id,mid FROM hq_composition
+		<if test="wheres != null">
+			WHERE 1=1 and mid is not null and mid !="" and deleted =0 and hidden =0
+		</if>
+		<if test="orderBy != null">
+			ORDER BY ${orderBy}
+		</if>
+		<if test="pageSize > 0">
+			LIMIT #{pagedBegin},#{pageSize}
+		</if>
+	</select>
+	<select id="selectTotal" resultType="int">
+		SELECT count(*) FROM hq_composition  WHERE 1=1 and mid is not null and mid !="" and deleted =0 and hidden =0
+	</select>
+
+	<select id="getSourceCps" resultType="java.util.Map">
+		SELECT * FROM source_skinstore_detail limit #{pager},#{pageSize}
+	</select>
+
+	<select id="SourceCpsCount" resultType="long">
+		SELECT count(*) FROM source_skinstore_detail
+	</select>
+
+	<insert id="addCompositionInfo" parameterType="cn.bevol.app.entity.dto.CompositionDTO" useGeneratedKeys="true" keyProperty="id">
+		insert into hq_composition (
+		<trim suffixOverrides=",">
+			<if test="name != null">`name`,</if>
+			<if test="english != null">english,</if>
+			<if test="used != null">used,</if>
+			<if test="efficacy != null">efficacy,</if>
+			<if test="usedNum != null">used_num,</if>
+			<if test="active != null">active,</if>
+			<if test="safety != null">safety,</if>
+			<if test="acneRisk != null">acne_risk,</if>
+			<if test="shenyong != null">shenyong,</if>
+			<if test="cas != null">cas,</if>
+			<if test="pid != null">pid,</if>
+			<if test="otherTitle != null">other_title,</if>
+			<if test="remark != null">remark,</if>
+			<if test="u1 != null">u1,</if>
+			<if test="usedName != null">used_name,</if>
+			<if test="OSPW != null">OSPW,</if>
+			<if test="OSPT != null">OSPT,</if>
+			<if test="OSNW != null">OSNW,</if>
+			<if test="OSNT != null">OSNT,</if>
+			<if test="ORPW != null">ORPW,</if>
+			<if test="ORNW != null">ORNW,</if>
+			<if test="ORNT != null">ORNT,</if>
+			<if test="DSPW != null">DSPW,</if>
+			<if test="DSPT != null">DSPT,</if>
+			<if test="DSNW != null">DSNW,</if>
+			<if test="DSNT != null">DSNT,</if>
+			<if test="DRPW != null">DRPW,</if>
+			<if test="DRPT != null">DRPT,</if>
+			<if test="DRNW != null">DRNW,</if>
+			<if test="DRNT != null">DRNT,</if>
+			<if test="ORPT != null">ORPT,</if>
+			<if test="namelength != null">namelength,</if>
+			<if test="crdate != null">crdate,</if>
+			<if test="tstamp != null">tstamp,</if>
+			<if test="cmName != null">cm_name,</if>
+			<if test="cmEnglish != null">cm_english,</if>
+		</trim>
+		) values (
+		<trim suffixOverrides=",">
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="english != null">#{english,jdbcType=VARCHAR},</if>
+			<if test="used != null">#{used,jdbcType=VARCHAR},</if>
+			<if test="efficacy != null">#{efficacy,jdbcType=VARCHAR},</if>
+			<if test="usedNum != null">#{used_num,jdbcType=INTEGER},</if>
+			<if test="active != null">#{active,jdbcType=VARCHAR},</if>
+			<if test="safety != null">#{safety,jdbcType=VARCHAR},</if>
+			<if test="acneRisk != null">#{acne_risk,jdbcType=INTEGER},</if>
+			<if test="shenyong != null">#{shenyong,jdbcType=VARCHAR},</if>
+			<if test="cas != null">#{cas,jdbcType=VARCHAR},</if>
+			<if test="pid != null">#{pid,jdbcType=INTEGER},</if>
+			<if test="otherTitle != null">#{otherTitle,jdbcType=VARCHAR},</if>
+			<if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+			<if test="u1 != null">#{u1,jdbcType=INTEGER},</if>
+			<if test="usedName != null">#{usedName,jdbcType=VARCHAR},</if>
+			<if test="OSPW != null">#{OSPW,jdbcType=VARCHAR},</if>
+			<if test="OSPT != null">#{OSPT,jdbcType=VARCHAR},</if>
+			<if test="OSNW != null">#{OSNW,jdbcType=VARCHAR},</if>
+			<if test="OSNT != null">#{OSNT,jdbcType=VARCHAR},</if>
+			<if test="ORPW != null">#{ORPW,jdbcType=VARCHAR},</if>
+			<if test="ORNW != null">#{ORNW,jdbcType=VARCHAR},</if>
+			<if test="ORNT != null">#{ORNT,jdbcType=VARCHAR},</if>
+			<if test="DSPW != null">#{DSPW,jdbcType=VARCHAR},</if>
+			<if test="DSPT != null">#{DSPT,jdbcType=VARCHAR},</if>
+			<if test="DSNW != null">#{DSNW,jdbcType=VARCHAR},</if>
+			<if test="DSNT != null">#{DSNT,jdbcType=VARCHAR},</if>
+			<if test="DRPW != null">#{DRPW,jdbcType=VARCHAR},</if>
+			<if test="DRPT != null">#{DRPT,jdbcType=VARCHAR},</if>
+			<if test="DRNW != null">#{DRNW,jdbcType=VARCHAR},</if>
+			<if test="DRNT != null">#{DRNT,jdbcType=VARCHAR},</if>
+			<if test="ORPT != null">#{ORPT,jdbcType=VARCHAR},</if>
+			<if test="namelength != null">#{namelength,jdbcType=INTEGER},</if>
+			<if test="crdate != null">#{crdate,jdbcType=INTEGER},</if>
+			<if test="tstamp != null">#{tstamp,jdbcType=INTEGER},</if>
+			<if test="cmName != null">#{cmName,jdbcType=INTEGER},</if>
+			<if test="cmEnglish != null">#{cmEnglish,jdbcType=INTEGER},</if>
+		</trim>
+		)
+	</insert>
+
+	<sql id="CompositionFields">
+		<set>
+			<if test="name != null">`name` = #{name,jdbcType=VARCHAR},</if>
+			<if test="english != null">english = #{english,jdbcType=VARCHAR},</if>
+			<if test="used != null">used = #{used,jdbcType=VARCHAR},</if>
+			<if test="efficacy != null">efficacy = #{efficacy,jdbcType=VARCHAR},</if>
+			<if test="usedNum != null">used_num = #{usedNum,jdbcType=INTEGER},</if>
+			<if test="active != null">active = #{active,jdbcType=VARCHAR},</if>
+			<if test="safety != null">safety = #{safety,jdbcType=VARCHAR},</if>
+			<if test="acneRisk != null">acne_risk = #{acneRisk,jdbcType=INTEGER},</if>
+			<if test="shenyong != null">shenyong = #{shenyong,jdbcType=VARCHAR},</if>
+			<if test="cas != null">cas = #{cas,jdbcType=VARCHAR},</if>
+			<if test="pid != null">pid = #{pid,jdbcType=INTEGER},</if>
+			<if test="otherTitle != null">other_title = #{otherTitle,jdbcType=VARCHAR},</if>
+			<if test="remark != null">remark = #{remark,jdbcType=VARCHAR},</if>
+			<if test="u1 != null">u1 = #{u1,jdbcType=INTEGER},</if>
+			<if test="usedName != null">used_name = #{usedName,jdbcType=VARCHAR},</if>
+			<if test="OSPW != null">OSPW = #{OSPW,jdbcType=VARCHAR},</if>
+			<if test="OSPT != null">OSPT = #{OSPT,jdbcType=VARCHAR},</if>
+			<if test="OSNW != null">OSNW = #{OSNW,jdbcType=VARCHAR},</if>
+			<if test="OSNT != null">OSNT = #{OSNT,jdbcType=VARCHAR},</if>
+			<if test="ORPW != null">ORPW = #{ORPW,jdbcType=VARCHAR},</if>
+			<if test="ORNW != null">ORNW = #{ORNW,jdbcType=VARCHAR},</if>
+			<if test="ORNT != null">ORNT = #{ORNT,jdbcType=VARCHAR},</if>
+			<if test="DSPW != null">DSPW = #{DSPW,jdbcType=VARCHAR},</if>
+			<if test="DSPT != null">DSPT = #{DSPT,jdbcType=VARCHAR},</if>
+			<if test="DSNW != null">DSNW = #{DSNW,jdbcType=VARCHAR},</if>
+			<if test="DSNT != null">DSNT = #{DSNT,jdbcType=VARCHAR},</if>
+			<if test="DRPW != null">DRPW = #{DRPW,jdbcType=VARCHAR},</if>
+			<if test="DRPT != null">DRPT = #{DRPT,jdbcType=VARCHAR},</if>
+			<if test="DRNW != null">DRNW = #{DRNW,jdbcType=VARCHAR},</if>
+			<if test="DRNT != null">DRNT = #{DRNT,jdbcType=VARCHAR},</if>
+			<if test="ORPT != null">ORPT = #{ORPT,jdbcType=VARCHAR},</if>
+			<if test="namelength != null">namelength = #{namelength,jdbcType=INTEGER},</if>
+			<if test="hidden != null">hidden = #{hidden,jdbcType=INTEGER},</if>
+			<if test="deleted != null">deleted = #{deleted,jdbcType=INTEGER},</if>
+			<if test="tstamp != null">tstamp = #{tstamp,jdbcType=INTEGER},</if>
+			<if test="cmName != null">cm_name = #{cmName,jdbcType=INTEGER},</if>
+			<if test="cmEnglish != null">cm_english = #{cmEnglish,jdbcType=INTEGER},</if>
+		</set>
+	</sql>
+
+	<update id="saveCompositionInfo" parameterType="cn.bevol.app.entity.dto.CompositionDTO">
+		update hq_composition
+		<include refid="CompositionFields"/>
+		where id = #{id}
+	</update>
+
+	<update id="saveCompositionList" parameterType="cn.bevol.app.entity.dto.CompositionDTO">
+		update hq_composition
+		<include refid="CompositionFields"/>
+		where id in
+		<foreach collection="idsArr" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<update id="saveCompositionMid">
+		update hq_composition set mid=#{mid} where id = #{id}
+	</update>
+
+	<select id="getMidById" resultType="String">
+		select mid from hq_composition where id = #{id}
+	</select>
+
+	<select id="getCompositionInfoByNames" resultType="cn.bevol.app.entity.dto.CompositionDTO">
+		select if(pid,pid,id) as id,`name`, `english`, UPPER(`cm_name`) as `cmName`, UPPER(`cm_english`) as `cmEnglish` from hq_composition
+		where `hidden` = 0 and `deleted` = 0 and
+		UPPER(`cm_name`) in
+		<foreach collection="compositionArr" item="name" open="(" separator="," close=")">
+			<if test="name!=null and name!=''">#{name}</if>
+		</foreach>
+		OR UPPER(`cm_english`) in
+		<foreach collection="compositionArr" item="name" open="(" separator="," close=")">
+			<if test="name!=null and name!=''">#{name}</if>
+		</foreach>
+	</select>
+
+	<select id="getDirtyCompositionInfoByNames" resultType="cn.bevol.app.entity.dto.CompositionDTO">
+		select if(c.`pid`,c.`pid`,c.`id`) as id, c.`name`, UPPER(dc.cm_name) as `cmName` from hq_dirty_composition dc
+		left join hq_composition c on c.id = dc.pid
+		where c.id is not null and dc.delete_status = 0 and UPPER(dc.cm_name) in
+		<foreach collection="compositionArr" item="name" open="(" separator="," close=")">
+			<if test="name!=null and name!=''">#{name}</if>
+		</foreach>
+	</select>
+
+	<select id="compositionByPage" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition
+		WHERE 1=1 and mid is not null and mid !="" and hidden = 0 and deleted = 0
+		<if test="orderBy != null">
+			ORDER BY ${orderBy}
+		</if>
+		<if test="pageSize > 0">
+			LIMIT #{pagedBegin},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="getSoapCps" resultType="java.lang.Integer">
+		select id from hq_soap_composition where soap='Y'
+	</select>
+
+	<select id="selectAcomposition" resultType="java.lang.Integer">
+		select id from hq_soap_composition where soap_composition='A'
+	</select>
+	
+	<select id="selectBcomposition" resultType="java.lang.Integer">
+		select id from hq_soap_composition where soap_composition='B'
+	</select>
+</mapper>

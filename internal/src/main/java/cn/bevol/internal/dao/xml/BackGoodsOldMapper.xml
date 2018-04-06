@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	 
+ -->
+<mapper namespace="cn.bevol.internal.dao.mapper.BackGoodsOldMapper">
+	<resultMap id="GoodsTag" type="cn.bevol.internal.entity.vo.GoodsTagVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="create_stamp" property="createStamp" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="rule1" property="rule1" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="GoodsTagResult" type="cn.bevol.internal.entity.model.GoodsTagResult">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
+        <result column="auto_tag_ids" property="autoTagIds" jdbcType="VARCHAR"/>
+        <result column="auto_tag_names" property="autoTagNames" jdbcType="VARCHAR"/>
+        <result column="made_tag_ids" property="madeTagIds" jdbcType="VARCHAR"/>
+        <result column="made_tag_names" property="madeTagNames" jdbcType="VARCHAR"/>
+        <result column="tag_names" property="tagNames" jdbcType="VARCHAR"/>
+        <result column="tag_ids" property="tagIds" jdbcType="VARCHAR"/>
+        <result column="made_delete" property="madeDelete" jdbcType="INTEGER"/>
+        <result column="create_stamp" property="createStamp" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="GoodsRule" type="cn.bevol.internal.entity.model.GoodsRule">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="val_json" property="valJson" jdbcType="VARCHAR"/>
+        <result column="create_stamp" property="createStamp" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+   		<result column="tag_id" property="tagId" jdbcType="INTEGER"/>
+    </resultMap>
+    
+    <resultMap id="GoodsTagComposition" type="cn.bevol.internal.entity.model.GoodsTagComposition">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="tag_id" property="tagId" jdbcType="INTEGER"/>
+        <result column="composition_id" property="compositionId" jdbcType="INTEGER"/>
+        <result column="create_stamp" property="createStamp" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="is_main" property="isMain" jdbcType="INTEGER"/>
+        <result column="main_name" property="mainName" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap type="cn.bevol.internal.entity.model.RedisCache" id="RedisBase">
+    	<id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="redis_key" property="redisKey" jdbcType="VARCHAR"/>
+        <result column="redis_cache" property="cache" jdbcType="VARCHAR"/>
+        <result column="redis_params" property="params" jdbcType="VARCHAR"/>
+        <result column="redis_version" property="cacheVersion" jdbcType="VARCHAR"/>
+        <result column="redis_desc" property="desc" jdbcType="VARCHAR"/>
+        <result column="entity_type" property="entityType" jdbcType="VARCHAR"/>
+        <result column="cache_type" property="cacheType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+	<insert id="addTagRule">
+		INSERT INTO hq_goods_tag_rule(tag_id,rule_1,create_stamp,status) VALUES(#{tagId},#{rule1},#{createStamp},1)
+	</insert>
+	
+	<insert id="addTag">
+		INSERT INTO hq_goods_tag(name,create_stamp,status) VALUES(#{tagName},#{createStamp},1)
+	</insert>     
+
+	<update id="updateGoodsTag">
+		update hq_goods_tag set name=#{tagName} where id=#{tagId}
+	</update>
+	
+	<update id="updateGoodsTagName">
+		update hq_goods_tag set name=#{newName} where name=#{oldName}
+	</update>
+	
+	<update id="updateGoodsTagRule">
+		update hq_goods_tag_rule set rule_1=#{rule1} where tag_id=#{tagId}
+	</update>
+	
+	<select id="getTagByTagName" resultMap="GoodsTag">
+		select * from hq_goods_tag where name=#{tagName} and status=0
+	</select>
+
+	<select id="getTag" resultMap="GoodsTag">
+		select * from hq_goods_tag where status=0 limit #{start},#{pageSize}
+	</select>
+	
+	<select id="getAllTagComposition" resultMap="GoodsTagComposition">
+		select * from hq_goods_tag_composition where status=0
+	</select>
+	
+	<!-- 核心成分 -->
+	<select id="getTagCompositionByIsMain" resultMap="GoodsTagComposition">
+		select * from hq_goods_tag_composition where tag_id=#{tagId} and is_main=#{isMain} and status=0 limit #{pager},#{pageSize}
+	</select>
+	
+	<insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">
+		insert into hq_goods_tag_composition (tag_id, composition_id,status,create_stamp,is_main,main_name)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			 (#{item.tagId}, #{item.compositionId},#{item.status},#{item.createStamp},#{item.isMain},#{item.mainName})
+		</foreach>
+	</insert>
+	
+	<update id="delBatch" parameterType="java.util.List">
+		update hq_goods_tag_composition set status=1 where tag_id=#{tagId} and composition_id in(${compositionIds})
+		<!-- where tag_id in
+		<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+			 #{item.tagId}  3,5
+		</foreach>
+		  and composition_id in	7,6
+		 <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+			 #{item.compositionId}
+		</foreach> -->
+		
+		<!-- <where>
+		  <foreach collection="list" index="index" item="item" open="" separator="," close="">     
+		  	tag_id=#{item.tagId},composition_id=#{item.compositionId}
+		  </foreach>
+  		</where> -->
+	</update>
+	
+	
+	<update id="updateGoodsResult">
+		update hq_goods_tag_result set made_tag_ids=#{madeTagIds},made_tag_names=#{madeTagNames},
+		tag_ids=#{tagIds},tag_names=#{tagNames},update_time=#{updateTime},made_delete=#{madeDelete}
+		 where goods_id=#{goodsId}
+	</update>
+
+	<select id="getGoodsByTagId"  resultMap="GoodsTagResult">
+		select * from hq_goods_tag_result where tag_ids like '%,${tagId},%' or tag_ids like '%,${tagId}%' or tag_ids=#{tagId} or tag_ids like '%${tagId},%' limit #{start},#{pageSize}
+	</select>
+
+	<update id="delGoodsByTagId">
+		update hq_goods_tag_result set status=1 where tag_ids like '%,${tagId},%' or tag_ids like '%,${tagId}%' or tag_ids=#{tagId} or tag_ids like '%${tagId},%'
+	</update>
+	
+	<insert id="insertResult">
+		insert into hq_goods_tag_result(goods_id,made_tag_ids,made_tag_names,
+		tag_ids,tag_names,create_stamp) values
+		(#{goodsId},#{madeTagIds},#{madeTagNames},#{tagIds},#{tagNames},#{createStamp})
+	</insert>
+	
+	
+	<select id="getPolyCategoryBygoodsIds" resultType="java.util.Map">
+		select * from hq_goods_poly_category where goods_id in(${goodsIds})
+	</select>
+	
+	<select id="getPolyCategoryById" resultType="java.util.Map">
+		select id from hq_goods_poly_category where id=#{id}
+	</select>
+	
+	<update id="madeUpdateCategory" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close=""  separator="">
+                update hq_goods_poly_category
+                <set>
+                  category_id=${item.categoryId},
+                  exist_category_ids=${item.existCategoryIds},
+                  made_category_id=${item.madeCategoryId},
+                  update_time=${item.updateTime}
+                </set>
+                where goods_id = ${item.goodsId}
+         </foreach>
+	</update>
+	
+	<update id="updateGoodsTagByName">
+		update hq_goods_tag set status=1 where name=#{name}
+	</update>
+	
+	<update id="updateFindIds">
+		update hq_new_find set tag_ids=#{ids} where id=#{id}
+	</update>
+	
+	<select id="getCommonGoodsCategoryById" resultType="java.util.Map">
+    	select * from hq_goods_common_category where id=#{id}
+    </select>
+    
+    <update id="updateCommonGoodsCategoryById">
+    	update hq_goods_common_category set rule_1=#{rule_1},rule_2=#{rule_2} where id=#{id}
+    </update>
+    
+    <insert id="addCategoryRule">
+    	insert into hq_goods_common_category(rule_1,rule_2,category_id) values(#{newRule1},#{newRule2},#{categoryId})
+    </insert>
+    
+    <insert id="addRedisCache">
+    	insert into hq_redis_cache(entity_type,redis_cache,redis_key,redis_params,redis_version,redis_desc,cache_type) values(#{entityType},#{cache},#{redisKey},#{params},#{cacheVersion},#{desc},#{cacheType})
+    </insert>
+    
+    <select id="getRedisList" resultMap="RedisBase">
+    	select * from hq_redis_cache limit #{pager},#{pageSize}
+    </select>
+    
+</mapper>

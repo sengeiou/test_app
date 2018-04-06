@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="cn.bevol.mybatis.dao.GoodsUserSubmitMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.mybatis.model.GoodsUserSubmit">
+       <id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="img_id" property="imgId" jdbcType="VARCHAR"/>
+		<result column="user_id" property="userId" jdbcType="VARCHAR"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="source" property="source" jdbcType="VARCHAR"/>
+		<result column="state" property="state" jdbcType="INTEGER"/>
+		<result column="composition_ids" property="compositionIds" jdbcType="VARCHAR"/>
+		<result column="composition_names" property="compositionNames" jdbcType="VARCHAR"/>
+		<result column="composition_no" property="compositionNo" jdbcType="VARCHAR"/>
+        <result column="add_date" property="addDate" jdbcType="INTEGER"/>
+        <result column="update_date" property="updateDate" jdbcType="INTEGER"/>
+    </resultMap>
+    
+   <insert id="submitProduct" parameterType="cn.bevol.mybatis.model.GoodsUserSubmit">
+	   insert into hq_goods_user_submit(img_id,`name`,source,composition_ids,composition_names,composition_no,user_id,add_date)
+    	values
+    	(
+			#{imgId},#{name},#{source},#{compositionIds},#{compositionNames},#{compositionNo},#{userId}, #{addDate}
+    	)
+   </insert>
+	
+    <insert id="insertOrUpdate" parameterType="cn.bevol.mybatis.model.GoodsUserSubmit">
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			select count(*) from hq_goods_user_submit where name = #{name}
+		</selectKey>
+		<if test="count == 0">
+        	insert into hq_goods_user_submit(img_id,name,source,composition_ids,composition_names,composition_no,user_id,add_date)
+    	values
+    	(
+			#{imgId},#{name},#{source},#{compositionIds},#{compositionNames},#{compositionNo},#{userId}, #{addDate}
+    	)
+    	</if>
+		<if test="count > 0">
+			update hq_goods_user_submit set
+			<if test="imgId!=null">img_id=#{imgId},</if>
+			<if test="name!=null">name=#{name},</if>
+			<if test="compositionIds!=null">composition_ids=#{compositionIds},</if>
+			<if test="compositionNames!=null">composition_names=#{compositionNames},</if>
+			<if test="compositionNo!=null">composition_no=#{compositionNo},</if>
+			<if test="state!=null">state=#{state},</if>
+			<if test="updateDate!=null">update_date =#{updateDate}</if>
+			where name = #{name}
+		</if>
+     </insert>
+	<update id="update" parameterType="cn.bevol.mybatis.model.GoodsUserSubmit">
+		update hq_goods_user_submit set
+		<if test="imgId!=null">img_id=#{imgId},</if>
+		<if test="name!=null">name=#{name},</if>
+		<if test="compositionIds!=null">composition_ids=#{compositionIds},</if>
+		<if test="compositionNames!=null">composition_names=#{compositionNames},</if>
+		<if test="compositionNo!=null">composition_no=#{compositionNo},</if>
+		<if test="state!=null">state=#{state},</if>
+		<if test="updateDate!=null">update_date =#{updateDate}</if>
+		where id = #{id}
+	</update>
+	<update id="bathUpdate"	parameterType="cn.bevol.mybatis.model.GoodsUserSubmit">
+		update hq_goods_user_submit set
+		<if test="state!=null">state=#{state}</if>
+		WHERE id IN (${ids})
+
+
+	</update>
+   <select id="findByPage" resultMap="BaseResultMap">
+	    SELECT * FROM hq_goods_user_submit
+	    <if test="wheres != null">
+	      WHERE 1=1 
+	      <if test="wheres.name != null">
+	        and name= #{wheres.name}
+	      </if>
+			<if test="wheres.state != null">
+				and state= #{wheres.state}
+			</if>
+			<if test="wheres.userId != null">
+				and user_id= #{wheres.userId}
+			</if>
+	    </if>
+	    <if test="pageSize > 0">
+	      LIMIT #{pagedBegin},#{pageSize}
+	    </if>
+	  </select>
+	<select id="findByPageCount" resultType="int">
+		SELECT count(*) FROM hq_goods_user_submit
+		<if test="wheres != null">
+			WHERE 1=1
+			<if test="wheres.name != null">
+				and name= #{wheres.name}
+			</if>
+			<if test="wheres.state != null">
+				and state= #{wheres.state}
+			</if>
+			<if test="wheres.userId != null">
+				and user_id= #{wheres.userId}
+			</if>
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		SELECT id,img_id,user_id,name,source,composition_ids,composition_names,composition_no,state,add_date,update_date
+		FROM hq_goods_user_submit
+		WHERE id = #{id,jdbcType=INTEGER}
+	</select>
+
+</mapper>

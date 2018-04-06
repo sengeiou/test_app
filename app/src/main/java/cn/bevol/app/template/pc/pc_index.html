@@ -1,0 +1,320 @@
+<#include "/header.html" />
+</div>
+<script src="${js!'https://static.bevol.cn/pc/js'}/seo_index_20170517.js" type="text/javascript"></script>
+<!--banner-->
+<div class="main-banner">
+    <div class="main-banner-box">
+        <div class="main-banner-mobile" style="margin-top: 156px;width: 32%">
+            <img src="${img}/pc/images/iphone.png">
+        </div>
+
+        <div class="main-banner-title-box" style="margin-top: 168px">
+            <div class="main-banner-title">
+                <!--<img src="https://img0.bevol.cn/pc/images/mlxx2.png">-->
+                <h1 style="font-size: 70px;color: white;font-family: 'YouYuanb4e7892281965e';font-weight: 100">美丽是一种修行</h1>
+                <p style="margin-top: 15px;font-size: 20px;color: white;font-family:'Microsoft YaHei','PingFang SC';">查询${product_total}种化妆品安全指数，最懂安全和功效的护肤神器</p>
+            </div>
+            <div id="tab-choose">
+                <span tname="goods">产品</span>
+                <span tname="component">成分</span>
+            </div>
+            <div class="main-banner-title-search" style="margin-top:-1px;">
+                <!--<div class="main-banner-title-search-left pull-left">-->
+                <!--<div class="search-text-btn search-button">-->
+                <!--<span class="search-text">产品</span>-->
+                <!--<span><img class="" src="https://img0.bevol.cn/pc/images/pcpicture/small-arr.png"></span>-->
+                <!--</div>-->
+                <!--<ul class="goods-text width-60">-->
+                <!--<li tname="goods">产品</li>-->
+                <!--<li tname="component">成分</li>-->
+                <!--</ul>-->
+
+                <!--</div>-->
+                <div class="main-banner-title-search-center pull-left" style="width: 400px;border: 3px solid #B988ED;">
+                    <input id="search_form" autofocus="autofocus" type="text" value="" placeholder="搜索${product_total}种化妆品" style="border: none">
+                </div>
+                <div class="main-banner-title-search-right pull-left glyphicon" style="border: 3px solid #B988ED;" tname="goods">
+                        <span >
+                            <img class="" src="${img}/pc/images/pcpicture/search-icon.png">
+                        </span>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+            <div class="main-banner-title-hotsearch">
+                <ul style="left: -5px">
+                    <#list hot_keywords as hot_keyword>
+                        <li><a href="/product?keywords=${hot_keyword}">${hot_keyword}</a></li>
+                    </#list>
+                </ul>
+            </div>
+            <div class="main-banner-title-btn" style="margin-top: 75px">
+                <!--<a target="_self" href="http://istatic.bevol.cn/static/download/init/5">-->
+                <!--<div class="btn btn-default">-->
+                <!--<p><img class="" src="https://img0.bevol.cn/pc/images/pcpicture/android-small.png"></p>-->
+
+                <!--<p>Android APK</p>-->
+                <!--</div>-->
+                <!--</a>-->
+                <!--<a href="http://istatic.bevol.cn/static/download/init/6">-->
+                <!--<div class="btn btn-default">-->
+                <!--<p><img class="" src="https://img0.bevol.cn/pc/images/pcpicture/ios-small.png"></p>-->
+
+                <!--<p>APP Store</p>-->
+                <!--</div>-->
+                <!--</a>-->
+                <!--<img src="${img}/pc/images/download.png" alt="download" id="download-app" style="cursor: pointer">-->
+                <div id="download-app">
+                    <i class="fa fa-download fa-x" aria-hidden="true" style="vertical-align: middle;font-size: 20px;color: white"></i>
+                    <span>下载美丽修行</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="container">
+    <!--妆品分类-->
+    <div class="main-cosmetics-class col-public">
+        <h1>妆品分类</h1>
+        <div class="main-cosmetics-class-list col-nav goods">
+            <ul>
+                <#list categories as category>
+                    <li class="padding-r10">
+                        <a onclick="return false;" href="javascript:void(0)" <#if category_index ==0>class="active"</#if> data-toggle="tab">${category[0]}</a>
+                    </li>
+                </#list>
+                <div class="clear"></div>
+            </ul>
+        </div>
+
+        <#list categories as category>
+            <div id="tab_(${category_index}+1)" class="main-cosmetics-class-info col-info <#if category_index ==0>block</#if>" >
+                <ul>
+                    <#list category[1] as goods>
+                        <a href="/product/${goods.mid}.html" alt="${goods.title}">
+                            <li>
+                                <div class="main-padding-4 cursor hover">
+                                    <div class="main-cosmetics-class-info-img cosmetics-col-img">
+                                        <div style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%)">
+                                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color: #8d63ae"></i>
+                                        </div>
+                                        <img class="img_h" src="" data-echo="${img}/Goods/source/${goods.image}@50p" alt="${goods.title}">
+                                    </div>
+                                    <h3 class="center">${goods.title!}</h3>
+                                    <h4 class="center">${goods.alias!}</h4>
+                                </div>
+                            </li>
+                        </a>
+                    </#list>
+                    <div class="clear"></div>
+                </ul>
+                <div class="main-cosmetics-class-info-more col-more">
+                    <a href="/product?category=${category[2]}">
+                        <div class="btn">
+                            查看更多
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </#list>
+    </div>
+
+    <!--文章列表-->
+    <div class="main-article col-public">
+        <h2>文章列表</h2>
+        <div class="main-article-list col-nav article">
+            <ul>
+                <li class="padding-r10">
+                    <a onclick="return false;" href="javascript:void(0)" class="active" data-toggle="tab">最新</a>
+                </li>
+                <li class="padding-r10">
+                    <a onclick="return false;" href="javascript:void(0)" data-toggle="tab">最热</a>
+                </li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+
+        <div class="main-article-info col-info article-col-info block">
+            <ul>
+                <#list new_find as find>
+                    <#if find_index lt 8>
+                        <a href="/find/${find.id}.html" alt="${find.title}">
+                            <li a-href="article" data-mid="${find.id}">
+                                <div class="main-padding-4 cursor hover">
+                                    <div class="main-article-info-img article-col-img">
+                                        <div style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%)">
+                                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color: #8d63ae"></i>
+                                        </div>
+                                        <img class="img_width" src="" data-echo="${img}/Find/${find.pc_image}@50p" alt="${find.title}">
+                                    </div>
+                                    <h3>${find.title}</h3>
+                                </div>
+                            </li>
+                        </a>
+                    </#if>
+                </#list>
+                <div class="clear"></div>
+            </ul>
+            <div class="main-article-info-more col-more">
+                <a href="/find">
+                    <div class="btn">
+                        查看更多
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="main-article-info col-info article-col-info">
+            <ul>
+                <#list hot_find as find>
+                    <#if find_index lt 8>
+                        <a href="/find/${find.id}.html" alt="${find.title}">
+                            <li a-href="article" data-mid="${find.id}">
+                                <div class="main-padding-4 cursor hover">
+                                    <div class="main-article-info-img article-col-img">
+                                        <div style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%)">
+                                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color: #8d63ae"></i>
+                                        </div>
+                                        <img class="img_width" src="" data-echo="${img}/Find/${find.pc_image}@50p" alt="${find.title}">
+                                    </div>
+                                    <h3>${find.title}</h3>
+                                </div>
+                            </li>
+                        </a>
+                    </#if>
+                </#list>
+                <div class="clear"></div>
+            </ul>
+            <div class="main-article-info-more col-more">
+                <a href="/find?sort_type=1">
+                    <div class="btn">
+                        查看更多
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!--下载&关注-->
+    <div class="main-download col-public">
+        <h2>下载&关注</h2>
+        <div class="main-download-list download-col-info">
+            <ul>
+                <li>
+                    <a href="http://istatic.bevol.cn/static/download/init/6">
+                        <div class="main-download-list-img main-padding-3 cursor hover" id="download_iphone" style="color:#616161;text-align: center;padding-top: 50px;border: none">
+                            <i class="fa fa-apple" aria-hidden="true" style="transition: all .5s linear;font-size: 120px"></i>
+                            <p style="font-size: 26px">iPhone</p>
+                            <!--<img class="" src="https://img0.bevol.cn/pc/images/pcpicture/ios-big.png" alt="">-->
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a target="_self"  href="http://istatic.bevol.cn/static/download/init/5">
+                        <div class="main-download-list-img main-padding-3" id="download_android" style="color: #616161;text-align: center;padding-top: 50px;border: none">
+                            <i class="fa fa-android" aria-hidden="true"  style="transition: all .5s linear;font-size: 120px;"></i>
+                            <p style="font-size: 26px">Android</p>
+                            <!--<img class="" src="https://img0.bevol.cn/pc/images/pcpicture/android-big.png" alt="">-->
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <div class="main-download-list-img main-padding-3" style="position: relative;border: none">
+                        <div style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%)">
+                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="color: #8d63ae"></i>
+                        </div>
+                        <img class="" src="" alt="" data-echo="https://img0.bevol.cn/pc/images/pcpicture/qr-code.png" width="260" height="260" style="position:relative;z-index: 1">
+                    </div>
+                </li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<#if links?? && links?size gt 0>
+    <!--友情链接-->
+    <div class="main-friendship-link col-public">
+        <div class="main-link-box">
+            <h5>友情链接：</h5>
+            <ul>
+                <#list links as link>
+                    <li><a href="${link.url}" target="_blank">${link.title}</a></li>
+                </#list>
+                <div class="clear"></div>
+            </ul>
+        </div>
+
+    </div>
+</#if>
+<!--footer-->
+<div class="main-footer col-public">
+    <p>@ 武汉智美无限信息科技有限公司 美丽修行<br>
+        <script>var date = new Date();
+        document.write(date.getFullYear());</script>
+        bevol.cn 版权所有 ICP证：鄂15015954 <span class="bevol-nav"><a href="/navigation.html">网站导航</a></span>
+    </p>
+</div>
+<script src="//cdn.bootcss.com/echo.js/1.7.3/echo.min.js"></script>
+<script src="${js!'https://static.bevol.cn/pc/js'}/jquery.cookie.min.js" type="text/javascript"></script>
+<!---新版本 public.js 与 base.js 合并--->
+<script type="text/javascript" src="${js!'https://static.bevol.cn/pc/js'}/base_20170517.js"></script>
+
+<script type="text/javascript">
+    //baidu统计
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?14d9852b3b43958dbf0ebac06426979c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+<script>
+    //360统计
+    (function(){
+        var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?045a03941aa457762ba1f68f18dfc14a":"https://jspassport.ssl.qhimg.com/11.0.1.js?045a03941aa457762ba1f68f18dfc14a";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+    })();
+</script>
+<script>
+    window.onload = function(){
+        echo.init({
+            offset: 0,  //距离元素多高开始加载
+            throttle: 250,
+            unload: false,
+            callback: function (element, op) {
+//                console.log(element, 'has been', op + 'ed')
+                element.style.zIndex=10;
+            }
+        });
+    }
+
+    main_index.index.bind.button_toggle = function(){
+        $("#tab-choose").on("click","span",function () {
+            $("#tab-choose span").css({
+                backgroundColor:"transparent"
+            });
+            $(this).css({
+                backgroundColor:"#B988ED"
+            })
+            var tname = $(this).attr("tname");
+            if(tname == "goods"){
+                $("#search_form").prop("placeholder", "搜索${product_total}种化妆品");
+            }else{
+//                $("#search_form").prop("placeholder", "搜索${composition_total}种成分");
+                $("#search_form").prop("placeholder", "可以同时支持多成分搜索哦");
+            }
+            $(".glyphicon").attr("tname", tname);
+        })
+    }
+</script>
+</body>
+</html>

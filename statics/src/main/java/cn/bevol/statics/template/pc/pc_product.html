@@ -1,0 +1,234 @@
+<#include "/header.html" />
+<script src="https://static.bevol.cn/pc/js/jquery.page.js" type="text/javascript"></script>
+<script src="https://static.bevol.cn/pc/js/cosmetics_class.js" type="text/javascript"></script>
+<!--面包屑导航-->
+<div class="crumbs_nav">
+    <h1 class="crumbs_nav_text"><a href="/" target="_self">首页</a> / 产品列表</h1>
+    <div id="composition_title"></div>
+</div>
+
+<!--分类内容-->
+<div class="main-cosmetics-class">
+    <div class="cosmetics-class-left main-padding-4">
+        <div class="search-box">
+            <div class="search-box-left">
+                <div class="search-box-left-btn search-button">
+                    <span class="search-text">产品</span>
+                    <!--<span><img class="" src="{:TP('images/pcpicture/small-arr.png')}"></span>-->
+                </div>
+                <!--<ul class="goods-text width-70 search-sel">
+                    <li tname="product">产品</li>
+                    <li tname="composition">成分</li>
+                </ul>-->
+            </div>
+            <div class="search-box-right">
+                <input id="search_form" type="text" value="" autofocus="autofocus" placeholder="搜索${product_total}种化妆品" />
+            </div>
+            <div class="search-box-button" id="search-btn">
+                <img class="" src="${img}/pc/images/pcpicture/search-icon-ccc.png">
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <script>
+            var keywords=$.getUrlField("keywords");
+            if(keywords) {
+                keywords=decodeURI(keywords);
+                $("#search_form").val(keywords);
+            }
+            //入口是产品还是成分
+            if(location.href.indexOf("product")!=-1) {
+                $("#search_form").attr("tname","product");
+                $(".search-text").text("产品");
+            }else {
+                $("#search_form").attr("tname","composition");
+                $(".search-text").text("成分");
+            }
+
+            //提交
+            $("#search-btn").on("click",function() {
+                search();
+            });
+
+
+            function search() {
+                var keywords=encodeURI($.trim($("#search_form").val()));
+                var tname=$("#search_form").attr("tname");
+                var torul="/"+tname+"?v=2.0";
+                keywords=keywords?keywords:"";
+                if(keywords) {
+                    torul+="&keywords="+keywords;
+                }
+                var category=$("#search_form").data("category");
+
+                if(category) {
+                    torul+="&category="+category;
+                } else if(category===0){
+                    torul+="&category=0";
+                    category = true;
+                }
+                var p=$("#search_form").data("p");
+                if(p) {
+                    torul+="&p="+p;
+                }
+                if(keywords&&tname=="composition") {
+                    location.href=torul;
+                } else if((keywords||category)&&tname=="product") {
+                    location.href=torul;
+                }
+                getStatistics(tname, category);
+
+            }
+            $('#search_form').keydown(function(e){
+                if(e.keyCode==13){
+                    $("#search-btn").click();
+                }
+            });
+
+        </script>
+
+        <div class="goods-main-box col-nav goods-category" >
+            <ul>
+                <!--<li class="padding-r10-b20"><a target="_self" href="/product"  data-id="0" >全部</a></li>-->
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=6"  data-id="6" >洁面</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=7"  data-id="7" >化妆水</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=8"  data-id="8" >面霜/乳液</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=9"  data-id="9" >精华</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=10"  data-id="10" >眼部护理</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=11"  data-id="11" >面膜</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=12"  data-id="12" >卸妆</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=13"  data-id="13" >防晒</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=15"  data-id="15" >去角质</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=20"  data-id="20" >隔离／妆前</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=47"  data-id="47" >护唇</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=30"  data-id="30" >美体</a></li>
+                <li class="padding-r10-b20"><a target="_self" href="/product?category=38"  data-id="38" >洗护</a></li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+
+        <div class="goods-main-info-box">
+            <ul class="page-content">
+            </ul>
+        </div>
+    </div>
+    <#include "/sidebar.html" />
+    <div class="foot-page">
+        <div class="tcdPageCode"></div>
+    </div>
+    <script type="text/plain" page-tpl id="page-tpl">
+<%for(var i=0;i<items.length;i++) { var item=items[i];%>
+
+    <a href="/product/<%=item.mid%>.html" title="<%=item.title%>" >
+        <li class="cursor" a-href data-mid="111">
+            <div class="goods-main-info-img w186">
+                <%if(!item.image || item.image == 0){%>
+                    <img class="h186" src="${img}/Goods/default.png@90p" alt="<%=item.title%>">
+                <%}else {%>
+                    <img class="h186" src="<%='${img}/Goods/source/'+item.image%>@90p" alt="<%=item.title%>">
+                <%}%>
+            </div>
+            <div class="goods-main-info-text">
+                <p class="p1"><%=item.title%></p>
+                <%if(item.alias){%>
+                <p class="p2"><%=item.alias%></p>
+                <%}else{%>
+                <p class="p2"></p>
+                <%}%>
+                <%if(item.remark){%>
+                <p class="p3">别名：<%=item.remark%></p>
+                <%}else{%>
+                <p class="p3"></p>
+                <%}%>
+                <p class="absolute p4">
+                <%if(item.data_type){%>
+                    <%if(item.data_type==1) {%>
+                        <%='进口备案: '+item.approval%>
+                    <%} else if(item.data_type==2) {%>
+                        <%='国产备案: '+item.approval%>
+                    <%} else if(item.data_type==3) {%>
+                        <%='国产备案: '+item.approval%>
+                    <%} else if(item.data_type==4) {%>
+                        <%='产品标签'%>
+                    <%}else{%>
+                        暂待
+                    <%}%>
+                <%}%>
+                </p>
+
+            </div>
+            <div class="clear"></div>
+        </li>
+    </a>
+<%}%>
+<%if(items.length==0) {%>
+    <div id="search-more" style="">
+        <p class="p1">对不起，没有搜索到您要的结果，美丽修行建议您：</p><br />
+        <p class="p2">核对产品名称</p><br>
+        <p class="p3">建议核对产品包装上的正式名称，避免错别字或者同义词。<br />
+        ● 名称错误：如欧泊莱，正确名为欧珀莱<br />
+        ● 产品类型：如洁面产品，名称可能为洁颜，洗颜，洗面等。</p><br /><br />
+        <p class="p2">海淘产品补录</p><br>
+        <p class="p3">部分海淘产品尚未录入，期待您提供产品成分表和图片，发到邮箱qinyuping@bevol.cn，以便我们及时补录。</p><br /><br />
+        <p class="p2">国产产品</p><br>
+        <p class="p3">美丽修行只收录在药监局CFDA备案的国产产品。查不到的国产产品，大部分是由于产品没有备案，美丽修行不会补录。<br />
+        我们一般会在3个月之内把药监局备案的产品收录到数据库（页面会注明“国产备案”），如果这个产品是新备案的，可能需要等一段时间才能在美丽修行查询到。</p>
+        <br>
+    </div>
+<%}%>
+</script>
+    <script type="text/javascript" src="https://static.bevol.cn/pc/js/arttmpl.js"></script>
+    <script type="text/javascript">
+        //重新 remove;
+        //按照分类搜索
+        //    	$(".goods-category li a").on("click",function() {
+        //    		var id=$(this).data("id");
+        //    		$("#search_form").data("category",id);
+        //    		 search();
+        //    	});
+        //选择分类
+        //zp --url不带参数直接显示category=6的产品
+//        var category=$.getUrlField("category")? $.getUrlField("category"): 6;
+        var category=$.getUrlField("category");
+
+        //成分id
+        var composition_id=$.getUrlField("composition_id");
+
+        var composition_title=$.getUrlField("composition_title");
+        if(composition_id&&composition_title)
+            $("#composition_title").text("含有"+decodeURI(composition_title)+"的产品");
+
+        $("#search_form").data("category",category);
+        category=category||0;
+        $("ul [data-id="+category+"]").addClass("active");
+        var keywords= $("#search_form").val();
+        cosmetics_class.cosmetics.remote=function(curr,call) {
+            curr=curr||1;
+            keywords=$.trim(keywords);
+            var url="https://api.bevol.cn/search/"+"goods/index3?p="+curr+'&keywords='+keywords;
+            if(category) {
+                url+="&category="+category;
+            }
+            if(composition_id) {
+                url+="&cps="+composition_id;
+            }
+            $.ajax({
+                url:url,
+                dataType:"jsonp",
+                jsonp: "callback",
+                success:function(data){
+                    data=data.data;
+                    var comlist=template('page-tpl',data);
+                    $(".page-content").html(comlist);
+                    var pageto;
+                    var pagesize=20;
+                    if(call)
+                        call(curr,pagesize,data.total)
+                }
+            });
+        }
+
+
+    </script>
+</div>
+<#include "/footer.html" />

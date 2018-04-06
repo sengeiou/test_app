@@ -1,0 +1,8 @@
+# 请参考 https://help.aliyun.com/document_detail/59293.html 了解更多关于release文件的编写方式 
+
+# 构建源码语言类型
+code.language=oracle-jdk1.8
+
+build.command=mvn clean install -P ${ENV_P}
+# 构建打包使用的打包文件
+build.output=target/app-0.0.1-SNAPSHOT.jar

@@ -1,0 +1,14 @@
+package cn.bevol.model.entityAction;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+/**
+ * 喜欢发现
+ *
+ * @author hualong
+ */
+@Document(collection="entity_like_find")
+public class LikeFind extends Like {
+
+
+}

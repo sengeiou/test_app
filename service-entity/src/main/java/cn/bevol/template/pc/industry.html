@@ -1,0 +1,39 @@
+<#include "/header.html" />
+<link rel="stylesheet" href="${css!'http://static.bevol.cn/pc/css'}/article_info.css">
+<script src="${js!'http://static.bevol.cn/pc/js'}/article_info.js" type="text/javascript"></script>
+
+<!--面包屑导航-->
+<div class="crumbs_nav">
+    <div class="crumbs_nav_text"><a href="/">首页</a> / <a href="/industry">行业资讯</a> / 资讯详情</div>
+</div>
+
+<!--产品内容-->
+<div class="main-cosmetics-class">
+    <div class="cosmetics-info-left main-padding-4">
+        <div class="cosmetics-info-title padding15 margin-bottom-50">
+            <!--文章内容BEGIN-->
+            <!--<div class="page_head">
+                <img src="https://img${n}.bevol.cn/industry/${id}/${header_image}@80p" class="img_z">
+            </div>-->
+            <div class="page_info_main01" style="position: relative; left: 0px; top: 0px;">
+                <div class="page_main_title">${title}</div>
+                <div class="page_line"></div>
+                <div class="page_lists_box">
+                    <ul>
+                        <#if tag?size gt 0 >
+                            <#list tag as vo>
+                                <li>${vo}</li>
+                            </#list>
+                        </#if>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            ${descp}
+            <!--文章内容END-->
+        </div>
+    </div>
+    <#include "/sidebar.html" />
+
+</div>
+<#include "/footer.html" />

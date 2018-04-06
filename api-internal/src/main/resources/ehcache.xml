@@ -1,0 +1,10 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true" monitoring="autodetect" dynamicConfig="true">
+<diskStore path="java.io.tmpdir"/>
+<defaultCache   
+  maxElementsInMemory="500"   
+  eternal="false"   
+  timeToIdleSeconds="300"   
+  timeToLiveSeconds="1200"   
+  overflowToDisk="true" />   
+    <cache name="cn.bevol.utils.ConfUtils"  maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="36000" timeToIdleSeconds="3600" overflowToDisk="true"/>   
+</ehcache>  

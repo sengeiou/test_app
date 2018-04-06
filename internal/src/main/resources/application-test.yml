@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    username: mlxx_test
+    password: Mlxx_20170906
+    url: jdbc:mysql://rm-bp18b5929qwp968x1.mysql.rds.aliyuncs.com:3306/mlxx_test?characterEncoding=utf8
+    type: com.alibaba.druid.pool.DruidDataSource
+    #初始化连接大小
+    initialSize: 3
+    #连接池最小空闲
+    minIdle: 2
+    #连接池最大使用连接数量
+    maxActive: 3
+    #获取连接最大等待时间
+    maxWait: 60000
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+  data:
+    mongodb:
+      uri: mongodb://mlxx_test:#bevol2017Test0908!@10.132.32.240:43123/bevol_test
+      database: bevol_test
+  redis:
+#    host: 10.251.236.106
+#    port: 16379
+    host: r-bp16678ce20be2c4.redis.rds.aliyuncs.com
+    port: 6379
+    password: rediSb20180109
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: -1
+
+cloud:
+  search:
+    openSearchIndexPre: test_
+    hot_entity: 1
+
+server:
+  port: 8081
+
+static:
+  html:
+    root: /tmp

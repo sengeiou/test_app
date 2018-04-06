@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.app.dao.mapper.ArticleListOldMapper">
+	<resultMap id="BaseResultMap" type="cn.bevol.model.entity.EntityFind">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+        <result column="tag" property="tag" jdbcType="VARCHAR"/>
+        <result column="skin" property="skin" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="subhead" property="subhead" jdbcType="VARCHAR"/>
+        <result column="header_image" property="headerImage" jdbcType="VARCHAR"/>
+         <result column="pc_image" property="pcImage" jdbcType="VARCHAR"/>
+    </resultMap>
+
+        
+	<select id="articleList" resultMap="BaseResultMap">
+		select id,title,subhead,image,type,skin,tag,sort,header_image,pc_image from hq_new_find where id in(${ids})
+	</select>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Created by mysens on 18-1-2. -->
+<mapper namespace="cn.bevol.statics.dao.mapper.QrcodeOldOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.statics.entity.model.QrcodeOld">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="ticket" property="ticket" jdbcType="VARCHAR"/>
+        <result column="total" property="total" jdbcType="INTEGER"/>
+        <result column="delete_status" property="deleteStatus" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <update id="updateTotal" parameterType="cn.bevol.statics.entity.model.QrcodeOld">
+        UPDATE hq_qrcode set total = total+1
+        WHERE id=#{id}
+    </update>
+</mapper>

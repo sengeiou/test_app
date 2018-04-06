@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ --> 
+<mapper namespace="cn.bevol.statics.dao.mapper.GoodsExtOldMapper">
+	<resultMap id="GoodsExt" type="cn.bevol.statics.entity.model.GoodsExt">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="def_cps" property="defCps" jdbcType="VARCHAR"/>
+        <result column="mfj_cps" property="mfjCps" jdbcType="VARCHAR"/>
+        <result column="gc_cps" property="gcCps" jdbcType="VARCHAR"/>
+        <result column="def_ext_cps" property="defExtCps" jdbcType="VARCHAR"/>
+        <result column="cps_type" property="cpsType" jdbcType="VARCHAR"/>
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
+       <result column="allow_comment" property="allowComment" jdbcType="INTEGER"/>
+    </resultMap>
+ 
+    
+    <select id="getExtByGoodsIds" resultMap="GoodsExt">
+		SELECT * FROM hq_goods_ext where goods_id in
+		 <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+		 	 #{item}
+		 </foreach>
+	</select>
+	
+	  <select id="getExtByGoodsId" resultMap="GoodsExt">
+		SELECT * FROM hq_goods_ext where goods_id=#{id};
+	</select>
+	<update id="updateField" >
+		update hq_goods_ext set  ${key}=#{val}  where  ${feild}=#{fval}
+	</update>
+
+	<insert id="addGoodsExtInfo" parameterType="cn.bevol.statics.entity.model.GoodsExt">
+		insert into hq_goods_ext (def_cps,gc_cps,mfj_cps, def_ext_cps,cps_type,goods_id) values
+		(#{defCps},#{gcCps},#{mfjCps},#{defExtCps},
+		#{cpsType},#{goodsId})
+	</insert>
+
+	<update id="saveGoodsExtCps" parameterType="cn.bevol.statics.entity.model.GoodsExt">
+		update hq_goods_ext
+		<set>
+			<if test="defCps != null">def_cps=#{defCps},</if>
+			<if test="gcCps != null">gc_cps=#{gcCps},</if>
+			<if test="mfjCps != null">mfj_cps=#{mfjCps},</if>
+			<if test="defExtCps != null">def_ext_cps=#{defExtCps},</if>
+			<if test="cpsType != null">cps_type=#{cpsType}</if>
+		</set>
+		where goods_id = #{goodsId}
+	</update>
+
+ </mapper>

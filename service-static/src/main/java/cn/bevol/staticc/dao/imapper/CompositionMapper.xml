@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bevol.staticc.dao.imapper.CompositionMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.staticc.model.entity.Composition">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="title" jdbcType="VARCHAR"/>
+        <result column="tstamp" property="updateStamp" jdbcType="INTEGER"/>
+        <result column="crdate" property="createStamp" jdbcType="INTEGER"/>
+        <result column="deleted" property="deleted" jdbcType="INTEGER"/>
+        <result column="hidden" property="hidden" jdbcType="INTEGER"/>
+
+        <result column="efficacy" property="efficacy" jdbcType="INTEGER"/>
+        <result column="english" property="english" jdbcType="VARCHAR"/>
+        <result column="frequency" property="frequency" jdbcType="INTEGER"/>
+        <result column="active" property="active" jdbcType="VARCHAR"/>
+        <result column="safety" property="safety" jdbcType="VARCHAR"/>
+        <result column="name" property="title" jdbcType="VARCHAR"/>
+
+        <result column="acne_risk" property="acneRisk" jdbcType="INTEGER"/>
+        <result column="cas" property="cas" jdbcType="VARCHAR"/>
+        <result column="other_title" property="otherTitle" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="used_num" property="usedNum" jdbcType="INTEGER"/>
+        <result column="safety" property="safety" jdbcType="VARCHAR"/>
+        <result column="shenyong" property="shenyong" jdbcType="VARCHAR"/>
+        <result column="used" property="used" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="mpid" property="mPid" jdbcType="VARCHAR"/>
+        <result column="mid" property="mid" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <resultMap id="cpsResultMap" type="cn.bevol.staticc.model.entity.Composition">
+        <result column="name" property="title" jdbcType="VARCHAR"/>
+        <result column="english" property="english" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="compositionById" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition WHERE  id=#{id}
+	</select>
+    <select id="findCompositionByIds" resultMap="cpsResultMap">
+        SELECT `name`,english FROM hq_composition WHERE  id IN
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="compositionByMid" resultMap="BaseResultMap">
+		SELECT * FROM hq_composition WHERE  mid=#{mid}
+	</select>
+
+
+    <select id="compositionByPage" resultMap="BaseResultMap">
+        SELECT * FROM hq_composition
+        WHERE 1=1 and mid is not null and mid !="" and hidden = 0 and deleted = 0
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{pagedBegin},#{pageSize}
+        </if>
+    </select>
+    <select id="selectTotal" resultType="int">
+   		 SELECT count(*) FROM hq_composition  WHERE 1=1 and mid is not null and mid !="" and hidden = 0 and deleted = 0
+    </select>
+
+
+</mapper>

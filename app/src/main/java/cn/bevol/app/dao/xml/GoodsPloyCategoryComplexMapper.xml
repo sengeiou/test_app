@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Created by mysens on 17-12-27. -->
+<mapper namespace="cn.bevol.app.dao.mapper.GoodsPloyCategoryComplexMapper">
+    <update id="updatePloyCategory" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close=""  separator="">
+            update hq_goods_poly_category
+            <set>
+                category_id=${item.categoryId},
+                exist_category_ids=${item.existCategoryIds},
+                made_category_id=${item.madeCategoryId},
+                update_time=${item.updateTime}
+            </set>
+            where goods_id = ${item.goodsId}
+        </foreach>
+    </update>
+</mapper>

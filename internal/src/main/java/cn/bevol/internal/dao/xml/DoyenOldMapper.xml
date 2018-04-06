@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="cn.bevol.internal.dao.mapper.DoyenOldMapper">
+
+    <!-- mybsits_config中配置的alias类别名,也可直接配置resultType为类路劲 -->
+
+
+    <select id="getDoyenById"  resultType="cn.bevol.internal.entity.dto.Doyen">
+        select id,goods_id as goodsId,doyen_comment as doyenComment from hq_doyen WHERE hidden_status=0 AND delete_status=0 AND user_id=#{id}
+        order by id desc limit #{start},#{size}
+    </select>
+
+    <select id="countByGoodsId"  resultType="long">
+        select count(id) from hq_doyen WHERE hidden_status=0 AND delete_status=0 AND user_id=#{id}
+    </select>
+
+    <select id="findByGoodsIds"   resultType="cn.bevol.model.entity.EntityGoods">
+        SELECT id,title,image,mid FROM hq_goods WHERE id in (${ids})
+    </select>
+
+    <insert id="insertDoyen" parameterType="cn.bevol.internal.entity.dto.Doyen">
+    </insert>
+
+    <delete id="deleteDoyen">
+    </delete>
+
+	<select id="getDoyenById2"  resultType="cn.bevol.internal.entity.dto.Doyen">
+        select id,user_id as userId,goods_id as goodsId,doyen_comment as doyenComment from hq_doyen WHERE hidden_status=0 AND delete_status=0 AND id=#{id}
+    </select>
+    
+    <select id="getDoyenByGoodsId"  resultType="cn.bevol.internal.entity.dto.Doyen">
+        select id,goods_id as goodsId,doyen_comment as doyenComment,user_id as userId from hq_doyen WHERE hidden_status=0 AND delete_status=0 AND goods_id=#{goodsId}
+    </select>
+    
+</mapper>

@@ -1,0 +1,314 @@
+<#include "/wx_share_header.html" />
+<link rel="stylesheet" type="text/css" href="${css}/compare_goods2.css"/>
+<link rel="stylesheet" type="text/css" href="${css}/comment2.css"/>
+
+<div class="container">
+    <div style="text-align: center;">
+        <img src="https://img0.bevol.cn/wx/images2/mlxx-icon.png" style="height: 100px;">
+    </div>
+    <div class="header">
+        <#list entityInfo as entityInfoDetail>
+            <div class="goods-box">
+                <div class="goods-box-img">
+                    <img src="${entityInfoDetail.goods.imageSrc!}" class="img-w" onerror="javascript:this.src='${img}/wx/images2/default.png';">
+                </div>
+                <p>${entityInfoDetail.goods.title!}</p>
+                <p>${entityInfoDetail.goods.alias!}</p>
+                <p class="person blue">${supportNum[entityInfoDetail_index]}人支持</p>
+                <!--<div class="button blue-radius">
+                    <span class="button-icon blue-icon"></span>
+                    <span class="blue">支持它</span>
+                </div>-->
+            </div>
+        </#list>
+        <div class="clear"></div>
+    </div>
+    <div class="line"></div>
+    <div class="nav">
+        <ul>
+            <li><span class="active" data-type="info">基本信息</span></li>
+            <li><span data-type="score">用户评分</span></li>
+            <li><span data-type="safe">安全功效</span></li>
+            <li><span data-type="comments">讨论(${discussTotal!0})</span></li>
+        </ul>
+    </div>
+    <div class="info">
+        <h2>基本信息</h2>
+        <div class="box">
+            <#list entityInfo as entityInfoDetail>
+                <div class="row">
+                    <div class="info-box">
+                        <span class="item-name">制造商：${entityInfoDetail.goods.company!'-'}</span>
+                        <span class="item-price">规格：<#if entityInfoDetail.goods.prize?? && entityInfoDetail.goods.prize !="">${entityInfoDetail.goods.prize!}/${entityInfoDetail.goods.capacity!}<#else/>-</#if></span>
+                    </div>
+                </div>
+            </#list>
+        </div>
+    </div>
+    <div class="line"></div>
+    <div class="score">
+        <h2>用户评分</h2>
+        <div class="box">
+            <#list commentCompare as commentCompareDetail>
+                <#if commentCompareDetail.avgScore gt 0>
+                    <div class="row">
+                        <span class="item-score">${commentCompareDetail.avgScore}分</span>
+                        <span class="item-star">
+                                <#assign xinji = commentCompareDetail.avgScore />
+                                                <#list 1..5 as t>
+                                                    <#if t lte xinji?eval >
+                                                        <img src="${img}/wx/images2/xiaostar.png" style="width: 18px;">
+                                                        <#else/>
+                                                        <#if t gt xinji?eval && t lt (xinji?eval + 1)>
+                                                            <img src="${img}/wx/images2/xiaobanstar.png" style="width: 18px;"/>
+                                                            <#else/>
+                                                            <img src="${img}/wx/images2/xiaostargree.png" style="width: 18px;" />
+                                                        </#if>
+                                                    </#if>
+                                                </#list>
+					     </span>
+                        <span class="item-text">
+					     	${commentCompareDetail.content}
+					     </span>
+                        <!--<span class="item-more">更多用户评价<img src="${img}/wx/images2/more-violet.png" style="width: 12px; vertical-align: top;"></span>-->
+
+                    </div>
+                    <#else/>
+                    <div class="row">
+                        <span class="item-score dadada">暂无评价</span>
+                        <span class="item-star">
+					     	<img src="${img}/wx/images2/xiaostargree.png" style="width: 18px;">
+					     	<img src="${img}/wx/images2/xiaostargree.png" style="width: 18px;">
+					     	<img src="${img}/wx/images2/xiaostargree.png" style="width: 18px;">
+					     	<img src="${img}/wx/images2/xiaostargree.png" style="width: 18px;">
+					     	<img src="${img}/wx/images2/xiaostargree.png" style="width: 18px;">
+					     </span>
+                        <span class="item-text dadada">
+					     	-
+					     </span>
+                        <span class="item-more dadada">更多用户评价<img src="${img}/wx/images2/more-gray.png" style="width: 12px; vertical-align: top;"></span>
+                    </div>
+                </#if>
+            </#list>
+        </div>
+    </div>
+    <div class="line"></div>
+    <div class="safe">
+        <h2>安全功效</h2>
+        <div class="box">
+            <#assign i = 0 />
+            <#list entityInfo as entityInfoDetail>
+                <#list entityInfoDetail.safety as safe>
+                    <#if safe.unit == 1>
+                        <div class="row hold-row${i}">
+                            <div class="pie-box">
+                                <div class="hold hold1">
+                                    <div class="pie pie1 pie-green"></div>
+                                </div>
+                                <div class="hold hold2">
+                                    <div class="pie pie2 pie-green"></div>
+                                </div>
+                                <div class="bg"></div>
+                                <div class="time">
+                                    <p class="score-num score-${i}" data-num="${safe.num}">${safe.num}分</p>
+                                    <p class="safe-num">安全指数</p>
+                                </div>
+                            </div>
+                            <!--<span class="item-more">查看详细成分表<img src="${img}/wx/images2/more-violet.png" style="width: 12px; vertical-align: top;"></span>-->
+                        </div>
+                        <#assign i = i +1 />
+                    </#if>
+                </#list>
+            </#list>
+        </div>
+        <div class="grid">
+            <#list entityInfo[0].safety as safeInfo>
+                <#if safeInfo.unit == 0 >
+                    <div class="grid-row">
+                        <div class="grid-cell list01">
+                            <span class="num">${safeInfo.num}种</span>
+                            <div class="line-box">
+                                <p id="${safeInfo.desc}-l"></p>
+                            </div>
+                        </div>
+                        <div class="grid-cell list02">
+                            <span>${safeInfo.displayName}</span>
+                        </div>
+                        <#list entityInfo[1].safety as safeInfo2>
+                            <#if safeInfo.displayName == safeInfo2.displayName>
+                                <div class="grid-cell list03">
+                                    <span class="num">${safeInfo2.num}种</span>
+                                    <div class="line-box">
+                                        <p id="${safeInfo.desc}-r"></p>
+                                    </div>
+                                </div>
+                            </#if>
+                        </#list>
+                    </div>
+                </#if>
+            </#list>
+        </div>
+        <div class="composition">
+            <#list effectCompare as effect>
+                <#if effect_index != 0>
+                    <div class="row">
+                        <div class="composition-box">
+                            <span class="title">${effect.title}<#if effect.compareGoodsItem[0].compostion??>(${effect.compareGoodsItem[0].val})</#if></span>
+                            <span class="text">
+                                        <#if effect.compareGoodsItem[0].compostion??>
+                                            <#list effect.compareGoodsItem[0].compostion as comps>
+                                                ${comps.title}<#if (comps_has_next)>,</#if>
+                                            </#list>
+                                            <#else/>
+                                            ${effect.compareGoodsItem[0].val}
+                                        </#if>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="composition-box">
+                            <span class="title">${effect.title}<#if effect.compareGoodsItem[0].compostion??>(${effect.compareGoodsItem[1].val})</#if></span>
+                            <span class="text">
+                                        <#if effect.compareGoodsItem[1].compostion??>
+                                            <#list effect.compareGoodsItem[1].compostion as comps>
+                                                ${comps.title}<#if (comps_has_next)>,</#if>
+                                            </#list>
+                                            <#else/>
+                                            ${effect.compareGoodsItem[0].val}
+                                        </#if>
+                        </div>
+                    </div>
+                </#if>
+            </#list>
+        </div>
+    </div>
+    <div class="line"></div>
+
+    <#include "/wx_discuss.html" />
+
+</div>
+<script type="text/javascript">
+
+    $(function(){
+    <#list entityInfo as entityInfoDetail>
+        <#list entityInfoDetail.safety as safe>
+        <#if safe.unit != 1>
+        <#if safe.percent?? >
+    <#if entityInfoDetail_index = 0>
+            $("#${safe.desc}-l").css("width", ${safe.percent}*100 + "%")
+            <#else/>
+        $("#${safe.desc}-r").css("width", ${safe.percent}*100 + "%")
+    </#if>
+        </#if>
+        </#if>
+        </#list>
+        </#list>
+    })
+
+
+    var num1 = 0;
+    var a = setInterval(function() {
+        num1++;
+        start(num1, "hold-row0");
+        if(num1 >= $(".score-0").data("num")*20) {
+            clearInterval(a);
+        }
+    }, 20);
+
+    var num2= 0;
+    var b = setInterval(function() {
+        num2++;
+        start(num2, "hold-row1");
+        if(num2 >= $(".score-1").data("num")*20) {
+            clearInterval(b);
+        }
+    }, 20);
+
+    $('.nav li span').click(function(){
+        var i = $('.nav li span').index(this);
+//			$('.nav li span').removeClass('active');
+//			$('.nav li span').eq(i).addClass('active');
+
+        var winScroll = $(window).scrollTop();
+        var infoTop = $('.info').get(0).offsetTop + 56;
+        var scoreTop = $('.score').get(0).offsetTop - 44 + 56;
+        var safeTop = $('.safe').get(0).offsetTop - 44 + 56;
+        var comments = $('.comments-box').get(0).offsetTop - 44 + 56;
+
+        if(i == 0){
+            $('body').animate({
+                scrollTop: infoTop
+            });
+        }else if(i == 1){
+            $('body').animate({
+                scrollTop: scoreTop
+            });
+        }else if(i == 2){
+            $('body').animate({
+                scrollTop: safeTop
+            });
+        }else if(i == 3){
+            $('body').animate({
+                scrollTop: comments
+            });
+        }
+    });
+
+    $(window).scroll(function(event){
+        var winScroll = $(window).scrollTop();
+        var navTop = $('.nav').get(0).offsetTop + 56;
+        var scoreTop = $('.score').get(0).offsetTop - 45 + 56;
+        var safeTop = $('.safe').get(0).offsetTop - 45 + 56;
+//        var commentsTop = $('.comments-box').get(0).offsetTop - 45 + 56;
+
+        if(winScroll > navTop){
+            $('.nav').css({
+                'position': 'fixed',
+                'top': '0'
+            });
+            $('.info').css('padding-top', '44px');
+            for(var i = 0; i < $('.nav li').length; i++){
+                $('.nav li span').removeClass('active');
+            }
+            $("[data-type='info']").addClass('active');
+        }
+        if(winScroll < 370){
+            $('.nav').css({
+                'position': 'relative'
+            });
+            $('.info').css('padding-top', '0');
+
+            $("[data-type='info']").addClass('active');
+        }
+        if(winScroll > scoreTop){
+            for(var i = 0; i < $('.nav li').length; i++){
+                $('.nav li span').removeClass('active');
+            }
+            $("[data-type='score']").addClass('active');
+        }
+        if(winScroll > safeTop){
+            for(var i = 0; i < $('.nav li').length; i++){
+                $('.nav li span').removeClass('active');
+            }
+            $("[data-type='safe']").addClass('active');
+        }
+        if($(document).scrollTop() + $(window).height() == $(document).height()){
+            for(var i = 0; i < $('.nav li').length; i++){
+                $('.nav li span').removeClass('active');
+            }
+            $("[data-type='comments']").addClass('active');
+        }
+    });
+
+    function start(num, hold) {
+        if(num <= 50) {
+            num = 3.6 * num + 180;
+            $("."+hold + " .pie1").css("-webkit-transform", "rotate(" + num + "deg)");
+        } else if(num > 50) {
+            $("."+hold + " .pie1").css("-webkit-transform", "rotate(360deg)");
+            num = 3.6 * num;
+            $("."+hold + " .pie2").css("-webkit-transform", "rotate(" + num + "deg)");
+        }
+    }
+</script>
+<#include "/wx_share_footer.html" />
+

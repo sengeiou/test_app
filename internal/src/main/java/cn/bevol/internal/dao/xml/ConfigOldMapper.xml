@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Created by mysens on 17-6-7. -->
+<mapper namespace="cn.bevol.internal.dao.mapper.ConfigOldMapper">
+    <resultMap id="BaseResultMap" type="cn.bevol.internal.entity.model.Config">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="key" property="key" jdbcType="VARCHAR"/>
+        <result column="value" property="value" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getConfigByKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT *
+        FROM hq_config
+        WHERE `key` = #{key,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT *
+        FROM hq_config
+        WHERE `key` = #{key,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getConfigByKeys" resultMap="BaseResultMap">
+        SELECT `id`, `key`, `value`, `type`
+        FROM hq_config WHERE  `key` in
+        <foreach collection="array" item="keys"  open="(" separator="," close=")">
+            #{keys}
+        </foreach>
+    </select>
+
+    <update id="saveConfigType">
+        update hq_config set `type` = #{type} where `key` = #{key}
+    </update>
+
+    <insert id="insertOrUpdate" parameterType="java.lang.String"  useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from hq_config where `key` = #{key}
+        </selectKey>
+        <if test="count == 0">
+            insert into hq_config (`key`, `value`)
+            values
+            (
+            #{key}, #{value}
+            )
+        </if>
+        <if test="count > 0">
+            update hq_config set `value` = #{value} where `key` = #{key}
+        </if>
+    </insert>
+</mapper>
